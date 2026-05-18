@@ -80,7 +80,7 @@ const Home = ({ onSelectSchool }) => {
   }
 
   return (
-    <Box sx={{ p: 4, margin: "0 auto" }}>
+    <Box sx={{ p: 4, margin: "0" }}>
       {/* Encabezado Principal */}
       <Box sx={{ textAlign: "center", mb: 6 }}>
         <Typography

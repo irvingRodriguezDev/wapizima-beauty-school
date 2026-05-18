@@ -4,10 +4,12 @@ import { Box } from "@mui/material";
 import Hero from "../components/Hero";
 import MarqueeCinta from "../components/MarqueeCinta";
 import BeneficiosGrid from "../components/BeneficiosGrid";
+import Layout from "../components/Landing/Layout";
+import Planteles from "./Planteles";
 
 const LandingPrincipal = ({ onDiscoverLocations }) => {
   return (
-    <Box sx={{ bgcolor: "#fff", minHeight: "100vh", overflowX: "hidden" }}>
+    <Layout>
       {/* 1. Sección de Introducción de Impacto */}
       <Hero onDiscoverLocations={onDiscoverLocations} />
 
@@ -16,7 +18,8 @@ const LandingPrincipal = ({ onDiscoverLocations }) => {
 
       {/* 3. Grid Minimalista de Beneficios Corporativos */}
       <BeneficiosGrid />
-    </Box>
+      <Planteles />
+    </Layout>
   );
 };
 

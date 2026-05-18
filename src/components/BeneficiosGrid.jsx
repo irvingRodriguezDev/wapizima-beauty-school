@@ -1,10 +1,17 @@
 import React from "react";
-import { Box, Typography, Grid, Container } from "@mui/material";
+import { Box, Typography, Grid, Container, Button } from "@mui/material";
 import SchoolIcon from "@mui/icons-material/School";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import { motion } from "framer-motion";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Home from "../pages/Home";
 
+const itemVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+};
 const BeneficiosGrid = () => {
   const items = [
     {
@@ -30,15 +37,15 @@ const BeneficiosGrid = () => {
   ];
 
   return (
-    <Container maxWidth='lg' sx={{ py: 6 }}>
-      <Box sx={{ textAlign: "center", mb: 8 }}>
+    <Grid container spacing={2}>
+      <Grid size={12} sx={{ textAlign: "center", mb: 5, mt: 2 }}>
         <Typography variant='h4' fontWeight='800' sx={{ color: "#212121" }}>
           ✨ Los beneficios de estudiar en{" "}
           <Box component='span' sx={{ color: "#f06292" }}>
             Wapizima
           </Box>
         </Typography>
-      </Box>
+      </Grid>
 
       <Grid container spacing={4}>
         {items.map((item, index) => (
@@ -73,7 +80,39 @@ const BeneficiosGrid = () => {
           </Grid>
         ))}
       </Grid>
-    </Container>
+      <Grid
+        size={12}
+        sx={{ display: "flex", justifyContent: "center", mt: 4, mb: 8 }}
+      >
+        <motion.div variants={itemVariants}>
+          <Button
+            variant='contained'
+            // onClick={onDiscoverLocations}
+            endIcon={<LocationOnIcon />}
+            sx={{
+              bgcolor: "#d81b60",
+              color: "#fff",
+              px: 6,
+              py: 2.2,
+              borderRadius: "50px",
+              fontWeight: "800",
+              textTransform: "none",
+              fontSize: "1.1rem",
+              letterSpacing: "0.5px",
+              boxShadow: "0 12px 30px rgba(216, 27, 96, 0.4)",
+              transition: "all 0.3s ease-in-out",
+              "&:hover": {
+                bgcolor: "#d81b60",
+                transform: "scale(1.03)",
+                boxShadow: "0 15px 35px rgba(216, 27, 96, 0.6)",
+              },
+            }}
+          >
+            Comienza tu transformación aquí
+          </Button>
+        </motion.div>
+      </Grid>
+    </Grid>
   );
 };
 
