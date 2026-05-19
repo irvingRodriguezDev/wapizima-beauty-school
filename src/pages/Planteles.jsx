@@ -11,6 +11,7 @@ import { getDistanceKm } from "../utils/geoDistance";
 import { supabase } from "../config/supabaseClient";
 import PlantelCard from "../components/PlantelCard";
 import { Link } from "react-router-dom";
+import { parsePostGISPoint } from "../utils/geo";
 
 const Planteles = ({ onSelectSchool }) => {
   const {
@@ -24,37 +25,47 @@ const Planteles = ({ onSelectSchool }) => {
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        // 1. Traemos las escuelas desde Supabase
         const { data, error } = await supabase.from("schools").select("*");
         if (error) throw error;
 
         let escuelasProcesadas = data || [];
 
-        // OJO: Cambié location.lng por location.lon para hacer match con el proveedor IP/GPS anterior
+        // 1. Mapeamos y ordenamos por geolocalización
         const tieneUbicacionValida =
           location?.lat && (location?.lon || location?.lng);
 
         if (tieneUbicacionValida) {
           const userLat = location.lat;
-          const userLon = location.lon || location.lng; // Soporta ambas nomenclaturas por seguridad
+          const userLon = location.lon || location.lng;
 
           escuelasProcesadas = escuelasProcesadas
             .map((school) => {
-              // Validamos que la escuela tenga coordenadas válidas antes de calcular
-              if (!school.latitude || !school.longitude) {
-                return { ...school, distance: 9999 }; // Las mandamos al final si no tienen GPS
+              // DECODIFICAMOS EL STRING HEXADECIMAL DE SUPABASE A AQUÍ:
+              const coordsDecodificadas = parsePostGISPoint(school.location);
+
+              const schoolLat = coordsDecodificadas.lat;
+              const schoolLng = coordsDecodificadas.lng;
+
+              // Si la decodificación falló o no tiene coordenadas, va al fondo
+              if (!schoolLat || !schoolLng) {
+                return { ...school, lat: null, lng: null, distance: 9999 };
               }
 
               const distance = getDistanceKm(
                 userLat,
                 userLon,
-                Number(school.latitude),
-                Number(school.longitude),
+                Number(schoolLat),
+                Number(schoolLng),
               );
 
-              return { ...school, distance };
+              // Devolvemos el objeto escuela con sus latitudes numéricas limpias para el resto de la app
+              return {
+                ...school,
+                lat: schoolLat,
+                lng: schoolLng,
+                distance,
+              };
             })
-            // Ordenamos de la más cercana a la más lejana
             .sort((a, b) => a.distance - b.distance);
         }
 
@@ -66,11 +77,10 @@ const Planteles = ({ onSelectSchool }) => {
       }
     };
 
-    // Solo ejecuta cuando la ubicación haya terminado de cargarse (sea exitosa o fallback)
     if (!loadingLocation) {
       fetchSchools();
     }
-  }, [location, loadingLocation]); // Dependencias limpias y correctas
+  }, [location, loadingLocation]);
 
   // Loader perfectamente centrado relativo a la sección
   if (loadingLocation || loadingSchools) {
