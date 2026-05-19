@@ -47,7 +47,7 @@ const MarqueeCinta = () => {
       >
         {/* Duplicamos el array tres veces para asegurar que pantallas ultra-wide (como tu monitor) no vean cortes */}
         {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, i) => (
-          <Stack key={i} direction='row' alignItems='center' spacing={3}>
+          <Stack key={i} direction='row' spacing={3}>
             <Typography
               variant='button'
               sx={{

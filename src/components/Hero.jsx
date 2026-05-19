@@ -1,12 +1,4 @@
-import React from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Container,
-  Grid,
-  useTheme,
-} from "@mui/material";
+import { Box, Typography, Container, Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
@@ -78,20 +70,13 @@ const Hero = ({ onDiscoverLocations }) => {
           initial='hidden'
           animate='visible'
         >
-          <Grid
-            container
-            spacing={4}
-            justifyContent='center'
-            alignItems='center'
-          >
+          <Grid container spacing={4}>
             {/* 1. BADGE SUPERIOR DE MARCA */}
-            <Grid size={12}>
+            <Grid size={12} sx={{ display: "flex", justifyContent: "center" }}>
               <motion.div variants={itemVariants}>
                 <Box
                   sx={{
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
                     gap: 1,
                     mb: 3,
                   }}
@@ -104,6 +89,7 @@ const Hero = ({ onDiscoverLocations }) => {
                       letterSpacing: "4px",
                       fontWeight: 800,
                       color: "#f06292",
+                      textAlign: "center",
                     }}
                   >
                     FORJANDO LÍDERES EN EL ARTE DE LAS UÑAS

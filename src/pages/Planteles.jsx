@@ -24,37 +24,53 @@ const Planteles = ({ onSelectSchool }) => {
   useEffect(() => {
     const fetchSchools = async () => {
       try {
+        // 1. Traemos las escuelas desde Supabase
         const { data, error } = await supabase.from("schools").select("*");
         if (error) throw error;
 
-        let escuelasProcesadas = data;
+        let escuelasProcesadas = data || [];
 
-        if (location.lat && location.lng) {
-          escuelasProcesadas = data
+        // OJO: Cambié location.lng por location.lon para hacer match con el proveedor IP/GPS anterior
+        const tieneUbicacionValida =
+          location?.lat && (location?.lon || location?.lng);
+
+        if (tieneUbicacionValida) {
+          const userLat = location.lat;
+          const userLon = location.lon || location.lng; // Soporta ambas nomenclaturas por seguridad
+
+          escuelasProcesadas = escuelasProcesadas
             .map((school) => {
+              // Validamos que la escuela tenga coordenadas válidas antes de calcular
+              if (!school.latitude || !school.longitude) {
+                return { ...school, distance: 9999 }; // Las mandamos al final si no tienen GPS
+              }
+
               const distance = getDistanceKm(
-                location.lat,
-                location.lng,
-                school.latitude,
-                school.longitude,
+                userLat,
+                userLon,
+                Number(school.latitude),
+                Number(school.longitude),
               );
+
               return { ...school, distance };
             })
+            // Ordenamos de la más cercana a la más lejana
             .sort((a, b) => a.distance - b.distance);
         }
 
         setSchools(escuelasProcesadas);
       } catch (err) {
-        console.error("Error cargando escuelas:", err.message);
+        console.error("Error cargando escuelas de Wapizima:", err.message);
       } finally {
         setLoadingSchools(false);
       }
     };
 
+    // Solo ejecuta cuando la ubicación haya terminado de cargarse (sea exitosa o fallback)
     if (!loadingLocation) {
       fetchSchools();
     }
-  }, [location, loadingLocation]);
+  }, [location, loadingLocation]); // Dependencias limpias y correctas
 
   // Loader perfectamente centrado relativo a la sección
   if (loadingLocation || loadingSchools) {

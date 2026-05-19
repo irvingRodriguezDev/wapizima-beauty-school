@@ -66,7 +66,6 @@ const Navbar = () => {
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
               gap: 1,
               flexGrow: 1,
               color: "#1a1a1a",
@@ -157,22 +156,16 @@ const Navbar = () => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
-        PaperProps={{
-          sx: {
-            width: 260,
-            background: "rgba(255, 255, 255, 0.95)",
-            backdropFilter: "blur(10px)",
-          },
-        }}
+        // PaperProps={{
+        //   sx: {
+        //     width: 260,
+        //     background: "rgba(255, 255, 255, 0.95)",
+        //     backdropFilter: "blur(10px)",
+        //   },
+        // }}
       >
         <Box sx={{ p: 3, textAlign: "center" }}>
-          <Stack
-            direction='row'
-            spacing={1}
-            justifyContent='center'
-            alignItems='center'
-            mb={4}
-          >
+          <Stack direction='row' spacing={1} mb={4}>
             <AutoAwesomeIcon sx={{ color: "#f06292" }} />
             <Typography variant='h6' fontWeight='900' color='#1a1a1a'>
               WAPIZIMA
@@ -186,13 +179,7 @@ const Navbar = () => {
                   onClick={handleDrawerToggle}
                   sx={{ textAlign: "center", borderRadius: "10px", my: 0.5 }}
                 >
-                  <ListItemText
-                    primary={item.label}
-                    primaryTypographyProps={{
-                      fontWeight: "700",
-                      color: "#444",
-                    }}
-                  />
+                  <ListItemText primary={item.label} />
                 </ListItemButton>
               </ListItem>
             ))}
