@@ -11,6 +11,8 @@ import {
   Button,
 } from "@mui/material";
 import { ArrowForward as ArrowForwardIcon } from "@mui/icons-material";
+import { FormatCurrency } from "../utils/FormatCurrency";
+import { Link } from "react-router-dom";
 
 // Paleta de colores Rosa de tu diseño
 const COLORS = {
@@ -28,45 +30,9 @@ const PublicCoursesTabs = ({ courses = [] }) => {
     setTabValue(newValue);
   };
 
-  /* Datos de ejemplo por si necesitas validar el diseño antes de conectar Supabase.
-    Cuando pases la prop 'courses', este mock se ignorará automáticamente.
-  */
-  const datosAMostrar =
-    courses.length > 0
-      ? courses
-      : [
-          {
-            id: 1,
-            name: "Manicure Rusa Avanzada",
-            type: "CURSO",
-            price: 1200,
-            banner_url: null,
-            description:
-              "Aprende la técnica perfecta de corte y preparación de cutícula con torno.",
-          },
-          {
-            id: 2,
-            name: "Estructuras de Salón y Formas",
-            type: "CURSO",
-            price: 2500,
-            banner_url: null,
-            description:
-              "Domina el manejo del acrílico y polygel para estructuras comerciales.",
-          },
-          {
-            id: 3,
-            name: "Taller de Flores 3D Básico",
-            type: "TALLER",
-            price: 800,
-            banner_url: null,
-            description:
-              "Arte y diseño en tercera dimensión para salones de uñas.",
-          },
-        ];
-
   // Clasificación estricta: Pestaña 0 = CURSOS, Pestaña 1 = TALLERES
-  const filteredData = datosAMostrar.filter((item) =>
-    tabValue === 0 ? item.type === "CURSO" : item.type === "TALLER",
+  const filteredData = courses.filter((item) =>
+    tabValue === 0 ? item.tipo_curso === "Curso" : item.tipo_curso === "Taller",
   );
 
   return (
@@ -77,9 +43,6 @@ const PublicCoursesTabs = ({ courses = [] }) => {
         p: { xs: 2, md: 4 },
       }}
     >
-      {/* Encabezado del visor público */}
-
-      {/* Pestañas de Navegación Rosas */}
       <Box
         sx={{
           display: "flex",
@@ -142,10 +105,10 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                   component='img'
                   height='180'
                   image={
-                    item.banner_url ||
+                    item.flayer_url ||
                     "https://images.unsplash.com/photo-1604654894610-df490651e56c?q=80&w=600&auto=format&fit=crop"
                   } // Imagen bonita de stock si no hay banner_url
-                  alt={item.name}
+                  alt={item.titulo}
                   sx={{
                     borderTopLeftRadius: "24px",
                     borderTopRightRadius: "24px",
@@ -162,24 +125,6 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                   }}
                 >
                   <Box>
-                    {/* Precio Destacado */}
-                    <Typography
-                      variant='h5'
-                      sx={{ fontWeight: 800, color: COLORS.accent, mb: 1 }}
-                    >
-                      ${item.price}{" "}
-                      <Box
-                        component='span'
-                        sx={{
-                          fontSize: "0.85rem",
-                          fontWeight: 400,
-                          color: "text.secondary",
-                        }}
-                      >
-                        MXN
-                      </Box>
-                    </Typography>
-
                     {/* Nombre */}
                     <Typography
                       variant='h6'
@@ -190,7 +135,9 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                         mb: 1,
                       }}
                     >
-                      {item.name}
+                      {item.maestro
+                        ? `${item.titulo} con ${item.maestro}`
+                        : item.titulo}
                     </Typography>
 
                     {/* Descripción Corta */}
@@ -205,33 +152,56 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                         mb: 3,
                       }}
                     >
-                      {item.description ||
-                        "Sin descripción disponible actualmente."}
+                      Disponible del{" "}
+                      {new Date(item.fecha_inicio).toLocaleDateString()} al{" "}
+                      {new Date(item.fecha_fin).toLocaleDateString()}
+                    </Typography>
+                    {/* Precio Destacado */}
+                    <Typography
+                      variant='h6'
+                      sx={{ fontWeight: 800, color: COLORS.accent, mb: 1 }}
+                    >
+                      {FormatCurrency(item.costo)}{" "}
+                      <Box
+                        component='span'
+                        sx={{
+                          fontSize: "0.55rem",
+                          fontWeight: 400,
+                          color: "text.secondary",
+                        }}
+                      >
+                        MXN
+                      </Box>
                     </Typography>
                   </Box>
 
                   {/* Botón de Acción Pública */}
-                  <Button
-                    variant='contained'
-                    fullWidth
-                    endIcon={<ArrowForwardIcon />}
-                    sx={{
-                      backgroundColor: COLORS.secondary,
-                      color: COLORS.accent,
-                      borderRadius: "14px",
-                      py: 1.2,
-                      fontWeight: 700,
-                      textTransform: "none",
-                      boxShadow: "none",
-                      "&:hover": {
-                        backgroundColor: COLORS.primary,
-                        color: "white",
-                        boxShadow: "0px 4px 15px rgba(240, 98, 146, 0.25)",
-                      },
-                    }}
+                  <Link
+                    to={`/curso/${item.slug}`}
+                    style={{ textDecoration: "none" }}
                   >
-                    Ver Detalles
-                  </Button>
+                    <Button
+                      variant='contained'
+                      fullWidth
+                      endIcon={<ArrowForwardIcon />}
+                      sx={{
+                        backgroundColor: COLORS.secondary,
+                        color: COLORS.accent,
+                        borderRadius: "14px",
+                        py: 1.2,
+                        fontWeight: 700,
+                        textTransform: "none",
+                        boxShadow: "none",
+                        "&:hover": {
+                          backgroundColor: COLORS.primary,
+                          color: "white",
+                          boxShadow: "0px 4px 15px rgba(240, 98, 146, 0.25)",
+                        },
+                      }}
+                    >
+                      Ver Detalles
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </Grid>

@@ -4,6 +4,7 @@ import LandingPrincipal from "./pages/LandingPrincipal";
 import PlantelDetailPage from "./pages/PlantelDetail";
 import QuienesSomos from "./pages/QuienesSomos";
 import FranquiciasSection from "./pages/Franquicias";
+import CourseDetailPage from "./pages/CourseDetailPage";
 
 function App() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function App() {
 
       {/* Ruta Dinámica: Landing Page de la Escuela Seleccionada */}
       <Route path='/plantel/:slug' element={<PlantelDetailPage />} />
+      <Route path='/curso/:courseSlug' element={<CourseDetailPage />} />
       <Route path='/nosotros' element={<QuienesSomos />} />
       <Route path='/franquicias' element={<FranquiciasSection />} />
       {/* Ruta de escape por si escriben cualquier otra cosa (404) */}
