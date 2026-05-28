@@ -3,68 +3,115 @@ import { Box, Typography, Stack } from "@mui/material";
 import { motion } from "framer-motion";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
-// Animación acelerada un poco (de 25s a 20s) para darle más dinamismo al llamado
+// ---- DIRECCIÓN DE DISEÑO EDITORIAL SÓLIDO ----
+const TAPE_STYLE = {
+  // Fondo sólido, sofisticado y maduro en Rosa Viejo
+  bgSolid: "#BA8992",
+  // Color de texto en contraste de alta costura
+  textContrast: "#2D2526",
+  fontSans: "'Montserrat', 'Inter', sans-serif",
+  // Sombra plana y ultra sutil para separación de capas
+  boxShadow: "0px 4px 20px rgba(45, 37, 38, 0.02)",
+};
+
+// Animación fluida de marquesina infinita
 const marqueeVariants = {
   animate: {
-    x: [0, -1200],
+    x: [0, "-50%"],
     transition: {
-      x: { repeat: Infinity, repeatType: "loop", duration: 20, ease: "linear" },
+      x: {
+        repeat: Infinity,
+        repeatType: "loop",
+        duration: 30, // Un ritmo un poco más pausado y exclusivo
+        ease: "linear",
+      },
     },
   },
 };
 
 const MarqueeCinta = () => {
-  // Frases ultra-empoderadas de invitación a la comunidad
   const marqueeItems = [
     { text: "ÚNETE A LA ACADEMIA NÚMERO UNO", highlight: true },
-    { text: "SÉ PARTE DE LACOMUNIDAD WAPIZIMA", highlight: false },
+    { text: "SÉ PARTE DE LA COMUNIDAD WAPIZIMA", highlight: false },
     { text: "TRANSFORMA TU PASIÓN EN UN IMPERIO", highlight: true },
-    { text: "INCRÍBETE HOY Y ASEGURA TU LUGAR", highlight: false },
-    { text: "EL MOMENTO DE EMPRENDER ES AHORA", highlight: true },
-    { text: "APARTA TU LUGAR CON SOLO EL 10%", highlight: false },
+    { text: "EL MOMENTO DE EMPRENDER ES AHORA", highlight: false },
+    { text: "CONTRATO Y RESPALDO DE MARCA LÍDER", highlight: true },
+    { text: "CALIDAD PROFESIONAL INTERNACIONAL", highlight: false },
   ];
+
+  // Renderizamos el bloque de ítems de forma limpia
+  const renderMarqueeBlock = () => (
+    <Stack
+      direction='row'
+      spacing={10} // Más aire entre frases para diseño editorial
+      sx={{ alignItems: "center", flexShrink: 0 }}
+    >
+      {marqueeItems.map((item, i) => (
+        <Stack
+          key={i}
+          direction='row'
+          spacing={4}
+          sx={{ alignItems: "center" }}
+        >
+          <Typography
+            variant='button'
+            sx={{
+              fontWeight: item.highlight ? 800 : 500, // Jugamos con los pesos tipográficos en lugar de colores chillones
+              letterSpacing: "4px", // Súper espaciado estilo alta joyería
+              fontSize: { xs: "0.85rem", md: "1rem" },
+              fontFamily: TAPE_STYLE.fontSans,
+              color: TAPE_STYLE.textContrast,
+              whiteSpace: "nowrap",
+              textTransform: "uppercase",
+            }}
+          >
+            {item.text}
+          </Typography>
+          <AutoAwesomeIcon
+            sx={{
+              color: TAPE_STYLE.textContrast,
+              fontSize: 14,
+              opacity: 0.6, // Sutil destello integrado al flujo del texto
+            }}
+          />
+        </Stack>
+      ))}
+    </Stack>
+  );
 
   return (
     <Box
       sx={{
-        bgcolor: "#fdf2f5",
-        borderTop: "2px solid rgba(240, 98, 146, 0.3)",
-        borderBottom: "2px solid rgba(240, 98, 146, 0.3)",
-        py: 2.2,
-        whiteSpace: "nowrap",
+        background: TAPE_STYLE.bgSolid,
+        py: 3, // Un poco más alta para darle un aire imponente a la tipografía
         overflow: "hidden",
         display: "flex",
-        // Mantenemos la asimetría rompedora de tus flyers impresos
-        transform: "rotate(-1.5deg) scale(1.02)",
-        my: 2,
-        boxShadow: "0 6px 20px rgba(240, 98, 146, 0.05)",
+        width: "100vw",
+        position: "relative",
+        left: "50%",
+        right: "50%",
+        marginLeft: "-50vw",
+        marginRight: "-50vw",
+        boxShadow: TAPE_STYLE.boxShadow,
+        zIndex: 10,
+        my: 8, // Separación generosa para dejar respirar el contenido superior e inferior
       }}
     >
-      <motion.div
+      <Box
+        component={motion.div}
         variants={marqueeVariants}
         animate='animate'
-        style={{ display: "flex", gap: "4rem", paddingRight: "4rem" }}
+        sx={{
+          display: "flex",
+          gap: 10,
+          whiteSpace: "nowrap",
+          width: "max-content",
+        }}
       >
-        {/* Duplicamos el array tres veces para asegurar que pantallas ultra-wide (como tu monitor) no vean cortes */}
-        {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, i) => (
-          <Stack key={i} direction='row' spacing={3}>
-            <Typography
-              variant='button'
-              sx={{
-                fontWeight: 900,
-                letterSpacing: "1.5px",
-                fontSize: "1.1rem",
-                // Truco de diseño: intercalamos rosa fuerte con gris oscuro para un look de revista premium
-                color: item.highlight ? "#d81b60" : "#1a1a1a",
-                transition: "color 0.3s",
-              }}
-            >
-              {item.text}
-            </Typography>
-            <AutoAwesomeIcon sx={{ color: "#f06292", fontSize: 18 }} />
-          </Stack>
-        ))}
-      </motion.div>
+        {/* Bucle perfecto de dos bloques para renderizado continuo */}
+        {renderMarqueeBlock()}
+        {renderMarqueeBlock()}
+      </Box>
     </Box>
   );
 };

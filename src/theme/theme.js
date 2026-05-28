@@ -1,28 +1,94 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
+    // El tono principal de la academia: Ceniza Profundo / Chocolate Cálido
     primary: {
-      main: '#f06292', // El rosa vibrante de Floreciendo Juntas
-      dark: '#d81b60',
-      light: '#f8bbd0',
+      main: "#2D2526",
+      dark: "#1A1516",
+      light: "#423739",
+      contrastText: "#FAF6F6",
     },
+    // El tono de acento premium: Rosa Viejo / Oro Rosa Satinado Sólido
     secondary: {
-      main: '#635bff', // El morado de Stripe por si usas acentos
+      main: "#BA8992",
+      dark: "#9E6F78",
+      light: "#E8C1C4",
+      contrastText: "#2D2526",
     },
+    // Fondos de estudio fotográfico neutros (adiós a los pasteles ruidosos)
     background: {
-      default: '#fdf2f5', // Un fondo rosa pastel ultra suave
-      paper: '#ffffff',
+      default: "#FAF6F6", // Fondo crema limpio de alta costura
+      paper: "#FFFFFF", // Bloques puros para tarjetas y secciones planas
+    },
+    text: {
+      primary: "#2D2526",
+      secondary: "#736466",
     },
   },
   typography: {
-    fontFamily: '"Helvetica Neue", "Arial", sans-serif',
-    h1: { fontWeight: 800 },
-    h2: { fontWeight: 700 },
-    h4: { fontWeight: 700 },
+    // Mezcla editorial perfecta: Serif para impacto, Sans para lectura limpia
+    fontFamily: "'Montserrat', 'Inter', sans-serif",
+
+    h1: {
+      fontFamily: "'Playfair Display', 'Cormorant Garamond', serif",
+      fontWeight: 900,
+      letterSpacing: "2px",
+      color: "#2D2526",
+    },
+    h2: {
+      fontFamily: "'Playfair Display', 'Cormorant Garamond', serif",
+      fontWeight: 800,
+      letterSpacing: "1px",
+      color: "#2D2526",
+    },
+    h3: {
+      fontFamily: "'Playfair Display', 'Cormorant Garamond', serif",
+      fontWeight: 700,
+    },
+    h4: {
+      fontFamily: "'Montserrat', sans-serif",
+      fontWeight: 800,
+      letterSpacing: "1.5px",
+    },
+    body1: {
+      fontFamily: "'Montserrat', sans-serif",
+      fontWeight: 500,
+      lineHeight: 1.7,
+      letterSpacing: "0.3px",
+    },
+    button: {
+      fontFamily: "'Montserrat', sans-serif",
+      fontWeight: 700,
+      letterSpacing: "1.5px",
+      textTransform: "none", // Adiós a las mayúsculas forzadas automáticas de MUI
+    },
   },
   shape: {
-    borderRadius: 16, // Bordes redondeados y modernos para tus tarjetas flat
+    borderRadius: 0, // Cortes limpios y ortogonales de estilo arquitectónico de lujo
+  },
+  // Desactivamos sombras globales pesadas para asegurar un rendimiento plano impecable
+  components: {
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true, // Botones planos, elegantes y modernos
+      },
+      styleOverrides: {
+        root: {
+          borderRadius: "50px", // Mantenemos las cápsulas estilizadas solo para botones de acción
+          padding: "10px 24px",
+          transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none",
+          border: "1px solid rgba(186, 137, 146, 0.15)", // Bordes finos en lugar de sombras sucias
+        },
+      },
+    },
   },
 });
 

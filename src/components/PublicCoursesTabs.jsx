@@ -14,14 +14,6 @@ import { ArrowForward as ArrowForwardIcon } from "@mui/icons-material";
 import { FormatCurrency } from "../utils/FormatCurrency";
 import { Link } from "react-router-dom";
 
-// Paleta de colores Rosa de tu diseño
-const COLORS = {
-  primary: "#f06292", // Rosa principal
-  secondary: "#fce4ec", // Rosa pastel para fondos y sutiles
-  accent: "#ec407a", // Rosa fuerte para botones e interacciones
-  textDark: "#2d2d2d", // Gris oscuro premium para títulos
-};
-
 const PublicCoursesTabs = ({ courses = [] }) => {
   const [tabValue, setTabValue] = useState(0);
 
@@ -36,20 +28,15 @@ const PublicCoursesTabs = ({ courses = [] }) => {
   );
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        margin: "0 auto",
-        p: { xs: 2, md: 4 },
-      }}
-    >
+    <Box sx={{ width: "100%", margin: "0 auto", pt: 2 }}>
+      {/* SECCIÓN DE PESTAÑAS EDITORIALES */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
-          borderBottom: 1,
-          borderColor: "#eaeaea",
-          mb: 4,
+          borderBottom: "1px solid",
+          borderColor: "rgba(45, 37, 38, 0.08)",
+          mb: 6,
         }}
       >
         <Tabs
@@ -58,60 +45,65 @@ const PublicCoursesTabs = ({ courses = [] }) => {
           textColor='inherit'
           TabIndicatorProps={{
             style: {
-              backgroundColor: COLORS.primary,
-              height: 3,
-              borderRadius: "3px",
+              backgroundColor: "#BA8992", // Color secundario (Rosa Viejo)
+              height: 2,
             },
           }}
           sx={{
             "& .MuiTab-root": {
               fontWeight: 700,
-              fontSize: "1.05rem",
-              textTransform: "none",
-              color: "#888",
-              px: 4,
-              transition: "0.3s",
-              "&.Mui-selected": { color: COLORS.primary },
+              fontSize: "0.9rem",
+              textTransform: "uppercase",
+              letterSpacing: "2px", // Letraje de pasarela
+              color: "text.secondary",
+              px: { xs: 2, sm: 4 },
+              pb: 2,
+              transition: "color 0.3s ease",
+              "&.Mui-selected": {
+                color: "secondary.main",
+                fontWeight: 900,
+              },
             },
           }}
         >
-          <Tab label='📚 Cursos Completos' />
-          <Tab label='🎨 Talleres Especializados' />
+          <Tab label='Cursos Completos' />
+          <Tab label='Talleres Especializados' />
         </Tabs>
       </Box>
 
-      {/* Grid de Cursos / Talleres */}
-      <Grid container spacing={3}>
+      {/* GRID DE COMPONENTES FLAT */}
+      <Grid container spacing={4}>
         {filteredData.length > 0 ? (
           filteredData.map((item) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={item.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }} key={item.id}>
               <Card
                 sx={{
-                  borderRadius: "24px",
-                  boxShadow: "0px 10px 35px rgba(240, 98, 146, 0.05)",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    transform: "translateY(-6px)",
-                    boxShadow: "0px 15px 40px rgba(240, 98, 146, 0.12)",
-                  },
+                  borderRadius: "12px", // Ortogonal puro, estricto diseño flat
+                  boxShadow: "none",
                   border: "1px solid",
-                  borderColor: COLORS.secondary,
+                  borderColor: "rgba(186, 137, 146, 0.18)", // Borde fino en tono de acento
                   display: "flex",
                   flexDirection: "column",
                   height: "100%",
+                  bgcolor: "background.paper",
+                  transition: "border-color 0.3s ease, transform 0.3s ease",
+                  "&:hover": {
+                    borderColor: "secondary.main",
+                    transform: "translateY(-4px)", // Elevación flat sutil sin sombras ruidosas
+                  },
                 }}
               >
                 <CardMedia
                   component='img'
-                  height='180'
+                  height='200'
                   image={
                     item.flayer_url ||
                     "https://images.unsplash.com/photo-1604654894610-df490651e56c?q=80&w=600&auto=format&fit=crop"
-                  } // Imagen bonita de stock si no hay banner_url
+                  }
                   alt={item.titulo}
                   sx={{
-                    borderTopLeftRadius: "24px",
-                    borderTopRightRadius: "24px",
+                    borderRadius: 0,
+                    filter: "brightness(0.96)", // Sutil matiz para integrar la foto al fondo
                   }}
                 />
 
@@ -125,14 +117,17 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                   }}
                 >
                   <Box>
-                    {/* Nombre */}
+                    {/* Nombre del Curso / Maestro */}
                     <Typography
                       variant='h6'
+                      component='h3'
                       sx={{
-                        fontWeight: 700,
-                        color: COLORS.textDark,
+                        fontWeight: 800,
+                        color: "primary.main",
                         lineHeight: 1.3,
-                        mb: 1,
+                        letterSpacing: "0.5px",
+                        fontSize: "1.1rem",
+                        mb: 1.5,
                       }}
                     >
                       {item.maestro
@@ -140,15 +135,13 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                         : item.titulo}
                     </Typography>
 
-                    {/* Descripción Corta */}
+                    {/* Rango de Fechas Minimalista */}
                     <Typography
                       variant='body2'
-                      color='textSecondary'
                       sx={{
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
+                        color: "text.secondary",
+                        fontWeight: 500,
+                        letterSpacing: "0.2px",
                         mb: 3,
                       }}
                     >
@@ -156,18 +149,27 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                       {new Date(item.fecha_inicio).toLocaleDateString()} al{" "}
                       {new Date(item.fecha_fin).toLocaleDateString()}
                     </Typography>
+
                     {/* Precio Destacado */}
                     <Typography
                       variant='h6'
-                      sx={{ fontWeight: 800, color: COLORS.accent, mb: 1 }}
+                      component='p'
+                      sx={{
+                        fontWeight: 900,
+                        color: "secondary.main",
+                        mb: 2.5,
+                        fontSize: "1.25rem",
+                        letterSpacing: "0.5px",
+                      }}
                     >
                       {FormatCurrency(item.costo)}{" "}
                       <Box
                         component='span'
                         sx={{
-                          fontSize: "0.55rem",
-                          fontWeight: 400,
+                          fontSize: "0.6rem",
+                          fontWeight: 600,
                           color: "text.secondary",
+                          ml: 0.5,
                         }}
                       >
                         MXN
@@ -175,27 +177,28 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                     </Typography>
                   </Box>
 
-                  {/* Botón de Acción Pública */}
+                  {/* Botón de Acción Sólido Premium */}
                   <Link
                     to={`/curso/${item.slug}`}
                     style={{ textDecoration: "none" }}
                   >
                     <Button
                       variant='contained'
+                      color='primary'
                       fullWidth
                       endIcon={<ArrowForwardIcon />}
                       sx={{
-                        backgroundColor: COLORS.secondary,
-                        color: COLORS.accent,
-                        borderRadius: "14px",
-                        py: 1.2,
+                        borderRadius: "12px", // Botón rectangular alineado a la estética de la tarjeta
+                        py: 1.5,
                         fontWeight: 700,
-                        textTransform: "none",
-                        boxShadow: "none",
+                        fontSize: "0.8rem",
+                        letterSpacing: "2px",
+                        textTransform: "uppercase",
+                        backgroundColor: "primary.main",
+                        color: "background.default",
                         "&:hover": {
-                          backgroundColor: COLORS.primary,
-                          color: "white",
-                          boxShadow: "0px 4px 15px rgba(240, 98, 146, 0.25)",
+                          backgroundColor: "secondary.main",
+                          color: "primary.contrastText",
                         },
                       }}
                     >
@@ -208,8 +211,15 @@ const PublicCoursesTabs = ({ courses = [] }) => {
           ))
         ) : (
           <Grid size={12}>
-            <Box sx={{ textAlign: "center", py: 8 }}>
-              <Typography variant='body1' color='textSecondary'>
+            <Box sx={{ textAlign: "center", py: 10 }}>
+              <Typography
+                variant='body1'
+                sx={{
+                  color: "text.secondary",
+                  letterSpacing: "1px",
+                  fontWeight: 500,
+                }}
+              >
                 No hay {tabValue === 0 ? "cursos" : "talleres"} disponibles en
                 este momento.
               </Typography>

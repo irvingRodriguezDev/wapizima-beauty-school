@@ -1,10 +1,10 @@
 import React from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import LandingPrincipal from "./pages/LandingPrincipal";
-import PlantelDetailPage from "./pages/PlantelDetail";
 import QuienesSomos from "./pages/QuienesSomos";
 import FranquiciasSection from "./pages/Franquicias";
 import CourseDetailPage from "./pages/CourseDetailPage";
+import PlantelDetailPage from "./pages/PlantelDetail";
 
 function App() {
   const navigate = useNavigate();

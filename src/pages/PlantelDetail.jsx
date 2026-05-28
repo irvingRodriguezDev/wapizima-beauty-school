@@ -1,38 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Container, Typography, Button } from "@mui/material";
 import { LocationOn as LocationIcon } from "@mui/icons-material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Layout from "../components/Landing/Layout";
 import PublicCoursesTabs from "../components/PublicCoursesTabs";
-import {
-  PublicSchoolProvider,
-  usePublicSchool,
-} from "../context/PublicSchoolContext";
+import { usePublicSchool } from "../context/PublicSchoolContext";
 import LoadingScreen from "../components/LoadingScreen";
 
-// Componente Interno que consume el contexto y maneja la vista
-const PlantelDetailContent = () => {
+// Componente Interno que consume el contexto y maneja la vista refinada
+const PlantelDetailPage = () => {
+  const params = useParams();
+  const { school, courses, loading, error, fetchPublicSchoolData } =
+    usePublicSchool();
   const navigate = useNavigate();
-  const { school, courses, loading, error } = usePublicSchool();
-
+  const { slug } = params;
+  useEffect(() => {
+    fetchPublicSchoolData(slug);
+  }, [slug]);
   if (loading) {
     return <LoadingScreen message='Cargando información del plantel...' />;
   }
 
   if (error || !school) {
     return (
-      <Container sx={{ py: 8, textAlign: "center" }}>
-        <Typography variant='h5' color='error' mb={3}>
+      <Container sx={{ py: 12, textAlign: "center" }}>
+        <Typography
+          variant='h5'
+          color='text.primary'
+          fontWeight={800}
+          mb={3}
+          sx={{ letterSpacing: "1px" }}
+        >
           No pudimos encontrar este plantel o no está disponible.
         </Typography>
-        <Button variant='outlined' onClick={() => navigate("/")}>
+        <Button
+          variant='outlined'
+          color='primary'
+          onClick={() => navigate("/")}
+        >
           Volver al Inicio
         </Button>
       </Container>
@@ -41,118 +47,106 @@ const PlantelDetailContent = () => {
 
   return (
     <Layout>
-      <Box sx={{ minHeight: "100vh" }}>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mr: 2, mt: 2 }}>
+      {/* Fondo plano y limpio alineado a la nueva paleta premium */}
+      <Box sx={{ minHeight: "100vh", bgcolor: "background.default", pb: 10 }}>
+        {/* BOTÓN REGRESAR - ESTILO MINIMALISTA */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            pt: 4,
+            pr: { xs: 3, md: 6 },
+          }}
+        >
           <Button
             startIcon={<ArrowBackIcon />}
             onClick={() => navigate("/")}
-            variant='contained'
+            variant='text'
+            color='primary'
             sx={{
-              backgroundColor: "#f06292",
-              color: "#fff",
-              fontWeight: "bold",
-              textTransform: "none",
-              borderRadius: "12px",
-              "&:hover": { backgroundColor: "#ec407a" },
+              fontWeight: 700,
+              fontSize: "0.85rem",
+              letterSpacing: "1.5px",
+              textTransform: "uppercase",
+              borderRadius: 0,
+              px: 2,
+              "&:hover": {
+                color: "secondary.main",
+                background: "transparent",
+              },
             }}
           >
             Volver a planteles
           </Button>
         </Box>
 
-        <Container maxWidth='2xl' sx={{ py: 6 }}>
-          {/* SECCIÓN 1: Header de la escuela */}
+        <Container maxWidth='2xl' sx={{ pt: 2, pb: 6 }}>
+          {/* SECCIÓN 1: HEADER EDITORIAL DEL PLANTEL */}
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               textAlign: "center",
-              py: { xs: 5, md: 7 },
-              px: 3,
-              background: "linear-gradient(180deg, #FFF9FA 0%, #FFFFFF 100%)",
-              borderRadius: "32px",
-              border: "1px solid rgba(240, 98, 146, 0.15)",
-              boxShadow: "0px 20px 40px rgba(242, 32, 140, 0.02)",
-              mb: 6,
+              py: { xs: 6, md: 9 },
+              px: 4,
+              bgcolor: "background.paper",
+              borderRadius: "12px", // Estructura ortogonal recta estilo galería de arte
+              border: "1px solid",
+              borderColor: "rgba(186, 137, 146, 0.15)", // Trazo fino del color de acento
+              mb: 8,
             }}
           >
+            {/* Título usando la tipografía Serif de Alta Costura heredada del tema */}
             <Typography
               variant='h2'
+              component='h1'
               sx={{
-                fontFamily: "'Playfair Display', 'Didot', 'Helvetica', serif",
                 fontWeight: 900,
-                letterSpacing: "-1.5px",
-                mb: 2,
-                background:
-                  "linear-gradient(135deg, #A81464 0%, #E2208C 50%, #F06292 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                fontSize: { xs: "2.5rem", sm: "3.5rem" },
-                lineHeight: 1.1,
+                color: "primary.main",
+                fontSize: { xs: "2.4rem", sm: "3.6rem" },
+                lineHeight: 1.15,
+                mb: 3,
+                maxWidth: "900px",
               }}
             >
               {school.name}
             </Typography>
 
+            {/* Separador Lineal Geométrico Sutil */}
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 2,
-                mb: 2.5,
-                width: "100%",
-                justifyContext: "center",
-                justifyContent: "center",
+                width: "60px",
+                height: "2px",
+                backgroundColor: "secondary.main",
+                mb: 4,
               }}
-            >
-              <Box
-                sx={{
-                  width: "40px",
-                  height: "1px",
-                  backgroundColor: "rgba(226, 32, 140, 0.3)",
-                }}
-              />
-              <Box
-                sx={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  backgroundColor: "#E2208C",
-                }}
-              />
-              <Box
-                sx={{
-                  width: "40px",
-                  height: "1px",
-                  backgroundColor: "rgba(226, 32, 140, 0.3)",
-                }}
-              />
-            </Box>
+            />
 
+            {/* Cápsula de Ubicación Plana y Sofisticada */}
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 1,
-                maxWidth: "550px",
-                backgroundColor: "rgba(255, 255, 255, 0.8)",
-                boxShadow: "0px 4px 15px rgba(0,0,0,0.02)",
-                borderRadius: "50px",
+                gap: 1.5,
+                maxWidth: "600px",
                 py: 1,
                 px: 3,
-                border: "1px solid rgba(0,0,0,0.03)",
+                border: "1px solid",
+                borderColor: "rgba(45, 37, 38, 0.1)",
+                borderRadius: "50px",
               }}
             >
-              <LocationIcon sx={{ color: "#E2208C", fontSize: "1.2rem" }} />
+              <LocationIcon
+                sx={{ color: "secondary.main", fontSize: "1.1rem" }}
+              />
               <Typography
                 variant='body2'
                 sx={{
-                  color: "#555555",
-                  fontWeight: 500,
-                  lineHeight: 1.4,
-                  letterSpacing: "0.3px",
+                  color: "text.secondary",
+                  fontWeight: 600,
+                  letterSpacing: "0.5px",
                 }}
               >
                 {school.address}
@@ -160,27 +154,18 @@ const PlantelDetailContent = () => {
             </Box>
           </Box>
 
-          {/* SECCIÓN 2: Título de la Oferta Educativa */}
-          <Box sx={{ textAlign: "center", mb: 5 }}>
+          {/* SECCIÓN 2: TÍTULO DE LA OFERTA EDUCATIVA (ESTILO REVISTA) */}
+          <Box sx={{ textAlign: "center", mb: 6 }}>
             <Typography
               variant='h4'
+              component='h2'
               sx={{
                 fontWeight: 800,
-                color: "#2D2D2D",
-                letterSpacing: "-0.5px",
-                mb: 1,
-                position: "relative",
-                display: "inline-block",
-                "&::after": {
-                  content: '""',
-                  position: "absolute",
-                  bottom: "-6px",
-                  left: "25%",
-                  width: "50%",
-                  height: "2px",
-                  background:
-                    "linear-gradient(90deg, transparent, #F06292, transparent)",
-                },
+                color: "primary.main",
+                letterSpacing: "2px",
+                textTransform: "uppercase",
+                fontSize: { xs: "1.4rem", md: "1.8rem" },
+                mb: 2,
               }}
             >
               Nuestra Oferta Educativa
@@ -188,11 +173,10 @@ const PlantelDetailContent = () => {
             <Typography
               variant='body1'
               sx={{
-                color: "#777777",
-                fontWeight: 400,
-                maxWidth: "500px",
-                margin: "12px auto 0 auto",
-                lineHeight: 1.6,
+                color: "text.secondary",
+                maxWidth: "550px",
+                margin: "0 auto",
+                fontSize: "0.95rem",
               }}
             >
               Elige el programa ideal diseñado por expertos para impulsar tu
@@ -200,22 +184,11 @@ const PlantelDetailContent = () => {
             </Typography>
           </Box>
 
-          {/* 🌟 PASAMOS LAS PROPS REALES DESDE EL CONTEXTO AQUÍ: */}
+          {/* 🌟 TABS QUE RECIBEN LA DATA DE CURSOS */}
           <PublicCoursesTabs courses={courses} />
         </Container>
       </Box>
     </Layout>
-  );
-};
-
-// Componente principal exportado que inyecta el Provider
-const PlantelDetailPage = () => {
-  const { slug } = useParams();
-
-  return (
-    <PublicSchoolProvider slug={slug}>
-      <PlantelDetailContent />
-    </PublicSchoolProvider>
   );
 };
 
