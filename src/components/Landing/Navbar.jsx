@@ -224,13 +224,11 @@ const Navbar = () => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
-        PaperProps={{
-          sx: {
-            width: 280,
-            background: LUXURY_STYLE.bgSolid, // Opaco, sólido y pulcro
-            boxShadow: "-10px 0px 40px rgba(45, 37, 38, 0.04)",
-            borderLeft: `1px solid ${LUXURY_STYLE.borderSoft}`,
-          },
+        sx={{
+          width: 280,
+          background: LUXURY_STYLE.bgSolid, // Opaco, sólido y pulcro
+          boxShadow: "-10px 0px 40px rgba(45, 37, 38, 0.04)",
+          borderLeft: `1px solid ${LUXURY_STYLE.borderSoft}`,
         }}
       >
         <Box
@@ -310,7 +308,7 @@ const Navbar = () => {
                   >
                     <ListItemText
                       primary={item.label}
-                      primaryTypographyProps={{
+                      sx={{
                         fontWeight: isActive ? 800 : 600,
                         fontSize: "1.05rem",
                         fontFamily: LUXURY_STYLE.fontSans,

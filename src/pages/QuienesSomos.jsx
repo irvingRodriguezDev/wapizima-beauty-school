@@ -99,6 +99,7 @@ const QuienesSomos = () => {
                       lineHeight: 1.8,
                       mb: 3,
                       fontWeight: 500,
+                      textAlign: "justify",
                     }}
                   >
                     En <strong>Wapizima Beauty School</strong> no creemos en los
@@ -114,6 +115,7 @@ const QuienesSomos = () => {
                       color: "text.secondary",
                       fontSize: "0.95rem",
                       lineHeight: 1.8,
+                      textAlign: "justify",
                     }}
                   >
                     Más que una escuela, somos un movimiento de empoderamiento.
@@ -142,7 +144,7 @@ const QuienesSomos = () => {
                   component={motion.div}
                   sx={{
                     p: 4,
-                    borderRadius: 0, // Ortogonal puro para evitar el look genérico redondeado
+                    borderRadius: "12px", // Ortogonal puro para evitar el look genérico redondeado
                     border: "1px solid",
                     borderColor: "rgba(186, 137, 146, 0.2)",
                     bgcolor: "background.default", // Crema suave de estudio fotográfico
@@ -173,6 +175,7 @@ const QuienesSomos = () => {
                       color: "text.secondary",
                       fontSize: "0.9rem",
                       lineHeight: 1.7,
+                      textAlign: "justify",
                     }}
                   >
                     Dotar a miles de mujeres de las herramientas artísticas y
@@ -187,7 +190,7 @@ const QuienesSomos = () => {
                   component={motion.div}
                   sx={{
                     p: 4,
-                    borderRadius: 0, // Consistencia arquitectónica recta
+                    borderRadius: "12px", // Consistencia arquitectónica recta
                     border: "1px solid",
                     borderColor: "rgba(45, 37, 38, 0.08)",
                     bgcolor: "background.paper", // Blanco para generar ritmo visual entre pilares
@@ -219,6 +222,7 @@ const QuienesSomos = () => {
                       color: "text.secondary",
                       fontSize: "0.9rem",
                       lineHeight: 1.7,
+                      textAlign: "justify",
                     }}
                   >
                     Consolidarnos como la red de academias de belleza más

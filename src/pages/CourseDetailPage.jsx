@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePublicSchool } from "../context/PublicSchoolContext";
 import {
@@ -18,11 +18,12 @@ import LoadingScreen from "../components/LoadingScreen";
 import Banner from "../components/CourseDetail/Banner";
 import DetailsAndDescription from "../components/CourseDetail/DetailsAndDescription";
 import MaterialList from "../components/CourseDetail/MaterialList";
+import InscripcionModal from "../components/inscriptions/InscriptionModal";
 
 const CourseDetailPage = () => {
   const { courseSlug } = useParams();
   const navigate = useNavigate();
-  const { currentCourse, fetchCourseDetailBySlug, loading, error } =
+  const { school, currentCourse, fetchCourseDetailBySlug, loading, error } =
     usePublicSchool();
 
   useEffect(() => {
@@ -30,6 +31,8 @@ const CourseDetailPage = () => {
       fetchCourseDetailBySlug(courseSlug);
     }
   }, [courseSlug, fetchCourseDetailBySlug]);
+
+  const [openModalInscription, setOpenModalInscription] = useState(false);
 
   if (loading) {
     return <LoadingScreen message='Cargando detalles del programa...' />;
@@ -115,6 +118,7 @@ const CourseDetailPage = () => {
             variant='contained'
             color='secondary'
             size='large'
+            onClick={() => setOpenModalInscription(true)}
             sx={{
               width: "100%",
               maxWidth: "500px",
@@ -136,15 +140,17 @@ const CourseDetailPage = () => {
                 transform: "scale(1.02)", // Cambia por una micro-expansión limpia al hacer hover
               },
             }}
-            onClick={() =>
-              console.log("Iniciar pasarela para el curso:", currentCourse.id)
-            }
           >
             Inscribirme al{" "}
             {currentCourse.tipo_curso === "Taller" ? "Taller" : "Curso"}
           </Button>
         </Box>
       </Box>
+      <InscripcionModal
+        open={openModalInscription}
+        onClose={() => setOpenModalInscription(false)}
+        currentCourse={currentCourse}
+      />
     </Layout>
   );
 };

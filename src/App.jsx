@@ -5,6 +5,8 @@ import QuienesSomos from "./pages/QuienesSomos";
 import FranquiciasSection from "./pages/Franquicias";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import PlantelDetailPage from "./pages/PlantelDetail";
+import PagoExitoso from "./pages/PagoExitoso";
+import InscripcionCancelada from "./pages/InscripcionCancelada";
 
 function App() {
   const navigate = useNavigate();
@@ -29,6 +31,8 @@ function App() {
       <Route path='/curso/:courseSlug' element={<CourseDetailPage />} />
       <Route path='/nosotros' element={<QuienesSomos />} />
       <Route path='/franquicias' element={<FranquiciasSection />} />
+      <Route path='/pago-exitoso' element={<PagoExitoso />} />
+      <Route path='/inscripcion-cancelada' element={<InscripcionCancelada />} />
       {/* Ruta de escape por si escriben cualquier otra cosa (404) */}
       <Route
         path='*'

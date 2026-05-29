@@ -61,10 +61,8 @@ const FranquiciasSection = () => {
           <Box sx={{ textAlign: "center", mb: 14 }}>
             <Stack
               direction='row'
-              alignItems='center'
-              justifyContent='center'
               spacing={1.5}
-              sx={{ mb: 2 }}
+              sx={{ mb: 2, justifyContent: "center", alignItems: "center" }}
             >
               <AutoAwesomeIcon sx={{ color: "secondary.main", fontSize: 14 }} />
               <Typography

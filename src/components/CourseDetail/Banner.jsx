@@ -41,7 +41,7 @@ const Banner = ({ currentCourse }) => {
         Volver
       </Button>
 
-      <Container maxWidth='xl'>
+      <Container sx={{ maxWidth: "xl" }}>
         {/* Etiqueta tipo de programa plana */}
         <Box
           sx={{

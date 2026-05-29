@@ -91,13 +91,13 @@ const Hero = ({ onDiscoverLocations }) => {
         <AutoAwesomeIcon sx={{ fontSize: 35, transform: "scaleX(-1)" }} />
       </Box>
 
-      <Container maxWidth='xl'>
+      <Container sx={{ maxWidth: "xl" }}>
         <motion.div
           variants={containerVariants}
           initial='hidden'
           animate='visible'
         >
-          <Grid container justifyContent='center'>
+          <Grid container sx={{ justifyContent: "center" }}>
             {/* 1. BADGE SUPERIOR DE MARCA (Look Editorial) */}
             <Grid size={12} sx={{ display: "flex", justifyContent: "center" }}>
               <motion.div variants={itemVariants}>
@@ -188,6 +188,7 @@ const Hero = ({ onDiscoverLocations }) => {
                     fontFamily: LUXURY_STYLE.fontSans,
                     fontWeight: 400,
                     letterSpacing: "0.2px",
+                    textAlign: "center",
                   }}
                 >
                   No solo te enseñamos una técnica, te entregamos las llaves de

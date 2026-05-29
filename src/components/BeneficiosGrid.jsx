@@ -77,7 +77,7 @@ const BeneficiosGrid = ({ onDiscoverLocations }) => {
         viewport={{ once: true, margin: "-100px" }}
       >
         {/* 1. TÍTULO PREMIUM DE SECCIÓN */}
-        <Grid container justifyContent='center' sx={{ px: 2 }}>
+        <Grid container sx={{ px: 2, justifyContent: "center" }}>
           <Grid size={12} sx={{ textAlign: "center", mb: { xs: 5, md: 8 } }}>
             <Typography
               variant='h2'
@@ -108,8 +108,8 @@ const BeneficiosGrid = ({ onDiscoverLocations }) => {
           </Grid>
 
           {/* 2. GRID DE TARJETAS CON GLASSMORPHISM */}
-          <Grid size={12} maxWidth='xl'>
-            <Grid container spacing={3} justifyContent='center'>
+          <Grid size={12}>
+            <Grid container spacing={3} sx={{ justifyContent: "center" }}>
               {items.map((item, index) => (
                 <Grid size={{ xs: 12, sm: 6, md: 6, lg: 3 }} key={index}>
                   <motion.div variants={itemVariants}>
@@ -168,6 +168,7 @@ const BeneficiosGrid = ({ onDiscoverLocations }) => {
                           fontSize: "0.92rem",
                           fontFamily: LUXURY_STYLE.fontSans,
                           fontWeight: 400,
+                          textAlign: "justify",
                         }}
                       >
                         {item.desc}

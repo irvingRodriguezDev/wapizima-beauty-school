@@ -43,13 +43,9 @@ const PublicCoursesTabs = ({ courses = [] }) => {
           value={tabValue}
           onChange={handleTabChange}
           textColor='inherit'
-          TabIndicatorProps={{
-            style: {
-              backgroundColor: "#BA8992", // Color secundario (Rosa Viejo)
-              height: 2,
-            },
-          }}
           sx={{
+            backgroundColor: "transparent", // Color secundario (Rosa Viejo)
+            height: 2,
             "& .MuiTab-root": {
               fontWeight: 700,
               fontSize: "0.9rem",

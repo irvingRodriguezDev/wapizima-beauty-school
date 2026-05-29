@@ -92,14 +92,11 @@ export const PublicSchoolProvider = ({ slug, children }) => {
     setLoading(true);
     setError(null);
     try {
-      console.log(
-        `🚀 Buscando detalle del curso individual para el slug: "${courseSlug}"`,
-      );
-
       const { data, error: courseErr } = await supabase
         .from("cursos")
         .select(
-          "id, titulo, descripcion, costo, maestro, tipo_curso, flayer_url, lista_materiales, fecha_inicio, fecha_fin, created_at, hora_inicio, hora_fin, video_presentacion_url, slug",
+          `id, titulo, descripcion, costo, maestro, tipo_curso, flayer_url, lista_materiales, fecha_inicio, school_id,
+          fecha_fin, created_at, hora_inicio, hora_fin, video_presentacion_url, slug, escuela:schools(stripe_account_id, name)`,
         )
         .eq("slug", courseSlug)
         .maybeSingle();
