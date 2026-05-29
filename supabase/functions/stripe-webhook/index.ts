@@ -17,14 +17,12 @@ serve(async (req) => {
   }
 
   try {
-    // 🌟 Leer el flujo como un ArrayBuffer binario
+    // 🌟 Leer el flujo como un ArrayBuffer binario (Indispensable para Deno 2)
     const arrayBuffer = await req.arrayBuffer();
     const rawBody = new Uint8Array(arrayBuffer);
-
-    // Deno.env.get es sincrónico nativamente (sin await)
     const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
 
-    // 🌟 CORRECCIÓN CRUCIAL: 'await' junto con 'constructEventAsync'
+    // 🌟 Validación asíncrona obligatoria para evitar el error de SubtleCrypto
     const event = await stripe.webhooks.constructEventAsync(rawBody, signature, webhookSecret!);
     
     console.log(`✅ ¡Firma validada con éxito! Evento: ${event.type}`);
@@ -32,11 +30,11 @@ serve(async (req) => {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object
       
-      // 🚀 Recuperamos los metadatos mapeados desde tu formulario
+      // 🚀 Recuperamos la metadata exacta que inyectó 'create-checkout'
       const { name, phone, email, cursoId, schoolId, costo_curso } = session.metadata
       const montoTotal = session.amount_total / 100
 
-      // 1. VALIDAR O CREAR AL ESTUDIANTE (Haciendo match con tu base de datos)
+      // 1. VALIDAR O CREAR AL ESTUDIANTE
       let studentId;
       const { data: existingStudent } = await supabase
         .from('students')
@@ -69,7 +67,7 @@ serve(async (req) => {
           student_id: studentId,
           course_id: cursoId,
           status: 'active',
-          total_amount: costo_curso,
+          total_amount: costo_curso ? parseFloat(costo_curso) : 0, // Convertimos el string de metadata a número
           registration_source: "web_stripe",
           payment_amount: montoTotal,
         })
@@ -85,7 +83,7 @@ serve(async (req) => {
           amount: montoTotal,
           payment_method: 'stripe_online',
           notes: "Pago realizado por medio de la plataforma de stripe",
-          transaction_id: session.payment_intent as string
+          transaction_id: session.payment_intent as string // ID de transacción real del banco
         })
 
       if (errPay) throw errPay
