@@ -47,9 +47,7 @@ const Hero = ({ onDiscoverLocations }) => {
         overflow: "hidden",
         // Fondo con iluminación de estudio premium (Doble glow en esquinas opuestas)
         background: `
-          radial-gradient(circle at 15% 15%, rgba(240, 203, 208, 0.25) 0%, rgba(255, 255, 255, 0) 50%),
-          radial-gradient(circle at 85% 85%, rgba(184, 133, 142, 0.12) 0%, rgba(255, 255, 255, 0) 60%),
-          #FAF6F6
+#FAF6F6
         `,
         py: { xs: 10, md: 16 },
       }}
