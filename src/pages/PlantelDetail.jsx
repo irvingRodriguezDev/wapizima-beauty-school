@@ -21,7 +21,6 @@ const PlantelDetailPage = () => {
   if (loading) {
     return <LoadingScreen message='Cargando información del plantel...' />;
   }
-
   if (error || !school) {
     return (
       <Container sx={{ py: 12, textAlign: "center" }}>

@@ -7,6 +7,7 @@ import CourseDetailPage from "./pages/CourseDetailPage";
 import PlantelDetailPage from "./pages/PlantelDetail";
 import PagoExitoso from "./pages/PagoExitoso";
 import InscripcionCancelada from "./pages/InscripcionCancelada";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const navigate = useNavigate();
@@ -34,21 +35,7 @@ function App() {
       <Route path='/pago-exitoso' element={<PagoExitoso />} />
       <Route path='/inscripcion-cancelada' element={<InscripcionCancelada />} />
       {/* Ruta de escape por si escriben cualquier otra cosa (404) */}
-      <Route
-        path='*'
-        element={
-          <div
-            style={{
-              padding: "4rem",
-              textAlign: "center",
-              fontFamily: "sans-serif",
-            }}
-          >
-            <h2>404 - Ruta no encontrada</h2>
-            <p>Regresa al inicio de Wapizima Beauty School.</p>
-          </div>
-        }
-      />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   );
 }

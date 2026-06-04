@@ -55,12 +55,36 @@ export const PublicSchoolProvider = ({ slug, children }) => {
 
         // 2. Traemos sus cursos y talleres vinculados a su ID real
         // NOTA: Revisa si tu columna de estado se llama "active" o si se usa otra nomenclatura
+        // 1. Obtener la fecha de hoy en formato YYYY-MM-DD (Hora de México)
+        const hoy = new Date().toLocaleDateString("sv-SE", {
+          timeZone: "America/Mexico_City",
+        });
+
         const { data: coursesData, error: coursesErr } = await supabase
           .from("cursos")
           .select(
-            "id, titulo, descripcion, costo, maestro, tipo_curso, flayer_url, lista_materiales, fecha_inicio, fecha_fin, created_at, hora_inicio, hora_fin, slug",
-          )
+            `
+    id, 
+    titulo, 
+    descripcion, 
+    costo, 
+    maestro, 
+    tipo_curso,
+    flayer_url, 
+    lista_materiales, 
+    fecha_inicio, 
+    fecha_fin, 
+    created_at, 
+    hora_inicio,
+    hora_fin, 
+    slug,
+    salon_id,
+    enrollments(count),
+    salon:salones ( capacidad ) 
+  `,
+          ) // 🌟 LA MAGIA: Le decimos que use 'salon_id' para traer la relación y lo nombre como 'salon'
           .eq("school_id", schoolData.id)
+          .gte("fecha_inicio", hoy)
           .order("created_at", { ascending: false });
 
         if (coursesErr) {
@@ -70,8 +94,34 @@ export const PublicSchoolProvider = ({ slug, children }) => {
           );
           throw coursesErr;
         }
+        // 1. Inyectamos la propiedad 'lugares_disponibles' calculada en cada objeto
+        const cursosConDisponibilidad = (coursesData || []).map((curso) => {
+          // Validamos el conteo de inscritos de forma segura
+          const inscritos = Array.isArray(curso.enrollments)
+            ? curso.enrollments[0]?.count || 0
+            : curso.enrollments?.count || 0;
 
-        setCourses(coursesData || []);
+          // Obtenemos la capacidad total del salón asignado
+          const cupoMaximo = curso.salon?.capacidad || 0;
+
+          // Calculamos la diferencia real
+          const lugaresDisponibles = cupoMaximo - inscritos;
+
+          // Retornamos el objeto clonado agregando la nueva propiedad para usar en UI
+          return {
+            ...curso,
+            lugares_disponibles: lugaresDisponibles, // 👈 ¡Aquí nace tu nueva variable!
+            total_inscritos: inscritos, // Opcional por si quieres poner "X alumnas inscritas"
+          };
+        });
+
+        // 2. Filtramos para dejar únicamente los que tengan más de 0 lugares libres
+        const cursosVisibles = cursosConDisponibilidad.filter(
+          (curso) => curso.lugares_disponibles > 0,
+        );
+
+        // Guardamos el resultado en el estado
+        setCourses(cursosVisibles);
       } catch (err) {
         console.error(
           "💥 Error crítico en el flujo de fetchPublicSchoolData:",
