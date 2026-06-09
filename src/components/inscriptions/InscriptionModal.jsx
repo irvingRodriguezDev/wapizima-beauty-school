@@ -143,7 +143,21 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
           <strong>{currentCourse?.titulo || "Seleccionado"}</strong>. <br />{" "}
           Completa los datos solicitados y define el monto de tu pago inicial.
         </Typography>
-
+        {errorMessage && (
+          <Box
+            sx={{
+              mb: 3,
+              p: 2,
+              bgcolor: "rgba(255, 205, 210, 0.15)",
+              border: "1px solid rgba(239, 83, 80, 0.3)",
+              borderRadius: "8px",
+            }}
+          >
+            <Typography variant='body2' color='error'>
+              {errorMessage}
+            </Typography>
+          </Box>
+        )}
         <Box component='form' onSubmit={handleSubmit}>
           <Stack spacing={3}>
             {/* Campo: Nombre Completo */}

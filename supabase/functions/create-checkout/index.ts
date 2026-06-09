@@ -2,7 +2,6 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import Stripe from "npm:stripe@14.22.0"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
-// Eliminamos HTTP Client forzado de ESM para usar el nativo de Deno 2
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {})
 
 const supabase = createClient(
@@ -21,7 +20,45 @@ serve(async (req) => {
   try {
     const { name, phone, email, cursoId, schoolId, montoAPagar, stripeAccountId, curso, tipo_curso, maestro, fecha_inicio, costo, escuela } = await req.json()
     const tipo = tipo_curso === "Curso" ? "Curso" : "Taller";
-    
+
+    // 🌟 PASO 0: VALIDACIÓN DE LUGARES DISPONIBLES EN TIEMPO REAL 🌟
+    const { data: cursoData, error: dbErr } = await supabase
+      .from("cursos")
+      .select(`
+        id,
+        titulo,
+        enrollments(count),
+        salon:salones(capacidad)
+      `)
+      .eq("id", cursoId)
+      .single();
+
+    if (dbErr || !cursoData) {
+      throw new Error("No se pudo verificar la información del curso.");
+    }
+
+    // Calculamos los inscritos (soportando array u objeto)
+    const inscritos = Array.isArray(cursoData.enrollments)
+      ? (cursoData.enrollments[0]?.count || 0)
+      : (cursoData.enrollments?.count || 0);
+
+    // Obtenemos la capacidad máxima del salón asignado
+    const cupoMaximo = cursoData.salon?.capacidad || 0;
+    const lugaresDisponibles = cupoMaximo - inscritos;
+
+    // 🛑 Si ya no hay cupo, detenemos el proceso de inmediato
+    if (lugaresDisponibles <= 0) {
+      return new Response(
+        JSON.stringify({ 
+          error: "Lo sentimos, ya no quedan lugares disponibles para este curso o taller." 
+        }), 
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 422, // Unprocessable Entity (Entidad semánticamente incorrecta debido al cupo)
+        }
+      );
+    }
+
     // Llave de idempotencia única basada en la combinación del intento de compra
     const idempotencyKey = btoa(`${schoolId}-${cursoId}-${phone}-${montoAPagar}`);
     
@@ -49,7 +86,7 @@ serve(async (req) => {
 
     // 3. Generamos la sesión de Checkout corriendo DIRECTAMENTE en la cuenta conectada
     const session = await stripe.checkout.sessions.create({
-      customer: customerId, // Ahora sí hará match perfecto
+      customer: customerId,
       payment_method_types: ['card'],
       line_items: [{
         price_data: {
@@ -63,7 +100,6 @@ serve(async (req) => {
       success_url: `${req.headers.get('origin')}/pago-exitoso`,
       cancel_url: `${req.headers.get('origin')}/inscripcion-cancelada`,
       
-      // Guardamos la información temporal para recuperar en tu Webhook
       metadata: {
         name: name,
         phone: phone,
@@ -73,11 +109,9 @@ serve(async (req) => {
         montoPuro: montoAPagar.toString(),
         costo_curso: costo?.toString() || ''
       },
-      // Al correr la sesión en la cuenta conectada, Stripe sabe por defecto 
-      // que los fondos se procesan ahí mismo. Eliminamos transfer_data redundante.
     }, {
       idempotencyKey: idempotencyKey,
-      stripeAccount: stripeAccountId // 🌟 ESTA ES LA MAGIA: Vincula toda la sesión al ecosistema de la escuela
+      stripeAccount: stripeAccountId
     });
 
     return new Response(JSON.stringify({ url: session.url }), {

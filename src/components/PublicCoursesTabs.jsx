@@ -171,6 +171,13 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                         MXN
                       </Box>
                     </Typography>
+                    <Typography
+                      variant='caption'
+                      sx={{ color: "secondary.main", fontWeight: 700 }}
+                    >
+                      ¡Solo quedan {item.lugares_disponibles} lugares
+                      disponibles!
+                    </Typography>
                   </Box>
 
                   {/* Botón de Acción Sólido Premium */}

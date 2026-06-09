@@ -25,7 +25,6 @@ const CourseDetailPage = () => {
   const navigate = useNavigate();
   const { school, currentCourse, fetchCourseDetailBySlug, loading, error } =
     usePublicSchool();
-
   useEffect(() => {
     if (courseSlug) {
       fetchCourseDetailBySlug(courseSlug);
