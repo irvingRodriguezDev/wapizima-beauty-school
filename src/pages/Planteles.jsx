@@ -121,6 +121,7 @@ const Planteles = ({ onSelectSchool }) => {
           radial-gradient(circle at 85% 20%, rgba(244, 114, 182, 0.18) 0%, rgba(255, 240, 245, 0.5) 35%, transparent 70%),
           radial-gradient(circle at 50% 90%, rgba(229, 56, 136, 0.05) 0%, transparent 50%)
         `,
+        paddingBottom: "80px",
       }}
     >
       <Container maxWidth='xl'>
@@ -167,7 +168,7 @@ const Planteles = ({ onSelectSchool }) => {
             }}
           >
             {geoError
-              ? "Explora todos nuestros planteles autorizados disponibles para ti."
+              ? "Explora todas nuestras academias autorizadas disponibles para ti."
               : "Academias ordenadas meticulosamente por cercanía en kilómetros según tu ubicación actual."}
           </Typography>
         </Box>
@@ -188,7 +189,7 @@ const Planteles = ({ onSelectSchool }) => {
               >
                 <motion.div variants={itemVariants}>
                   <Link
-                    to={`/plantel/${school.slug}`}
+                    to={`/academia/${school.slug}`}
                     style={{ textDecoration: "none" }}
                   >
                     <PlantelCard

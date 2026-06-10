@@ -8,6 +8,7 @@ import PlantelDetailPage from "./pages/PlantelDetail";
 import PagoExitoso from "./pages/PagoExitoso";
 import InscripcionCancelada from "./pages/InscripcionCancelada";
 import NotFound from "./pages/NotFound";
+import AccessGenerator from "./pages/AccessGenerator";
 
 function App() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function App() {
   const handleSelectSchool = (school) => {
     // Si tu tabla de Supabase tiene un campo "slug" (ej. "plantel-toluca") lo usas, si no, usamos el id.
     const schoolIdentifier = school.slug || school.id;
-    navigate(`/plantel/${schoolIdentifier}`);
+    navigate(`/academia/${schoolIdentifier}`);
   };
 
   return (
@@ -28,12 +29,13 @@ function App() {
       />
 
       {/* Ruta Dinámica: Landing Page de la Escuela Seleccionada */}
-      <Route path='/plantel/:slug' element={<PlantelDetailPage />} />
+      <Route path='/academia/:slug' element={<PlantelDetailPage />} />
       <Route path='/curso/:courseSlug' element={<CourseDetailPage />} />
       <Route path='/nosotros' element={<QuienesSomos />} />
       <Route path='/franquicias' element={<FranquiciasSection />} />
       <Route path='/pago-exitoso' element={<PagoExitoso />} />
       <Route path='/inscripcion-cancelada' element={<InscripcionCancelada />} />
+      <Route path='/generador-accesos' element={<AccessGenerator />} />
       {/* Ruta de escape por si escriben cualquier otra cosa (404) */}
       <Route path='*' element={<NotFound />} />
     </Routes>

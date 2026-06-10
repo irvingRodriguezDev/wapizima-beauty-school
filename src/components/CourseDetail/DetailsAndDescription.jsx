@@ -49,7 +49,7 @@ const DetailsAndDescription = ({ currentCourse }) => {
         >
           <Grid container spacing={3}>
             {/* Fecha y Horario */}
-            <Grid item xs={12} sm={6} sx={{ display: "flex", gap: 2 }}>
+            <Grid size={{ xs: 12, sm: 6 }} sx={{ display: "flex", gap: 2 }}>
               <CalendarMonthIcon
                 sx={{ color: "#E53888", mt: 0.2, fontSize: "1.4rem" }}
               />
@@ -123,7 +123,7 @@ const DetailsAndDescription = ({ currentCourse }) => {
             </Grid>
 
             {/* Instructor Certificado */}
-            <Grid item xs={12} sm={5.5} sx={{ display: "flex", gap: 2 }}>
+            <Grid size={{ xs: 12, sm: 5.5 }} sx={{ display: "flex", gap: 2 }}>
               <RecordVoiceOverIcon
                 sx={{ color: "#E53888", mt: 0.2, fontSize: "1.4rem" }}
               />

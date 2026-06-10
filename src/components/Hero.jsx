@@ -57,7 +57,7 @@ const Hero = ({ onDiscoverLocations }) => {
           position: "absolute",
           top: "15%",
           right: "10%",
-          color: "rgba(244, 114, 182, 0.4)",
+          color: "rgba(244, 114, 182, 0.9)",
           display: { xs: "none", md: "block" },
           filter: "drop-shadow(0px 4px 12px rgba(229, 56, 136, 0.15))",
         }}
@@ -73,7 +73,7 @@ const Hero = ({ onDiscoverLocations }) => {
           position: "absolute",
           bottom: "18%",
           left: "8%",
-          color: "rgba(229, 56, 136, 0.25)",
+          color: "rgba(229, 56, 136, 0.9)",
           display: { xs: "none", md: "block" },
           filter: "drop-shadow(0px 4px 12px rgba(229, 56, 136, 0.1))",
         }}
@@ -130,7 +130,7 @@ const Hero = ({ onDiscoverLocations }) => {
             </Grid>
 
             {/* 2. TITULAR PRINCIPAL CON TIPOGRAFÍA EDITORIAL (SERIF + ITALIC REAL) */}
-            <Grid item xs={12}>
+            <Grid size={12}>
               <motion.div variants={itemVariants}>
                 <Typography
                   variant='h1'
@@ -167,7 +167,7 @@ const Hero = ({ onDiscoverLocations }) => {
             </Grid>
 
             {/* 3. PÁRRAFO EMPOWERED CON TIPOGRAFÍA ALTAMENTE LEGIBLE */}
-            <Grid item xs={12} sm={10} md={9}>
+            <Grid size={{ xs: 12, sm: 10, md: 9 }}>
               <motion.div variants={itemVariants}>
                 <Typography
                   variant='body1'
@@ -212,6 +212,7 @@ const Hero = ({ onDiscoverLocations }) => {
                     fontWeight: 700,
                     fontSize: "0.95rem",
                     letterSpacing: "1.5px",
+                    borderRadius: "12px",
                     px: 6,
                     py: 2.2,
                     bgcolor: "#E1218A",

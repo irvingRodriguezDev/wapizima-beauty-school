@@ -62,7 +62,7 @@ const MarqueeCinta = () => {
             sx={{
               color: "#FFFFFF",
               fontSize: 14,
-              opacity: 0.5, // Destello integrado sutilmente
+              opacity: 0.9, // Destello integrado sutilmente
             }}
           />
         </Stack>

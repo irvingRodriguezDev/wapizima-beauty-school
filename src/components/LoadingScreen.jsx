@@ -30,7 +30,13 @@ const LoadingScreen = ({ message = "Cargando experiencia..." }) => {
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
         {/* 1. CONTENEDOR DEL SPINNER CROMADO EN BLOQUE */}
-        <Box sx={{ position: "relative", display: "inline-flex" }}>
+        <Box
+          sx={{
+            position: "relative",
+            display: "inline-flex",
+            justifyContent: "center",
+          }}
+        >
           {/* Spinner Dinámico Principal */}
           <CircularProgress
             variant='indeterminate'

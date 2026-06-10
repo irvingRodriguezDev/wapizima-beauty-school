@@ -39,7 +39,7 @@ const QuienesSomos = () => {
         <Container maxWidth='xl'>
           <Grid container spacing={{ xs: 8, md: 12 }} alignItems='center'>
             {/* COLUMNA IZQUIERDA: MANIFIESTO EDITORIAL (TEXTO DE PODER) */}
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Box
                 component={motion.div}
                 initial='hidden'
@@ -141,7 +141,7 @@ const QuienesSomos = () => {
             </Grid>
 
             {/* COLUMNA DERECHA: LOS PILARES EN DISEÑO PREMIUM */}
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Stack
                 spacing={3.5}
                 component={motion.div}

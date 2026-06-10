@@ -67,11 +67,7 @@ const BeneficiosGrid = () => {
         >
           <Grid container justifyContent='center'>
             {/* 1. TÍTULO DE SECCIÓN EDITORIAL */}
-            <Grid
-              item
-              xs={12}
-              sx={{ textAlign: "center", mb: { xs: 6, md: 9 } }}
-            >
+            <Grid size={12} sx={{ textAlign: "center", mb: { xs: 6, md: 9 } }}>
               <Typography
                 variant='h2'
                 sx={{
@@ -102,10 +98,13 @@ const BeneficiosGrid = () => {
             </Grid>
 
             {/* 2. GRID DE TARJETAS FLOTANTES ROSA PREMIUM */}
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Grid container spacing={4} justifyContent='center'>
                 {items.map((item, index) => (
-                  <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
+                  <Grid
+                    size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}
+                    key={index}
+                  >
                     <motion.div
                       variants={itemVariants}
                       style={{ height: "100%" }}

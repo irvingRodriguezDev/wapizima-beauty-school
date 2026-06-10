@@ -97,7 +97,7 @@ const PlantelDetailPage = () => {
                 },
               }}
             >
-              Volver a planteles
+              Volver a Academias
             </Button>
           </Box>
 

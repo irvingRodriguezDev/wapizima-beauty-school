@@ -9,11 +9,9 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material";
-import {
-  QrCode2 as QrIcon,
-  PhoneAndroid as PhoneIcon,
-  CheckCircleOutline as SuccessIcon,
-} from "@mui/icons-material";
+import QrCode2Icon from "@mui/icons-material/QrCode2";
+import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { QRCodeSVG } from "qrcode.react"; // Librería estándar para pintar el QR en React
 
 const COLORS = {
@@ -106,7 +104,7 @@ const AccessGenerator = () => {
             placeholder='Ej. 7221234567'
             InputProps={{
               startAdornment: (
-                <PhoneIcon sx={{ color: COLORS.primary, mr: 1 }} />
+                <PhoneAndroidIcon sx={{ color: COLORS.primary, mr: 1 }} />
               ),
             }}
             sx={{
@@ -127,7 +125,7 @@ const AccessGenerator = () => {
               loading ? (
                 <CircularProgress size={20} color='inherit' />
               ) : (
-                <QrIcon />
+                <QrCode2Icon />
               )
             }
             sx={{
@@ -168,7 +166,9 @@ const AccessGenerator = () => {
               alignItems: "center",
             }}
           >
-            <SuccessIcon sx={{ color: "#4caf50", fontSize: "3rem", mb: 1 }} />
+            <CheckCircleIcon
+              sx={{ color: "#4caf50", fontSize: "3rem", mb: 1 }}
+            />
             <Typography
               variant='h6'
               sx={{ fontWeight: 800, color: COLORS.dark }}
