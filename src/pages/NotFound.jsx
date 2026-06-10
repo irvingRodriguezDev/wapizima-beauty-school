@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, Typography, Button, Container, Stack } from "@mui/material";
+import { Box, Typography, Button, Container } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import { motion } from "framer-motion";
 
 const NotFound = () => {
   return (
@@ -12,90 +13,96 @@ const NotFound = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        // Fondo con un degradado premium sutil que evoca el estilo estético de la escuela
-        background:
-          "linear-gradient(135deg, #FFF5F6 0%, #F5E3E6 50%, #E8D3D7 100%)",
+        // Fondo radial limpio con aura rosa Wapizima
+        backgroundColor: "#FFFBFD",
+        backgroundImage:
+          "radial-gradient(circle at 50% 50%, rgba(229, 56, 136, 0.05) 0%, transparent 70%)",
         position: "relative",
         overflow: "hidden",
         px: 2,
-        // Círculos difusos decorativos de fondo para dar profundidad de alta costura
-        "&::before": {
-          content: '""',
+      }}
+    >
+      {/* Círculos difusos orgánicos usando Framer Motion para rendimiento óptimo */}
+      <Box
+        component={motion.div}
+        animate={{ x: [0, 15, 0], y: [0, -20, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        sx={{
           position: "absolute",
-          width: { xs: "300px", md: "500px" },
-          height: { xs: "300px", md: "500px" },
-          top: "-10%",
-          right: "-10%",
+          width: { xs: "280px", md: "500px" },
+          height: { xs: "280px", md: "500px" },
+          top: "-5%",
+          right: "-5%",
           borderRadius: "50%",
-          background: "rgba(237, 201, 208, 0.4)",
-          filter: "blur(80px)",
+          background: "rgba(244, 114, 182, 0.15)",
+          filter: "blur(90px)",
           zIndex: 1,
-        },
-        "&::after": {
-          content: '""',
+        }}
+      />
+      <Box
+        component={motion.div}
+        animate={{ x: [0, -10, 0], y: [0, 15, 0] }}
+        transition={{
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
+        sx={{
           position: "absolute",
-          width: { xs: "250px", md: "400px" },
-          height: { xs: "250px", md: "400px" },
+          width: { xs: "220px", md: "400px" },
+          height: { xs: "220px", md: "400px" },
           bottom: "-5%",
           left: "-5%",
           borderRadius: "50%",
-          background: "rgba(186, 137, 146, 0.3)",
-          filter: "blur(60px)",
+          background: "rgba(216, 46, 122, 0.1)",
+          filter: "blur(80px)",
           zIndex: 1,
-        },
-      }}
-    >
+        }}
+      />
+
       <Container maxWidth='sm' sx={{ position: "relative", zIndex: 2 }}>
         <Box
+          component={motion.div}
+          initial={{ opacity: 0, scale: 0.95, y: 30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, cubicBezier: [0.16, 1, 0.3, 1] }}
           sx={{
             p: { xs: 4, md: 6 },
             textAlign: "center",
-            borderRadius: "24px",
-            // Efecto Glassmorphism puro y elegante
-            backdropFilter: "blur(16px) saturate(120%)",
-            WebkitBackdropFilter: "blur(16px) saturate(120%)",
-            backgroundColor: "rgba(255, 255, 255, 0.55)",
-            border: "1px solid rgba(255, 255, 255, 0.7)",
-            boxShadow: "0 20px 40px rgba(186, 137, 146, 0.15)",
-            // Animación de entrada suave para todo el contenedor
-            animation: "fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) ease-out",
-            "@keyframes fadeInUp": {
-              "0%": { opacity: 0, transform: "translateY(30px)" },
-              "100%": { opacity: 1, transform: "translateY(0)" },
-            },
+            borderRadius: "32px", // Bordes suaves premium
+            backdropFilter: "blur(20px) saturate(140%)",
+            WebkitBackdropFilter: "blur(20px) saturate(140%)",
+            backgroundColor: "rgba(255, 255, 255, 0.65)",
+            border: "1px solid rgba(255, 255, 255, 0.8)",
+            boxShadow: "0px 24px 60px rgba(229, 56, 136, 0.05)",
           }}
         >
-          {/* Icono de destello animado arriba */}
-          <AutoAwesomeIcon
-            sx={{
-              color: "secondary.main",
-              fontSize: "2rem",
-              mb: 2,
-              animation: "pulse 2s infinite ease-in-out",
-              "@keyframes pulse": {
-                "0%, 100%": { transform: "scale(1)", opacity: 0.8 },
-                "50%": { transform: "scale(1.2)", opacity: 1 },
-              },
-            }}
-          />
+          {/* Icono Destello Animado */}
+          <Box
+            component={motion.div}
+            animate={{ scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            sx={{ display: "inline-block", mb: 1 }}
+          >
+            <AutoAwesomeIcon sx={{ color: "#E53888", fontSize: "1.8rem" }} />
+          </Box>
 
-          {/* Gran 404 con tipografía ultra-bold y animación flotante */}
+          {/* Gran 404 Flotante */}
           <Typography
             variant='h1'
-            component='div'
+            component={motion.div}
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             sx={{
-              fontSize: { xs: "6rem", md: "8rem" },
-              fontWeight: 950,
-              color: "primary.main",
+              fontSize: { xs: "5.5rem", md: "7.5rem" },
+              fontWeight: 900,
+              color: "#212121",
               lineHeight: 1,
-              letterSpacing: "-2px",
+              letterSpacing: "-3px",
+              fontFamily: "'Montserrat', sans-serif",
               mb: 1,
-              textShadow: "2px 4px 10px rgba(186, 137, 146, 0.2)",
-              animation: "float 4s infinite ease-in-out",
-              "@keyframes float": {
-                "0%, 100%": { transform: "translateY(0)" },
-                "50%": { transform: "translateY(-10px)" },
-              },
+              textShadow: "0px 10px 30px rgba(229, 56, 136, 0.08)",
             }}
           >
             404
@@ -105,12 +112,13 @@ const NotFound = () => {
             variant='h4'
             component='h1'
             sx={{
-              fontSize: { xs: "1.2rem", md: "1.5rem" },
+              fontSize: { xs: "1.15rem", md: "1.3rem" },
               fontWeight: 800,
-              color: "primary.main",
+              color: "#212121",
               textTransform: "uppercase",
-              letterSpacing: "3px",
-              mb: 2,
+              letterSpacing: "2.5px",
+              fontFamily: "'Montserrat', sans-serif",
+              mb: 2.5,
             }}
           >
             Página No Encontrada
@@ -118,43 +126,55 @@ const NotFound = () => {
 
           <Typography
             variant='body1'
-            color='text.secondary'
             sx={{
+              color: "#554D4F",
               mb: 5,
-              lineHeight: 1.7,
-              fontSize: "1rem",
-              fontWeight: 500,
+              lineHeight: 1.75,
+              fontSize: "0.95rem",
+              fontFamily: "'Inter', sans-serif",
+              px: { xs: 0, sm: 2 },
             }}
           >
-            El enlace que seguiste podría estar roto o la página fue removida.
-            No te preocupes, el camino hacia el diseño de tus sueños sigue
-            disponible.
+            El enlace que seguiste podría estar roto o el programa cambió de
+            ruta. No te preocupes, el camino hacia{" "}
+            <span
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontStyle: "italic",
+                color: "#E53888",
+                fontWeight: 600,
+              }}
+            >
+              el diseño de tus sueños
+            </span>{" "}
+            sigue disponible.
           </Typography>
 
-          {/* Botón de regreso estilizado con la consistencia del modal de pagos */}
+          {/* Botón de regreso estilo cápsula unificada */}
           <Button
             component={RouterLink}
             to='/'
             variant='contained'
-            color='secondary'
             size='large'
-            startIcon={<ArrowBackIcon />}
+            startIcon={
+              <ArrowBackIosNewIcon sx={{ fontSize: "12px !important" }} />
+            }
             sx={{
               width: { xs: "100%", sm: "auto" },
               px: 4,
-              py: 2,
-              color: "primary.main",
-              bgcolor: "secondary.main",
-              fontWeight: 800,
-              borderRadius: "12px",
-              letterSpacing: "1.5px",
-              textTransform: "uppercase",
-              boxShadow: "none",
+              py: 1.8,
+              backgroundColor: "#E53888",
+              color: "#FFFFFF",
+              fontWeight: 700,
+              borderRadius: "50px", // Formato de cápsula premium unificada
+              letterSpacing: "1px",
+              textTransform: "none",
+              fontFamily: "'Montserrat', sans-serif",
+              boxShadow: "0px 8px 25px rgba(229, 56, 136, 0.2)",
               transition: "all 0.3s ease",
               "&:hover": {
-                bgcolor: "secondary.dark",
-                color: "#FFFFFF",
-                boxShadow: "0 8px 20px rgba(186, 137, 146, 0.3)",
+                backgroundColor: "#D82E7A",
+                boxShadow: "0px 12px 30px rgba(229, 56, 136, 0.3)",
                 transform: "translateY(-2px)",
               },
               "&:active": {
@@ -162,7 +182,7 @@ const NotFound = () => {
               },
             }}
           >
-            Volver al Inicio
+            Volver al inicio
           </Button>
         </Box>
       </Container>

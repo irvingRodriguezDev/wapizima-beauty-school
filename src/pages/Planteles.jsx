@@ -9,25 +9,18 @@ import { parsePostGISPoint } from "../utils/geo";
 import { motion } from "framer-motion";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
-// ---- ESTILOS LUXURY ROSE GOLD ----
-const LUXURY_STYLE = {
-  roseGoldGradient:
-    "linear-gradient(135deg, #ECC4C6 0%, #C3939B 25%, #F0CBD0 50%, #B8858E 75%, #925863 100%)",
-  fontSerif: "'Playfair Display', 'Cormorant Garamond', 'Didot', serif",
-  fontSans: "'Montserrat', 'Inter', sans-serif",
-};
-
+// ---- VARIANTES DE ANIMACIÓN ----
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 25 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -47,54 +40,41 @@ const Planteles = ({ onSelectSchool }) => {
         if (error) throw error;
 
         let escuelasProcesadas = data || [];
-        const tieneUbicacionValida =
-          location?.lat && (location?.lon || location?.lng);
+        const hasCoords = location?.lat && (location?.lon || location?.lng);
 
-        if (tieneUbicacionValida) {
+        if (hasCoords) {
           const userLat = location.lat;
           const userLon = location.lon || location.lng;
 
           escuelasProcesadas = escuelasProcesadas
             .map((school) => {
-              const coordsDecodificadas = parsePostGISPoint(school.location);
-              const schoolLat = coordsDecodificadas.lat;
-              const schoolLng = coordsDecodificadas.lng;
+              const coords = parsePostGISPoint(school.location);
+              const distance =
+                coords.lat && coords.lng
+                  ? getDistanceKm(
+                      userLat,
+                      userLon,
+                      Number(coords.lat),
+                      Number(coords.lng),
+                    )
+                  : 9999;
 
-              if (!schoolLat || !schoolLng) {
-                return { ...school, lat: null, lng: null, distance: 9999 };
-              }
-
-              const distance = getDistanceKm(
-                userLat,
-                userLon,
-                Number(schoolLat),
-                Number(schoolLng),
-              );
-
-              return {
-                ...school,
-                lat: schoolLat,
-                lng: schoolLng,
-                distance,
-              };
+              return { ...school, lat: coords.lat, lng: coords.lng, distance };
             })
             .sort((a, b) => a.distance - b.distance);
         }
-
         setSchools(escuelasProcesadas);
       } catch (err) {
-        console.error("Error cargando escuelas de Wapizima:", err.message);
+        console.error("Error cargando escuelas:", err.message);
       } finally {
         setLoadingSchools(false);
       }
     };
 
-    if (!loadingLocation) {
-      fetchSchools();
-    }
+    if (!loadingLocation) fetchSchools();
   }, [location, loadingLocation]);
 
-  // ✨ LOADER PREMIUM CON IDENTIDAD COSMÉTICA (0% aburrido)
+  // ✨ LOADER MINIMALISTA (Vidrio Traslúcido Rosa)
   if (loadingLocation || loadingSchools) {
     return (
       <Box
@@ -103,81 +83,71 @@ const Planteles = ({ onSelectSchool }) => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          py: 16,
-          background: "#FAF6F6",
+          py: 20,
+          background: "#FFF5F7",
         }}
       >
         <Box
           component={motion.div}
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-            opacity: [0.6, 1, 0.6],
-          }}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          sx={{
-            background: LUXURY_STYLE.roseGoldGradient,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            mb: 3,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          animate={{ scale: [1, 1.15, 1], rotate: 360 }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          sx={{ color: "#E53888", mb: 2, display: "flex" }}
         >
-          <AutoAwesomeIcon sx={{ fontSize: 60 }} />
+          <AutoAwesomeIcon sx={{ fontSize: 50 }} />
         </Box>
         <Typography
           sx={{
-            color: "#A36D75",
+            color: "#E53888",
             fontWeight: 700,
-            fontSize: "1.05rem",
+            fontSize: "0.85rem",
             letterSpacing: "3px",
-            fontFamily: LUXURY_STYLE.fontSans,
             textTransform: "uppercase",
-            textAlign: "center",
-            px: 2,
+            fontFamily: "'Montserrat', sans-serif",
           }}
         >
-          Localizando espacios cercanos...
+          Localizando academias cercanas...
         </Typography>
       </Box>
     );
   }
 
   return (
-    <Box id='planteles' sx={{ py: { xs: 8, md: 14 }, background: "#FAF6F6" }}>
+    <Box
+      id='planteles'
+      sx={{
+        background: "#FFFBFD",
+        backgroundImage: `
+          radial-gradient(circle at 10% 15%, rgba(255, 240, 245, 0.9) 0%, transparent 40%),
+          radial-gradient(circle at 85% 20%, rgba(244, 114, 182, 0.18) 0%, rgba(255, 240, 245, 0.5) 35%, transparent 70%),
+          radial-gradient(circle at 50% 90%, rgba(229, 56, 136, 0.05) 0%, transparent 50%)
+        `,
+      }}
+    >
       <Container maxWidth='xl'>
-        {/* 1. ENCABEZADO EDITORIAL DE ALTA GAMA */}
-        <Box sx={{ textAlign: "center", mb: { xs: 6, md: 10 } }}>
+        {/* 1. ENCABEZADO EDITORIAL */}
+        <Box sx={{ textAlign: "center", mb: { xs: 6, md: 8 } }}>
           <Typography
             variant='h2'
             sx={{
               fontWeight: 900,
               color: "#212121",
-              fontSize: { xs: "2rem", sm: "2.8rem", md: "3.5rem" },
-              letterSpacing: "-1.5px",
-              lineHeight: 1.15,
-              fontFamily: LUXURY_STYLE.fontSans,
-              mb: 3,
+              fontSize: { xs: "2rem", sm: "2.8rem", md: "3.4rem" },
+              letterSpacing: "-0.5px",
+              lineHeight: 1.2,
+              mb: 2,
             }}
           >
             ENCUENTRA TU ESPACIO <br />
             <Box
               component='span'
               sx={{
-                fontFamily: LUXURY_STYLE.fontSerif,
+                fontFamily: "'Playfair Display', serif",
                 fontStyle: "italic",
                 fontWeight: "400",
-                background: LUXURY_STYLE.roseGoldGradient,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 display: "inline-block",
-                py: 0.5,
+                px: 1,
               }}
             >
               Wapizima Beauty School
@@ -189,39 +159,37 @@ const Planteles = ({ onSelectSchool }) => {
           <Typography
             variant='body1'
             sx={{
-              color: "#5A5455",
-              maxWidth: 650,
+              color: "#554D4F",
+              maxWidth: 600,
               margin: "0 auto",
               fontSize: { xs: "0.95rem", md: "1.1rem" },
-              lineHeight: 1.7,
-              fontFamily: LUXURY_STYLE.fontSans,
-              fontWeight: 400,
+              fontFamily: "'Inter', sans-serif",
             }}
           >
             {geoError
               ? "Explora todos nuestros planteles autorizados disponibles para ti."
-              : "Hemos detectado tu ubicación. Aquí tienes las academias ordenadas meticulosamente por cercanía en kilómetros."}
+              : "Academias ordenadas meticulosamente por cercanía en kilómetros según tu ubicación actual."}
           </Typography>
         </Box>
 
-        {/* 2. GRID DE PLANTELES CON ENTRADA SUAVE ANIMADA */}
+        {/* 2. GRID OPTIMIZADO */}
         <Box
           component={motion.div}
           variants={containerVariants}
           initial='hidden'
           whileInView='visible'
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-40px" }}
         >
           <Grid container spacing={4}>
             {schools.map((school, index) => (
               <Grid
-                size={{ xs: 12, sm: 6, md: 6, lg: 3, xl: 3 }}
+                size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}
                 key={school.id}
               >
                 <motion.div variants={itemVariants}>
                   <Link
                     to={`/plantel/${school.slug}`}
-                    style={{ textDecoration: "none", display: "block" }}
+                    style={{ textDecoration: "none" }}
                   >
                     <PlantelCard
                       school={school}

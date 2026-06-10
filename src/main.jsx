@@ -11,10 +11,10 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <PublicSchoolProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
+        {/* <ThemeProvider theme={theme}> */}
+        {/* <CssBaseline /> */}
+        <App />
+        {/* </ThemeProvider> */}
       </PublicSchoolProvider>
     </BrowserRouter>
   </StrictMode>,

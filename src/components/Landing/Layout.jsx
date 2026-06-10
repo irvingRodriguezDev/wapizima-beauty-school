@@ -3,7 +3,12 @@ import Navbar from "./Navbar";
 
 const Layout = ({ children }) => {
   return (
-    <div style={{ bgcolor: "#fff", minHeight: "100vh", overflowX: "hidden" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        overflowX: "hidden",
+      }}
+    >
       <Navbar />
       {children}
     </div>

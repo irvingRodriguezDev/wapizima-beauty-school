@@ -1,18 +1,27 @@
 import React from "react";
-import { Box, Typography, Container, Grid, Stack } from "@mui/material";
+import { Box, Typography, Grid, Container, Stack } from "@mui/material";
 import { motion } from "framer-motion";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import Layout from "../components/Landing/Layout";
 
-// Variantes de Framer Motion optimizadas para una entrada sutil y elegante
+// Variantes de Framer Motion optimizadas para un escalado sutil de alta costura
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
+};
+
 const textVariants = {
-  hidden: { opacity: 0, y: 15 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, cubicBezier: [0.16, 1, 0.3, 1] },
+  },
 };
 
 const QuienesSomos = () => {
@@ -21,8 +30,8 @@ const QuienesSomos = () => {
       <Box
         id='quienes-somos'
         sx={{
-          py: { xs: 10, md: 16 },
-          bgcolor: "background.paper", // Fondo puro para contrastar con las secciones crema
+          py: { xs: 12, md: 18 },
+          backgroundColor: "#FFFFFF", // Fondo puro para contrastar con las secciones crema radiales
           position: "relative",
           overflow: "hidden",
         }}
@@ -30,30 +39,30 @@ const QuienesSomos = () => {
         <Container maxWidth='xl'>
           <Grid container spacing={{ xs: 8, md: 12 }} alignItems='center'>
             {/* COLUMNA IZQUIERDA: MANIFIESTO EDITORIAL (TEXTO DE PODER) */}
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Box
                 component={motion.div}
                 initial='hidden'
                 whileInView='visible'
                 viewport={{ once: true, margin: "-100px" }}
+                variants={containerVariants}
               >
                 {/* Etiqueta superior estilo pasarela */}
                 <Stack
                   direction='row'
                   alignItems='center'
-                  spacing={1}
-                  sx={{ mb: 3 }}
+                  spacing={1.2}
+                  sx={{ mb: 2.5 }}
                 >
-                  <AutoAwesomeIcon
-                    sx={{ color: "secondary.main", fontSize: 14 }}
-                  />
+                  <AutoAwesomeIcon sx={{ color: "#E53888", fontSize: 14 }} />
                   <Typography
                     variant='caption'
                     sx={{
                       textTransform: "uppercase",
                       letterSpacing: "3px",
-                      fontWeight: 800,
-                      color: "secondary.main", // Rosa Viejo Satinado
+                      fontWeight: 700,
+                      color: "#D82E7A", // Rosa Intenso
+                      fontFamily: "'Montserrat', sans-serif",
                     }}
                   >
                     Nuestra Esencia
@@ -61,45 +70,47 @@ const QuienesSomos = () => {
                 </Stack>
 
                 {/* Encabezado Principal Serif */}
-                <motion.div variants={textVariants}>
+                <Box component={motion.div} variants={textVariants}>
                   <Typography
                     variant='h2'
                     component='h2'
                     sx={{
                       fontWeight: 900,
-                      color: "primary.main",
-                      fontSize: { xs: "2.4rem", md: "3.4rem" },
+                      color: "#212121",
+                      fontSize: { xs: "2.2rem", md: "3.4rem" },
                       lineHeight: 1.15,
-                      letterSpacing: "0.5px",
+                      letterSpacing: "-0.5px",
+                      fontFamily: "'Montserrat', sans-serif",
                       mb: 4,
                     }}
                   >
-                    CREAMOS EL ARTE QUE <br />
+                    Creamos el arte que <br />
                     <Box
                       component='span'
                       sx={{
                         fontStyle: "italic",
-                        color: "secondary.main",
+                        color: "#E53888",
                         fontFamily: "'Playfair Display', serif",
                         fontWeight: "400",
                       }}
                     >
-                      REDEFINE INDUSTRIAS.
+                      redefine industrias.
                     </Box>
                   </Typography>
-                </motion.div>
+                </Box>
 
                 {/* Párrafos de Cuerpo Editoriales */}
-                <motion.div variants={textVariants}>
+                <Box component={motion.div} variants={textVariants}>
                   <Typography
                     variant='body1'
                     sx={{
-                      color: "text.primary",
+                      color: "#212121",
                       fontSize: "1.05rem",
                       lineHeight: 1.8,
                       mb: 3,
                       fontWeight: 500,
-                      textAlign: "justify",
+                      fontFamily: "'Inter', sans-serif",
+                      textAlign: "left", // Alineación limpia natural
                     }}
                   >
                     En <strong>Wapizima Beauty School</strong> no creemos en los
@@ -112,10 +123,11 @@ const QuienesSomos = () => {
                   <Typography
                     variant='body1'
                     sx={{
-                      color: "text.secondary",
+                      color: "#554D4F",
                       fontSize: "0.95rem",
                       lineHeight: 1.8,
-                      textAlign: "justify",
+                      fontFamily: "'Inter', sans-serif",
+                      textAlign: "left",
                     }}
                   >
                     Más que una escuela, somos un movimiento de empoderamiento.
@@ -124,33 +136,33 @@ const QuienesSomos = () => {
                     nuestras alumnas con certificaciones oficiales y el
                     prestigio de una marca líder en el mercado.
                   </Typography>
-                </motion.div>
+                </Box>
               </Box>
             </Grid>
 
-            {/* COLUMNA DERECHA: LOS PILARES EN DISEÑO PLANO (PREMIUM) */}
-            <Grid size={{ xs: 12, md: 6 }}>
+            {/* COLUMNA DERECHA: LOS PILARES EN DISEÑO PREMIUM */}
+            <Grid item xs={12} md={6}>
               <Stack
-                spacing={4}
+                spacing={3.5}
                 component={motion.div}
                 initial='hidden'
                 whileInView='visible'
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ staggerChildren: 0.15 }}
+                variants={containerVariants}
               >
-                {/* Pilar 1: Misión (Bloque plano crema con trazo sutil) */}
+                {/* Pilar 1: Misión (Bloque Premium Estilizado) */}
                 <Box
                   variants={cardVariants}
                   component={motion.div}
                   sx={{
-                    p: 4,
-                    borderRadius: "12px", // Ortogonal puro para evitar el look genérico redondeado
-                    border: "1px solid",
-                    borderColor: "rgba(186, 137, 146, 0.2)",
-                    bgcolor: "background.default", // Crema suave de estudio fotográfico
-                    transition: "border-color 0.3s ease, transform 0.3s ease",
+                    p: { xs: 4, sm: 5 },
+                    borderRadius: "24px", // Esquinas suaves integradas
+                    border: "1px solid rgba(244, 114, 182, 0.18)",
+                    backgroundColor: "#FFFBFD", // Crema translúcido suave de estudio
+                    transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                     "&:hover": {
-                      borderColor: "secondary.main",
+                      borderColor: "#E53888",
+                      boxShadow: "0px 12px 35px rgba(229, 56, 136, 0.04)",
                       transform: "translateY(-4px)",
                     },
                   }}
@@ -158,13 +170,14 @@ const QuienesSomos = () => {
                   <Typography
                     variant='h4'
                     component='h3'
-                    color='primary.main'
                     mb={2}
                     sx={{
-                      fontSize: "1.2rem",
+                      fontSize: "1.1rem",
                       fontWeight: 800,
-                      letterSpacing: "1px",
+                      color: "#212121",
+                      letterSpacing: "0.5px",
                       textTransform: "uppercase",
+                      fontFamily: "'Montserrat', sans-serif",
                     }}
                   >
                     ✦ Nuestra Misión
@@ -172,10 +185,11 @@ const QuienesSomos = () => {
                   <Typography
                     variant='body1'
                     sx={{
-                      color: "text.secondary",
-                      fontSize: "0.9rem",
-                      lineHeight: 1.7,
-                      textAlign: "justify",
+                      color: "#554D4F",
+                      fontSize: "0.92rem",
+                      lineHeight: 1.75,
+                      fontFamily: "'Inter', sans-serif",
+                      textAlign: "left",
                     }}
                   >
                     Dotar a miles de mujeres de las herramientas artísticas y
@@ -184,20 +198,19 @@ const QuienesSomos = () => {
                   </Typography>
                 </Box>
 
-                {/* Pilar 2: Visión (Bloque plano blanco puro contrastado) */}
+                {/* Pilar 2: Visión (Bloque Puro Contrastado) */}
                 <Box
                   variants={cardVariants}
                   component={motion.div}
                   sx={{
-                    p: 4,
-                    borderRadius: "12px", // Consistencia arquitectónica recta
-                    border: "1px solid",
-                    borderColor: "rgba(45, 37, 38, 0.08)",
-                    bgcolor: "background.paper", // Blanco para generar ritmo visual entre pilares
-                    boxShadow: "none", // Cero sombras complejas para conservar el rendimiento flat en móviles
-                    transition: "border-color 0.3s ease, transform 0.3s ease",
+                    p: { xs: 4, sm: 5 },
+                    borderRadius: "24px",
+                    border: "1px solid rgba(244, 114, 182, 0.18)",
+                    backgroundColor: "#FFFFFF", // Blanco puro para mantener ritmo visual asimétrico
+                    transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                     "&:hover": {
-                      borderColor: "secondary.main",
+                      borderColor: "#E53888",
+                      boxShadow: "0px 12px 35px rgba(229, 56, 136, 0.04)",
                       transform: "translateY(-4px)",
                     },
                   }}
@@ -205,13 +218,14 @@ const QuienesSomos = () => {
                   <Typography
                     variant='h4'
                     component='h3'
-                    color='primary.main'
                     mb={2}
                     sx={{
-                      fontSize: "1.2rem",
+                      fontSize: "1.1rem",
                       fontWeight: 800,
-                      letterSpacing: "1px",
+                      color: "#212121",
+                      letterSpacing: "0.5px",
                       textTransform: "uppercase",
+                      fontFamily: "'Montserrat', sans-serif",
                     }}
                   >
                     ✦ La Visión
@@ -219,15 +233,16 @@ const QuienesSomos = () => {
                   <Typography
                     variant='body1'
                     sx={{
-                      color: "text.secondary",
-                      fontSize: "0.9rem",
-                      lineHeight: 1.7,
-                      textAlign: "justify",
+                      color: "#554D4F",
+                      fontSize: "0.92rem",
+                      lineHeight: 1.75,
+                      fontFamily: "'Inter', sans-serif",
+                      textAlign: "left",
                     }}
                   >
                     Consolidarnos como la red de academias de belleza más
                     prestigiosa, innovadora y cercana del país, elevando el
-                    estándar de la educación técnica.
+                    estándar de la educación técnica profesional.
                   </Typography>
                 </Box>
               </Stack>

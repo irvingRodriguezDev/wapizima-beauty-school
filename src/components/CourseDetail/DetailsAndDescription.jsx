@@ -1,6 +1,6 @@
-import { Box, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
-import { Description as DescIcon } from "@mui/icons-material";
+import { Box, Grid, Paper, Typography, Divider, Stack } from "@mui/material";
+import DescriptionIcon from "@mui/icons-material/Description";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
@@ -9,197 +9,226 @@ const DetailsAndDescription = ({ currentCourse }) => {
   return (
     <Grid size={{ xs: 12, md: 7.5 }}>
       <Paper
+        elevation={0}
         sx={{
-          p: { xs: 3, md: 5 },
-          borderRadius: "12px", // Ortogonal estricto
-          border: "1px solid",
-          borderColor: "rgba(186, 137, 146, 0.15)",
-          bgcolor: "background.paper",
+          p: { xs: 3.5, md: 5 },
+          borderRadius: "24px", // Esquinas suaves premium coordinadas
+          border: "1px solid rgba(244, 114, 182, 0.18)",
+          backgroundColor: "#FFFFFF",
+          boxShadow: "0px 10px 30px rgba(229, 56, 136, 0.02)",
         }}
       >
-        {/* Cabecera de la Sección */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 4 }}>
-          <DescIcon sx={{ color: "secondary.main", fontSize: "1.5rem" }} />
+        {/* Cabecera de la Sección Estilo Editorial */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 4 }}>
+          <DescriptionIcon sx={{ color: "#E53888", fontSize: "1.6rem" }} />
           <Typography
             variant='h4'
             component='h2'
             sx={{
-              fontSize: "1.3rem",
+              fontSize: "1.25rem",
               fontWeight: 800,
               letterSpacing: "1px",
               textTransform: "uppercase",
-              color: "#BA8992",
+              fontFamily: "'Montserrat', sans-serif",
+              color: "#212121",
             }}
           >
             Detalles del Programa
           </Typography>
         </Box>
 
-        {/* BLOQUE INFORMATIVO DE CLASE (DURACIÓN E INSTRUCTOR) */}
-        <Grid
-          container
-          spacing={3}
+        {/* BLOQUE INFORMATIVO DE ENTORNO PROFESIONAL */}
+        <Box
           sx={{
-            bgcolor: "background.default",
+            backgroundColor: "rgba(229, 56, 136, 0.03)", // Fondo rosa translúcido muy sutil
             p: 3,
             mb: 5,
-            borderRadius: "12px",
-            borderLeft: "3px solid",
-            borderColor: "secondary.main",
+            borderRadius: "20px",
+            border: "1px solid rgba(229, 56, 136, 0.08)",
           }}
         >
-          {/* Fecha y Horario */}
-          <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", gap: 2 }}>
-            <CalendarMonthIcon
-              sx={{
-                color: "secondary.main",
-                mt: 0.3,
-                fontSize: "1.3rem",
-              }}
-            />
-            <Box>
-              <Typography
-                variant='caption'
-                sx={{
-                  color: "text.secondary",
-                  fontWeight: 700,
-                  letterSpacing: "1px",
-                  display: "block",
-                  mb: 0.5,
-                }}
-              >
-                FECHA Y HORARIO
-              </Typography>
-              <Typography
-                variant='body2'
-                sx={{ color: "primary.main", fontWeight: 700, mb: 0.5 }}
-              >
-                {new Date(currentCourse.fecha_inicio).toLocaleDateString(
-                  "es-MX",
-                  {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  },
-                )}
-              </Typography>
-              <Typography
-                variant='caption'
-                sx={{
-                  color: "text.secondary",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 0.5,
-                  fontWeight: 600,
-                }}
-              >
-                <AccessTimeIcon
-                  sx={{ fontSize: "0.9rem", color: "secondary.main" }}
-                />{" "}
-                {currentCourse.hora_inicio} a {currentCourse.hora_fin}
-              </Typography>
-            </Box>
-          </Grid>
+          <Grid container spacing={3}>
+            {/* Fecha y Horario */}
+            <Grid item xs={12} sm={6} sx={{ display: "flex", gap: 2 }}>
+              <CalendarMonthIcon
+                sx={{ color: "#E53888", mt: 0.2, fontSize: "1.4rem" }}
+              />
+              <Box>
+                <Typography
+                  variant='caption'
+                  sx={{
+                    color: "#554D4F",
+                    fontWeight: 700,
+                    letterSpacing: "1.5px",
+                    display: "block",
+                    mb: 0.8,
+                    fontFamily: "'Montserrat', sans-serif",
+                  }}
+                >
+                  FECHA Y HORARIO
+                </Typography>
+                <Typography
+                  variant='body1'
+                  sx={{
+                    color: "#212121",
+                    fontWeight: 700,
+                    mb: 0.8,
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "0.95rem",
+                  }}
+                >
+                  {new Date(currentCourse.fecha_inicio).toLocaleDateString(
+                    "es-MX",
+                    {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    },
+                  )}
+                </Typography>
+                <Stack
+                  direction='row'
+                  spacing={0.5}
+                  sx={{ alignItems: "center" }}
+                >
+                  <AccessTimeIcon
+                    sx={{ fontSize: "0.95rem", color: "#D82E7A" }}
+                  />
+                  <Typography
+                    variant='caption'
+                    sx={{
+                      color: "#554D4F",
+                      fontWeight: 600,
+                      fontFamily: "'Inter', sans-serif",
+                    }}
+                  >
+                    {currentCourse.hora_inicio} a {currentCourse.hora_fin}
+                  </Typography>
+                </Stack>
+              </Box>
+            </Grid>
 
-          {/* Instructor Certificado */}
-          <Grid size={{ xs: 12, md: 6 }} sx={{ display: "flex", gap: 2 }}>
-            <RecordVoiceOverIcon
-              sx={{
-                color: "secondary.main",
-                mt: 0.3,
-                fontSize: "1.3rem",
-              }}
-            />
-            <Box>
-              <Typography
-                variant='caption'
-                sx={{
-                  color: "text.secondary",
-                  fontWeight: 700,
-                  letterSpacing: "1px",
-                  display: "block",
-                  mb: 0.5,
-                }}
-              >
-                IMPARTIDO POR
-              </Typography>
-              <Typography
-                variant='body1'
-                sx={{
-                  fontWeight: 800,
-                  color: "primary.main",
-                  fontSize: "0.95rem",
-                }}
-              >
-                {currentCourse.maestro}
-              </Typography>
-              <Typography
-                variant='caption'
-                sx={{
-                  color: "secondary.main",
-                  fontWeight: 600,
-                  letterSpacing: "0.3px",
-                }}
-              >
-                Master Instructor Certificado
-              </Typography>
-            </Box>
-          </Grid>
-        </Grid>
+            {/* Separador Vertical solo visible en pantallas medianas o superiores */}
+            <Grid
+              item
+              xs={12}
+              sm='auto'
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              <Divider
+                orientation='vertical'
+                flexItem
+                sx={{ height: "100%", borderColor: "rgba(229, 56, 136, 0.15)" }}
+              />
+            </Grid>
 
-        {/* Contenido HTML Seguro de la Descripción */}
+            {/* Instructor Certificado */}
+            <Grid item xs={12} sm={5.5} sx={{ display: "flex", gap: 2 }}>
+              <RecordVoiceOverIcon
+                sx={{ color: "#E53888", mt: 0.2, fontSize: "1.4rem" }}
+              />
+              <Box>
+                <Typography
+                  variant='caption'
+                  sx={{
+                    color: "#554D4F",
+                    fontWeight: 700,
+                    letterSpacing: "1.5px",
+                    display: "block",
+                    mb: 0.8,
+                    fontFamily: "'Montserrat', sans-serif",
+                  }}
+                >
+                  IMPARTIDO POR
+                </Typography>
+                <Typography
+                  variant='body1'
+                  sx={{
+                    fontWeight: 800,
+                    color: "#212121",
+                    fontSize: "0.95rem",
+                    fontFamily: "'Inter', sans-serif",
+                    mb: 0.3,
+                  }}
+                >
+                  {currentCourse.maestro}
+                </Typography>
+                <Typography
+                  variant='caption'
+                  sx={{
+                    color: "#D82E7A",
+                    fontWeight: 700,
+                    fontSize: "0.75rem",
+                    fontFamily: "'Montserrat', sans-serif",
+                    letterSpacing: "0.2px",
+                  }}
+                >
+                  Master Instructor Certificado
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Contenido HTML Seguro de la Descripción Pulido */}
         <Box
           dangerouslySetInnerHTML={{
             __html: currentCourse.descripcion,
           }}
           sx={{
-            color: "text.primary",
+            color: "#554D4F",
             lineHeight: 1.8,
-            fontSize: "0.95rem",
-            mb: 4,
+            fontSize: "0.98rem",
+            fontFamily: "'Inter', sans-serif",
+            mb: 2,
             "& p": { mb: 2.5 },
             "& ul, & ol": { pl: 3, mb: 2.5 },
             "& li": { mb: 1.2 },
-            "& strong": { color: "primary.main", fontWeight: 800 },
+            "& strong": {
+              color: "#212121",
+              fontWeight: 800,
+              fontFamily: "'Montserrat', sans-serif",
+            },
           }}
         />
 
-        {/* REPRODUCTOR TIKTOK ESTILO GALERÍA EDITORIAL */}
+        {/* REPRODUCTOR TIKTOK ESTILO SMARTPHONE SMART */}
         {currentCourse.video_presentacion_url && (
           <Box
             sx={{
               mt: 6,
-              pt: 4,
-              borderTop: "1px solid",
-              borderColor: "rgba(186, 137, 146, 0.12)",
+              pt: 5,
+              borderTop: "1px solid rgba(244, 114, 182, 0.15)",
             }}
           >
             <Typography
               variant='subtitle2'
               sx={{
-                color: "primary.main",
+                color: "#212121",
                 fontWeight: 800,
-                mb: 3,
+                mb: 4,
                 letterSpacing: "1px",
                 textTransform: "uppercase",
+                fontFamily: "'Montserrat', sans-serif",
                 fontSize: "0.85rem",
               }}
             >
               🎥 Conoce más sobre esta Masterclass
             </Typography>
 
+            {/* Contenedor con Aspecto de Pantalla de Teléfono Premium */}
             <Box
               sx={{
                 position: "relative",
                 width: "100%",
-                maxWidth: "340px",
+                maxWidth: "320px",
                 margin: "0 auto",
-                borderRadius: 0, // Recto y limpio
+                borderRadius: "32px", // Bordes redondeados imitando un teléfono móvil
                 overflow: "hidden",
                 backgroundColor: "#000000",
-                aspectRatio: { xs: "9/15", sm: "9/16" },
-                border: "1px solid",
-                borderColor: "rgba(186, 137, 146, 0.3)",
+                aspectRatio: "9/16",
+                boxShadow: "0px 16px 40px rgba(0, 0, 0, 0.08)",
+                border: "4px solid #212121", // Sutil marco simulando bisel de celular
               }}
             >
               <iframe

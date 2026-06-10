@@ -3,66 +3,57 @@ import { Box, Typography, Card, CardContent, Button } from "@mui/material";
 import { motion } from "framer-motion";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-// ---- ESTILOS LUXURY ROSE GOLD UNIFICADOS ----
-const LUXURY_STYLE = {
-  roseGoldGradient:
-    "linear-gradient(135deg, #ECC4C6 0%, #C3939B 25%, #F0CBD0 50%, #B8858E 75%, #925863 100%)",
-  fontSans: "'Montserrat', 'Inter', sans-serif",
-  fontSerif: "'Playfair Display', 'Cormorant Garamond', serif",
-  cardShadowDefault: "0px 10px 30px rgba(146, 88, 99, 0.04)",
-  cardShadowHover: "0px 20px 40px rgba(146, 88, 99, 0.12)",
-};
-
 const PlantelCard = ({ school, index }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 25 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
+      viewport={{ once: true, margin: "-20px" }}
       transition={{
         duration: 0.6,
         ease: [0.16, 1, 0.3, 1],
-        delay: index * 0.05,
+        delay: index * 0.05, // Efecto cascada fino
       }}
+      style={{ height: "100%" }}
     >
       <Card
         sx={{
           background: "#FFFFFF",
-          borderRadius: "24px", // Bordes más suaves y modernos de alta gama
-          border: "1px solid rgba(195, 147, 155, 0.15)",
-          boxShadow: LUXURY_STYLE.cardShadowDefault,
+          borderRadius: "24px", // Esquinas suaves premium
+          border: "1px solid rgba(244, 114, 182, 0.15)", // Borde rosa sutil
           overflow: "hidden",
           transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
           display: "flex",
           flexDirection: "column",
           height: "100%",
+          boxShadow: "0px 8px 24px rgba(229, 56, 136, 0.02)",
           "&:hover": {
-            transform: "translateY(-8px)",
-            borderColor: "rgba(195, 147, 155, 0.4)",
-            boxShadow: LUXURY_STYLE.cardShadowHover,
+            transform: "translateY(-6px)",
+            borderColor: "rgba(229, 56, 136, 0.35)",
+            boxShadow: "0px 16px 32px rgba(229, 56, 136, 0.06)",
             "& .school-logo-container": {
+              // Iluminación de estudio rosa que se intensifica al hacer hover
               background:
-                "radial-gradient(circle at center, rgba(240, 203, 208, 0.2) 0%, rgba(255, 255, 255, 1) 70%)",
+                "radial-gradient(circle at center, rgba(251, 207, 232, 0.25) 0%, rgba(255, 255, 255, 1) 75%)",
             },
             "& .btn-card-action": {
-              transform: "scale(1.02)",
-              filter: "brightness(1.05)",
+              boxShadow: "0px 10px 25px rgba(229, 56, 136, 0.35)",
             },
           },
         }}
       >
-        {/* Contenedor del Logo (Efecto Estudio Limpio) */}
+        {/* Contenedor del Logo (Efecto Estudio Fotográfico Limpio) */}
         <Box
           className='school-logo-container'
           sx={{
             height: 160,
             background:
-              "radial-gradient(circle at center, rgba(240, 203, 208, 0.08) 0%, rgba(255, 255, 255, 1) 70%)",
+              "radial-gradient(circle at center, rgba(251, 207, 232, 0.1) 0%, rgba(255, 255, 255, 1) 75%)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            borderBottom: "1px solid rgba(195, 147, 155, 0.1)",
-            p: 4,
+            borderBottom: "1px solid rgba(244, 114, 182, 0.1)",
+            p: 3.5,
             position: "relative",
             transition: "background 0.4s ease",
           }}
@@ -76,7 +67,7 @@ const PlantelCard = ({ school, index }) => {
                 height: "100%",
                 maxWidth: "100%",
                 objectFit: "contain",
-                filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.03))",
+                filter: "drop-shadow(0px 4px 12px rgba(229, 56, 136, 0.04))",
               }}
             />
           ) : (
@@ -84,11 +75,10 @@ const PlantelCard = ({ school, index }) => {
               variant='h6'
               sx={{
                 fontWeight: 900,
-                letterSpacing: "2px",
-                fontFamily: LUXURY_STYLE.fontSans,
-                background: LUXURY_STYLE.roseGoldGradient,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
+                letterSpacing: "1.5px",
+                color: "#E53888",
+                fontFamily: "'Montserrat', sans-serif",
+                textAlign: "center",
               }}
             >
               {school.name}
@@ -98,17 +88,17 @@ const PlantelCard = ({ school, index }) => {
 
         {/* Información del plantel */}
         <CardContent
-          sx={{ p: 3.5, flexGrow: 1, display: "flex", flexDirection: "column" }}
+          sx={{ p: 3, flexGrow: 1, display: "flex", flexDirection: "column" }}
         >
           <Typography
             variant='h6'
             sx={{
               fontWeight: 800,
               color: "#212121",
-              mb: 1.5,
-              fontSize: "1.2rem",
-              fontFamily: LUXURY_STYLE.fontSans,
-              letterSpacing: "-0.5px",
+              mb: 1,
+              fontSize: "1.15rem",
+              letterSpacing: "-0.3px",
+              fontFamily: "'Montserrat', sans-serif",
             }}
           >
             {school.name}
@@ -119,22 +109,21 @@ const PlantelCard = ({ school, index }) => {
               display: "flex",
               alignItems: "flex-start",
               gap: 1,
-              mb: 4,
+              mb: 3.5,
               flexGrow: 1,
             }}
           >
             <LocationOnIcon
-              sx={{ fontSize: 18, color: "#C3939B", mt: 0.2 }}
-              strokeWidth={1.5}
+              sx={{ fontSize: 18, color: "#E53888", mt: 0.2 }} // Ícono rosa Wapizima
             />
             <Typography
               variant='body2'
               sx={{
                 flex: 1,
                 fontWeight: 500,
-                color: "#5A5455",
-                fontFamily: LUXURY_STYLE.fontSans,
+                color: "#554D4F",
                 lineHeight: 1.5,
+                fontFamily: "'Inter', sans-serif",
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
@@ -144,21 +133,21 @@ const PlantelCard = ({ school, index }) => {
               {school.address || "Dirección no especificada"}
             </Typography>
 
-            {/* Micro-Badge Geográfico Rose Gold */}
-            {school.distance !== undefined && (
+            {/* Micro-Badge de Kilómetros en Cristal Rosa */}
+            {school.distance !== undefined && school.distance < 9999 && (
               <Box
                 sx={{
-                  background:
-                    "linear-gradient(135deg, rgba(240, 203, 208, 0.3) 0%, rgba(195, 147, 155, 0.15) 100%)",
-                  border: "1px solid rgba(195, 147, 155, 0.25)",
-                  color: "#925863",
-                  px: 1.4,
+                  background: "rgba(229, 56, 136, 0.06)",
+                  border: "1px solid rgba(229, 56, 136, 0.15)",
+                  color: "#D82E7A",
+                  px: 1.5,
                   py: 0.4,
                   borderRadius: "50px",
                   fontWeight: 700,
-                  fontSize: "0.75rem",
-                  fontFamily: LUXURY_STYLE.fontSans,
+                  fontSize: "0.72rem",
                   whiteSpace: "nowrap",
+                  fontFamily: "'Montserrat', sans-serif",
+                  letterSpacing: "0.2px",
                 }}
               >
                 {school.distance.toFixed(1)} km
@@ -171,20 +160,18 @@ const PlantelCard = ({ school, index }) => {
             className='btn-card-action'
             fullWidth
             variant='contained'
+            color='primary' // Usa directamente tu rosa #E53888
             sx={{
-              background: LUXURY_STYLE.roseGoldGradient,
-              color: "#FFFFFF",
-              borderRadius: "50px", // Botón redondo de alta costura
+              borderRadius: "50px",
               textTransform: "none",
               fontWeight: 700,
-              fontSize: "0.9rem",
+              fontSize: "0.88rem",
               letterSpacing: "0.5px",
-              py: 1.5,
-              boxShadow: "0px 4px 15px rgba(184, 133, 142, 0.2)",
+              py: 1.3,
+              bgcolor: "#E03392",
+              fontFamily: "'Montserrat', sans-serif",
+              boxShadow: "0px 6px 20px rgba(229, 56, 136, 0.18)",
               transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-              "&:hover": {
-                boxShadow: "0px 8px 25px rgba(146, 88, 99, 0.35)",
-              },
             }}
           >
             Ver Academia y Cursos

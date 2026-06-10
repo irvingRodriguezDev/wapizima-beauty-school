@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   Stack,
   Box,
@@ -18,32 +17,17 @@ import {
 import { motion } from "framer-motion";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { Link, useLocation } from "react-router-dom";
-
-// ---- DIRECCIÓN EDITORIAL DE ALTA GAMA ----
-const LUXURY_STYLE = {
-  // Gradiente Oro Rosa pulido y balanceado (corrección de sintaxis incluida)
-  roseGoldGradient:
-    "linear-gradient(135deg, #E8C1C4 0%, #C99A80 30%, #F5D3D7 60%, #BA8992 100%)",
-  brandGradient: "linear-gradient(135deg, #2D2526 20%, #734850 90%)",
-  fontSans: "'Montserrat', 'Inter', sans-serif",
-
-  // Colores sólidos corporativos de boutique
-  bgSolid: "#FAF6F6",
-  textPrimary: "#2D2526", // Ceniza profundo
-  textSecondary: "#BA8992", // Rosa viejo atenuado
-  borderSoft: "rgba(186, 137, 146, 0.2)",
-};
+import LogoWapizima from "../../assets/Logo_Wapizima.webp";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
-  // Detectamos scroll únicamente para añadir la línea de base divisoria
+  // Cambia sutilmente los valores cuando el usuario hace scroll
   const trigger = useScrollTrigger({
     disableHysteresis: true,
-    threshold: 10,
+    threshold: 20,
   });
 
   const navItems = [
@@ -58,18 +42,22 @@ const Navbar = () => {
 
   return (
     <>
-      {/* BARRA DE NAVEGACIÓN COMPLETAMENTE OPACA Y ESTRUCTURAL */}
       <AppBar
         position='fixed'
         elevation={0}
         sx={{
-          background: LUXURY_STYLE.bgSolid,
+          // Base de vidrio: Blanco ultra traslúcido (0.4) que se vuelve un poco más sólido al hacer scroll (0.7)
+          background: trigger
+            ? "rgba(255, 255, 255, 0.75)"
+            : "rgba(255, 255, 255, 0.4)",
+          // El secreto del Glassmorphism: Desenfoque de fondo de alta densidad
+          backdropFilter: "blur(11.1px)",
+          WebkitBackdropFilter: "blur(11.1px)",
+          // Línea divisoria milimétrica con reflejo rosa para que no se pierda en fondos blancos
           borderBottom: trigger
-            ? `1px solid ${LUXURY_STYLE.borderSoft}`
-            : "1px solid transparent",
-          boxShadow: trigger ? "0px 10px 30px rgba(45, 37, 38, 0.02)" : "none",
+            ? "1px solid rgba(229, 56, 136, 0.12)"
+            : "1px solid rgba(255, 255, 255, 0.3)",
           transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-          zIndex: 1200,
         }}
       >
         <Container maxWidth='xl' sx={{ px: { xs: 3, md: 6 } }}>
@@ -77,73 +65,46 @@ const Navbar = () => {
             disableGutters
             sx={{
               justifyContent: "space-between",
-              height: { xs: "70px", md: "90px" },
+              // Transición de altura fluida al hacer scroll
+              height: { xs: "75px", md: "95px" },
               transition: "height 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
               ...(trigger && {
-                height: { xs: "65px", md: "76px" },
+                height: { xs: "65px", md: "75px" },
               }),
             }}
           >
-            {/* 1. IDENTIDAD EDITORIAL */}
+            {/* 1. IDENTIDAD */}
             <Link
               to='/'
               style={{
                 textDecoration: "none",
                 display: "flex",
                 alignItems: "center",
-                gap: 14,
               }}
             >
               <Box
                 sx={{
-                  background: LUXURY_STYLE.roseGoldGradient,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  display: "flex",
-                  alignItems: "center",
+                  transition: "transform 0.4s ease",
+                  "&:hover": { transform: "scale(1.02)" },
                 }}
               >
-                <AutoAwesomeIcon sx={{ fontSize: 22 }} />
-              </Box>
-
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography
-                  variant='h6'
-                  component='div'
-                  sx={{
-                    fontWeight: 900,
-                    fontSize: { xs: "1.25rem", md: "1.45rem" },
-                    lineHeight: 1,
-                    letterSpacing: "5px",
-                    fontFamily: LUXURY_STYLE.fontSans,
-                    background: LUXURY_STYLE.brandGradient,
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
+                <img
+                  src={LogoWapizima}
+                  alt='Wapizima Academy'
+                  style={{
+                    width: "auto",
+                    height: trigger ? "45px" : "55px", // El logo se encoge sutilmente con el scroll
+                    transition: "height 0.4s ease",
+                    objectFit: "contain",
                   }}
-                >
-                  WAPIZIMA
-                </Typography>
-                <Typography
-                  variant='caption'
-                  sx={{
-                    fontWeight: 700,
-                    letterSpacing: "6px",
-                    fontSize: "0.62rem",
-                    color: LUXURY_STYLE.textSecondary,
-                    fontFamily: LUXURY_STYLE.fontSans,
-                    mt: 0.5,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Academy
-                </Typography>
+                />
               </Box>
             </Link>
 
-            {/* 2. MENÚ DESKTOP MINIMALISTA (SIN GLASS NI PASTILLAS FLOTANTES) */}
+            {/* 2. MENÚ DESKTOP (Botones limpios sobre el vidrio) */}
             <Stack
               direction='row'
-              spacing={4} // Mayor separación de estilo pasarela de moda
+              spacing={5}
               sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
             >
               {navItems.map((item) => {
@@ -154,43 +115,42 @@ const Navbar = () => {
                       component={Link}
                       to={item.href}
                       sx={{
-                        color: isActive
-                          ? LUXURY_STYLE.textSecondary
-                          : LUXURY_STYLE.textPrimary,
-                        fontWeight: isActive ? 800 : 600,
+                        fontWeight: isActive ? 700 : 500,
                         fontSize: "0.9rem",
                         textTransform: "none",
-                        fontFamily: LUXURY_STYLE.fontSans,
-                        letterSpacing: "1.5px", // Tipografía más espaciada y premium
+                        letterSpacing: "1.2px",
                         px: 1,
                         py: 0.5,
                         minWidth: "auto",
+                        color: isActive ? "#E53888" : "#2D2526",
                         transition: "color 0.3s ease",
                         "&:hover": {
-                          color: LUXURY_STYLE.textSecondary,
-                          background: "transparent", // Cero cajas de fondo
+                          background: "transparent",
+                          color: "#E53888",
                         },
                       }}
                     >
                       {item.label}
                     </Button>
 
-                    {/* Indicador de pestaña activa: Una línea minimalista de alta precisión */}
+                    {/* Indicador activo: Línea orgánica difuminada abajo del texto */}
                     {isActive && (
                       <Box
                         component={motion.div}
-                        layoutId='editorialActiveLine'
+                        layoutId='glassActiveLine'
                         sx={{
                           position: "absolute",
-                          bottom: "-6px",
-                          left: 0,
-                          width: "100%",
-                          height: "2px",
-                          background: LUXURY_STYLE.roseGoldGradient,
+                          bottom: "-4px",
+                          left: "20%",
+                          width: "60%",
+                          height: "3px",
+                          borderRadius: "2px",
+                          background:
+                            "linear-gradient(90deg, #E53888, #F472B6)",
                         }}
                         transition={{
                           type: "spring",
-                          stiffness: 300,
+                          stiffness: 380,
                           damping: 30,
                         }}
                       />
@@ -200,35 +160,37 @@ const Navbar = () => {
               })}
             </Stack>
 
-            {/* BOTÓN DE MENÚ PARA DISPOSITIVOS MÓVILES */}
+            {/* BOTÓN MÓVIL */}
             <IconButton
               onClick={handleDrawerToggle}
               sx={{
                 display: { md: "none" },
-                color: LUXURY_STYLE.textPrimary,
+                color: "#2D2526",
                 p: 1,
               }}
             >
-              <MenuIcon sx={{ fontSize: 24 }} />
+              <MenuIcon sx={{ fontSize: 26 }} />
             </IconButton>
           </Toolbar>
         </Container>
       </AppBar>
 
-      {/* Colchón de espacio idéntico para que el contenido inicie perfectamente alineado abajo */}
-      <Box sx={{ height: { xs: "70px", md: "90px" } }} />
+      {/* REEMPLAZO DEL COLCHÓN: Mantenemos la estructura limpia */}
+      <Box sx={{ height: { xs: "75px", md: "95px" } }} />
 
-      {/* 3. DRAWER MÓVIL TOTALMENTE OPACO ESTILO BOUTIQUE PRIVADA */}
+      {/* 3. DRAWER MÓVIL CON EFECTO VIDRIO ESMERILADO */}
       <Drawer
         anchor='right'
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
-        sx={{
-          width: 280,
-          background: LUXURY_STYLE.bgSolid, // Opaco, sólido y pulcro
-          boxShadow: "-10px 0px 40px rgba(45, 37, 38, 0.04)",
-          borderLeft: `1px solid ${LUXURY_STYLE.borderSoft}`,
+        PaperProps={{
+          sx: {
+            width: 280,
+            background: "rgba(255, 255, 255, 0.85)",
+            backdropFilter: "blur(25px)",
+            borderLeft: "1px solid rgba(229, 56, 136, 0.1)",
+          },
         }}
       >
         <Box
@@ -239,80 +201,52 @@ const Navbar = () => {
             flexDirection: "column",
           }}
         >
-          {/* Header del Drawer */}
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              mb: 6,
+              mb: 5,
             }}
           >
-            <Stack direction='row' spacing={1.5} sx={{ alignItems: "center" }}>
-              <Box
-                sx={{
-                  background: LUXURY_STYLE.roseGoldGradient,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                <AutoAwesomeIcon sx={{ fontSize: 18 }} />
-              </Box>
-              <Typography
-                variant='h6'
-                sx={{
-                  fontWeight: 900,
-                  letterSpacing: "3px",
-                  fontFamily: LUXURY_STYLE.fontSans,
-                  fontSize: "1.1rem",
-                  color: LUXURY_STYLE.textPrimary,
-                }}
-              >
-                WAPIZIMA
-              </Typography>
-            </Stack>
-            <IconButton
-              onClick={handleDrawerToggle}
-              sx={{ color: LUXURY_STYLE.textPrimary }}
-            >
-              <CloseIcon sx={{ fontSize: 20 }} />
+            <img
+              src={LogoWapizima}
+              alt='Logo'
+              style={{ height: "35px", width: "auto" }}
+            />
+            <IconButton onClick={handleDrawerToggle} sx={{ color: "#2D2526" }}>
+              <CloseIcon sx={{ fontSize: 22 }} />
             </IconButton>
           </Box>
 
-          {/* Enlaces de navegación del Drawer */}
           <List sx={{ flexGrow: 1 }}>
             {navItems.map((item) => {
               const isActive = location.pathname === item.href;
               return (
-                <ListItem key={item.label} disablePadding sx={{ mb: 1 }}>
+                <ListItem key={item.label} disablePadding sx={{ mb: 1.5 }}>
                   <ListItemButton
                     component={Link}
                     to={item.href}
                     onClick={handleDrawerToggle}
                     sx={{
-                      borderRadius: "0px", // Cortes limpios sin curvas innecesarias
-                      py: 1.8,
+                      borderRadius: "12px",
+                      py: 1.5,
                       px: 2,
-                      borderLeft: isActive
-                        ? `3px solid ${LUXURY_STYLE.textSecondary}`
-                        : "3px solid transparent",
-                      color: isActive
-                        ? LUXURY_STYLE.textSecondary
-                        : LUXURY_STYLE.textPrimary,
-                      backgroundColor: "transparent",
+                      color: isActive ? "#E53888" : "#2D2526",
+                      backgroundColor: isActive
+                        ? "rgba(229, 56, 136, 0.06)"
+                        : "transparent",
                       "&:hover": {
-                        backgroundColor: "rgba(186, 137, 146, 0.03)",
-                        color: LUXURY_STYLE.textSecondary,
+                        backgroundColor: "rgba(229, 56, 136, 0.03)",
                       },
                     }}
                   >
                     <ListItemText
                       primary={item.label}
-                      sx={{
-                        fontWeight: isActive ? 800 : 600,
-                        fontSize: "1.05rem",
-                        fontFamily: LUXURY_STYLE.fontSans,
-                        letterSpacing: "1px",
+                      primaryTypographyProps={{
+                        fontWeight: isActive ? 700 : 500,
+                        fontSize: "1rem",
+                        letterSpacing: "0.5px",
                       }}
                     />
                   </ListItemButton>

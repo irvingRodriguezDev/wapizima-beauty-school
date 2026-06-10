@@ -3,18 +3,7 @@ import { Box, Typography, Stack } from "@mui/material";
 import { motion } from "framer-motion";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
-// ---- DIRECCIÓN DE DISEÑO EDITORIAL SÓLIDO ----
-const TAPE_STYLE = {
-  // Fondo sólido, sofisticado y maduro en Rosa Viejo
-  bgSolid: "#BA8992",
-  // Color de texto en contraste de alta costura
-  textContrast: "#2D2526",
-  fontSans: "'Montserrat', 'Inter', sans-serif",
-  // Sombra plana y ultra sutil para separación de capas
-  boxShadow: "0px 4px 20px rgba(45, 37, 38, 0.02)",
-};
-
-// Animación fluida de marquesina infinita
+// Animación fluida e infinita sin saltos visuales
 const marqueeVariants = {
   animate: {
     x: [0, "-50%"],
@@ -22,7 +11,7 @@ const marqueeVariants = {
       x: {
         repeat: Infinity,
         repeatType: "loop",
-        duration: 30, // Un ritmo un poco más pausado y exclusivo
+        duration: 25, // Un ritmo continuo pero elegante
         ease: "linear",
       },
     },
@@ -35,15 +24,15 @@ const MarqueeCinta = () => {
     { text: "SÉ PARTE DE LA COMUNIDAD WAPIZIMA", highlight: false },
     { text: "TRANSFORMA TU PASIÓN EN UN IMPERIO", highlight: true },
     { text: "EL MOMENTO DE EMPRENDER ES AHORA", highlight: false },
-    { text: "CONTRATO Y RESPALDO DE MARCA LÍDER", highlight: true },
+    { text: "RESPALDO TOTAL DE UNA MARCA LÍDER", highlight: true },
     { text: "CALIDAD PROFESIONAL INTERNACIONAL", highlight: false },
   ];
 
-  // Renderizamos el bloque de ítems de forma limpia
+  // Renderizado del bloque de ítems (se duplica para el loop infinito perfecto)
   const renderMarqueeBlock = () => (
     <Stack
       direction='row'
-      spacing={10} // Más aire entre frases para diseño editorial
+      spacing={8} // Separación armónica entre frases
       sx={{ alignItems: "center", flexShrink: 0 }}
     >
       {marqueeItems.map((item, i) => (
@@ -56,22 +45,24 @@ const MarqueeCinta = () => {
           <Typography
             variant='button'
             sx={{
-              fontWeight: item.highlight ? 800 : 500, // Jugamos con los pesos tipográficos en lugar de colores chillones
-              letterSpacing: "4px", // Súper espaciado estilo alta joyería
-              fontSize: { xs: "0.85rem", md: "1rem" },
-              fontFamily: TAPE_STYLE.fontSans,
-              color: TAPE_STYLE.textContrast,
+              // Jugamos con el peso visual: Bold extremo vs Medium fino
+              fontWeight: item.highlight ? 800 : 400,
+              letterSpacing: "3px", // Espaciado premium de alta costura
+              fontSize: { xs: "0.8rem", md: "0.95rem" },
+              fontFamily: "'Montserrat', sans-serif",
+              color: "#FFFFFF", // Blanco puro para un contraste limpio sobre el rosa
               whiteSpace: "nowrap",
               textTransform: "uppercase",
+              opacity: item.highlight ? 1 : 0.85,
             }}
           >
             {item.text}
           </Typography>
           <AutoAwesomeIcon
             sx={{
-              color: TAPE_STYLE.textContrast,
+              color: "#FFFFFF",
               fontSize: 14,
-              opacity: 0.6, // Sutil destello integrado al flujo del texto
+              opacity: 0.5, // Destello integrado sutilmente
             }}
           />
         </Stack>
@@ -82,8 +73,7 @@ const MarqueeCinta = () => {
   return (
     <Box
       sx={{
-        background: TAPE_STYLE.bgSolid,
-        py: 3, // Un poco más alta para darle un aire imponente a la tipografía
+        py: 2.5,
         overflow: "hidden",
         display: "flex",
         width: "100vw",
@@ -92,9 +82,12 @@ const MarqueeCinta = () => {
         right: "50%",
         marginLeft: "-50vw",
         marginRight: "-50vw",
-        boxShadow: TAPE_STYLE.boxShadow,
         zIndex: 10,
-        my: 8, // Separación generosa para dejar respirar el contenido superior e inferior
+        my: 6, // Margen generoso para dejar respirar las secciones adyacentes
+        // INTERSECCIÓN VISUAL: El gradiente de 3 tonos rosa oficial de Wapizima
+        background:
+          "linear-gradient(90deg, #D82E7A 0%, #E53888 50%, #F472B6 100%)",
+        boxShadow: "0px 10px 30px rgba(229, 56, 136, 0.15)", // Sutil aura debajo de la cinta
       }}
     >
       <Box
@@ -103,12 +96,12 @@ const MarqueeCinta = () => {
         animate='animate'
         sx={{
           display: "flex",
-          gap: 10,
+          gap: 8,
           whiteSpace: "nowrap",
           width: "max-content",
         }}
       >
-        {/* Bucle perfecto de dos bloques para renderizado continuo */}
+        {/* El bloque duplicado garantiza que la animación nunca se corte en pantallas ultra-wide */}
         {renderMarqueeBlock()}
         {renderMarqueeBlock()}
       </Box>
