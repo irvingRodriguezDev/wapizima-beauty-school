@@ -210,9 +210,11 @@ const FranquiciasSection = () => {
                     >
                       <Stack
                         direction='row'
-                        alignItems='center'
-                        justifyContent='space-between'
                         mb={2.5}
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
                       >
                         <Box
                           sx={{

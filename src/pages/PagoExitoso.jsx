@@ -156,7 +156,7 @@ const PagoExitoso = () => {
                 startIcon={
                   <ArrowBackIosNewIcon sx={{ fontSize: "12px !important" }} />
                 }
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/")}
                 sx={{
                   color: "#554D4F",
                   fontWeight: 700,
@@ -172,7 +172,7 @@ const PagoExitoso = () => {
                   },
                 }}
               >
-                Volver a la Academia
+                Ir al incio
               </Button>
             </Stack>
           </Box>

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Container, Typography, Button, Stack } from "@mui/material";
+import { usePublicSchool } from "../context/PublicSchoolContext";
+// Eliminamos Box e importamos explícitamente Grid2 como Grid
+import { Container, Typography, Button, Stack, Grid } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Layout from "../components/Landing/Layout";
 import PublicCoursesTabs from "../components/PublicCoursesTabs";
-import { usePublicSchool } from "../context/PublicSchoolContext";
 import LoadingScreen from "../components/LoadingScreen";
 
 const PlantelDetailPage = () => {
@@ -33,7 +34,7 @@ const PlantelDetailPage = () => {
             mb={3}
             sx={{
               letterSpacing: "1px",
-              color: "#212121",
+              color: "#2A2628",
               fontFamily: "'Montserrat', sans-serif",
             }}
           >
@@ -42,14 +43,15 @@ const PlantelDetailPage = () => {
           </Typography>
           <Button
             variant='contained'
-            color='primary'
             onClick={() => navigate("/")}
             sx={{
-              borderRadius: "50px",
+              borderRadius: "99px",
               px: 4,
               py: 1.5,
               textTransform: "none",
               fontWeight: 700,
+              background: "#E91E63",
+              fontFamily: "'Montserrat', sans-serif",
             }}
           >
             Volver al Inicio
@@ -61,163 +63,200 @@ const PlantelDetailPage = () => {
 
   return (
     <Layout>
-      {/* FONDO PREMIUM: Continuidad visual con doble iluminación difuminada en las esquinas */}
-      <Box
+      {/* CONTENEDOR PRINCIPAL: Ahora es el Grid Raíz quien maneja el Lienzo Infinito */}
+      <Grid
+        container
         sx={{
           minHeight: "100vh",
-          background: "#FFFBFD",
+          background: "#FAFAFA",
           backgroundImage: `
-            radial-gradient(circle at 0% 0%, rgba(255, 240, 245, 0.9) 0%, transparent 35%),
-            radial-gradient(circle at 100% 50%, rgba(244, 114, 182, 0.12) 0%, transparent 40%)
+            radial-gradient(circle at 0% 0%, rgba(245, 79, 156, 0.04) 0%, transparent 40%),
+            radial-gradient(circle at 100% 60%, rgba(244, 114, 182, 0.03) 0%, transparent 35%)
           `,
           pb: 12,
         }}
       >
-        <Container maxWidth='xl'>
-          {/* BOTÓN REGRESAR - UBICACIÓN NATURAL (IZQUIERDA) */}
-          <Box sx={{ pt: 4, pb: 2 }}>
-            <Button
-              startIcon={
-                <ArrowBackIosNewIcon sx={{ fontSize: "12px !important" }} />
-              }
-              onClick={() => navigate("/")}
-              variant='text'
-              sx={{
-                fontWeight: 700,
-                fontSize: "0.85rem",
-                letterSpacing: "1.5px",
-                textTransform: "none",
-                color: "#554D4F",
-                transition: "all 0.3s ease",
-                fontFamily: "'Montserrat', sans-serif",
-                "&:hover": {
-                  color: "#E53888",
-                  background: "transparent",
-                  transform: "translateX(-3px)",
-                },
-              }}
-            >
-              Volver a Academias
-            </Button>
-          </Box>
-
-          {/* SECCIÓN 1: HEADER EDITORIAL MODELO "STUDIO GLOW" */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-              py: { xs: 6, md: 8 },
-              px: { xs: 3, md: 6 },
-              backgroundColor: "#FFFFFF",
-              borderRadius: "32px", // Bordes súper suaves consistentes con el diseño de las Cards
-              border: "1px solid rgba(244, 114, 182, 0.2)",
-              boxShadow: "0px 12px 40px rgba(229, 56, 136, 0.03)",
-              mb: 8,
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            {/* Título de Sede con Fuente de Revista de Moda */}
-            <Typography
-              variant='h1'
-              component='h1'
-              sx={{
-                fontWeight: 900,
-                color: "#212121",
-                fontSize: { xs: "2.2rem", sm: "3.2rem", md: "3.8rem" },
-                letterSpacing: "-0.5px",
-                lineHeight: 1.15,
-                mb: 3,
-                maxWidth: "900px",
-              }}
-            >
-              <Box
-                component='span'
+        <Container maxWidth='xl' sx={{ px: { xs: 3, md: 8 } }}>
+          <Grid container spacing={4}>
+            {/* 1. SECCIÓN: BOTÓN REGRESAR */}
+            <Grid size={12} sx={{ pt: 5, pb: 1 }}>
+              <Button
+                startIcon={
+                  <ArrowBackIosNewIcon sx={{ fontSize: "11px !important" }} />
+                }
+                onClick={() => navigate("/")}
+                variant='text'
                 sx={{
+                  fontWeight: 600,
+                  fontSize: "0.82rem",
+                  letterSpacing: "0.5px",
+                  textTransform: "none",
+                  color: "#655F62",
+                  backgroundColor: "rgba(0, 0, 0, 0.02)",
+                  border: "1px solid rgba(0, 0, 0, 0.04)",
+                  borderRadius: "99px",
+                  px: 2.5,
+                  py: 1,
+                  fontFamily: "'Montserrat', sans-serif",
+                  transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                  "&:hover": {
+                    backgroundColor: "rgba(245, 79, 156, 0.04)",
+                    color: "#E91E63",
+                    transform: "translateX(-4px)",
+                    borderColor: "rgba(245, 79, 156, 0.15)",
+                  },
+                }}
+              >
+                Volver a Academias
+              </Button>
+            </Grid>
+
+            {/* 2. SECCIÓN: HEADER EDITORIAL ASIMÉTRICO (100% Grid) */}
+            <Grid
+              size={12}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                pt: { xs: 2, md: 4 },
+                pb: { xs: 4, md: 6 },
+              }}
+            >
+              {/* Tag Premium con Emojis Controlados */}
+              <Stack
+                direction='row'
+                spacing={1}
+                sx={{
+                  alignItems: "center",
+                  border: "1px solid rgba(245, 79, 156, 0.2)",
+                  background: "rgba(245, 79, 156, 0.03)",
+                  color: "#E91E63",
+                  px: 2.2,
+                  py: 0.6,
+                  borderRadius: "99px",
+                  fontSize: "0.68rem",
+                  fontWeight: 700,
+                  letterSpacing: "2.5px",
+                  textTransform: "uppercase",
+                  fontFamily: "'Montserrat', sans-serif",
+                  mb: 3,
+                }}
+              >
+                <span>Sede Exclusiva</span>
+                <span style={{ fontSize: "0.85rem", marginTop: "-2px" }}>
+                  ✨
+                </span>
+              </Stack>
+
+              {/* Nombre de la Sede */}
+              <Typography
+                variant='h1'
+                component='h1'
+                sx={{
+                  color: "#2A2628",
+                  fontSize: { xs: "2.6rem", sm: "3.8rem", md: "5rem" },
+                  lineHeight: 1.05,
                   fontFamily: "'Playfair Display', serif",
                   fontStyle: "italic",
-                  fontWeight: "400",
-                  background:
-                    "linear-gradient(90deg, #E53888 0%, #F472B6 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  display: "inline-block",
+                  fontWeight: 400,
+                  letterSpacing: "-0.5px",
+                  mb: 3.5,
+                  maxWidth: "1000px",
                 }}
               >
                 {school.name}
-              </Box>
-            </Typography>
+              </Typography>
 
-            {/* Cápsula de Ubicación Refinada */}
-            <Stack
-              direction='row'
-              spacing={1.5}
-              sx={{
-                alignItems: "center",
-                justifyContent: "center",
-                maxWidth: "700px",
-                py: 1.2,
-                px: 3,
-                backgroundColor: "rgba(229, 56, 136, 0.04)",
-                border: "1px solid rgba(229, 56, 136, 0.15)",
-                borderRadius: "50px",
-              }}
-            >
-              <LocationOnIcon sx={{ color: "#E53888", fontSize: "1.15rem" }} />
-              <Typography
-                variant='body2'
+              {/* Dirección estilo Boutique */}
+              <Stack
+                direction='row'
+                spacing={1.5}
                 sx={{
-                  color: "#554D4F",
-                  fontWeight: 600,
-                  fontSize: "0.9rem",
-                  fontFamily: "'Inter', sans-serif",
-                  letterSpacing: "0.2px",
+                  alignItems: "center",
+                  py: 1.2,
+                  px: 2.5,
+                  backgroundColor: "rgba(0, 0, 0, 0.02)",
+                  border: "1px solid rgba(0, 0, 0, 0.04)",
+                  borderRadius: "50px",
                 }}
               >
-                {school.address || "Dirección no especificada"}
-              </Typography>
-            </Stack>
-          </Box>
+                <LocationOnIcon sx={{ color: "#E91E63", fontSize: "1.1rem" }} />
+                <Typography
+                  variant='body2'
+                  sx={{
+                    color: "#655F62",
+                    fontWeight: 600,
+                    fontSize: "0.88rem",
+                    fontFamily: "'Inter', sans-serif",
+                  }}
+                >
+                  {school.address || "Dirección no especificada"}
+                </Typography>
+              </Stack>
+            </Grid>
 
-          {/* SECCIÓN 2: SEPARADOR Y TÍTULO DE OFERTA EDUCATIVA */}
-          <Box sx={{ textAlign: "center", mb: 5 }}>
-            <Typography
-              variant='h4'
-              component='h2'
-              sx={{
-                fontWeight: 800,
-                color: "#212121",
-                letterSpacing: "1.5px",
-                textTransform: "uppercase",
-                fontSize: { xs: "1.3rem", md: "1.6rem" },
-                fontFamily: "'Montserrat', sans-serif",
-                mb: 1.5,
-              }}
-            >
-              Nuestra Oferta Educativa
-            </Typography>
-            <Typography
-              variant='body1'
-              sx={{
-                color: "#554D4F",
-                maxWidth: "500px",
-                margin: "0 auto",
-                fontSize: "0.95rem",
-                fontFamily: "'Inter', sans-serif",
-                lineHeight: 1.6,
-              }}
-            >
-              Elige el programa ideal diseñado por expertos para impulsar tu
-              carrera al máximo nivel en el arte de las uñas.
-            </Typography>
-          </Box>
+            {/* 3. SECCIÓN: TÍTULO DE OFERTA EDUCATIVA */}
+            <Grid size={12} sx={{ mb: 2 }}>
+              <Stack
+                direction='row'
+                spacing={1}
+                sx={{
+                  mb: 1.5,
+                  justifyContent: "center",
+                  textAlign: "center",
+                }}
+              >
+                <Typography
+                  variant='h4'
+                  component='h2'
+                  sx={{
+                    fontWeight: 800,
+                    textAlign: "center",
+                    color: "#2A2628",
+                    letterSpacing: "1px",
+                    fontSize: { xs: "1.4rem", md: "1.8rem" },
+                    fontFamily: "'Montserrat', sans-serif",
+                  }}
+                >
+                  Programas Disponibles
+                </Typography>
+                <span style={{ fontSize: "1.4rem", marginLeft: "8px" }}>
+                  💅
+                </span>
+              </Stack>
+              <Stack
+                direction='row'
+                spacing={1}
+                sx={{
+                  mb: 1.5,
+                  justifyContent: "center",
+                  textAlign: "center",
+                }}
+              >
+                <Typography
+                  variant='body1'
+                  sx={{
+                    color: "#655F62",
+                    maxWidth: "600px",
+                    fontSize: "0.95rem",
+                    fontFamily: "'Inter', sans-serif",
+                    lineHeight: 1.6,
+                    textAlign: "center",
+                  }}
+                >
+                  Elige el programa ideal diseñado por expertos para impulsar tu
+                  carrera al máximo nivel en el arte de las uñas.
+                </Typography>
+              </Stack>
+            </Grid>
 
-          {/* TABS CON LA DATA DE CURSOS (Se renderizan automáticamente con la nueva interfaz premium) */}
-          <PublicCoursesTabs courses={courses} />
+            {/* 4. SECCIÓN: TABS CON LAS TARJETAS DE CURSOS */}
+            <Grid size={12}>
+              <PublicCoursesTabs courses={courses} />
+            </Grid>
+          </Grid>
         </Container>
-      </Box>
+      </Grid>
     </Layout>
   );
 };

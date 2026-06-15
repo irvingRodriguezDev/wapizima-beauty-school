@@ -11,113 +11,124 @@ const Banner = ({ currentCourse }) => {
     <Box
       sx={{
         position: "relative",
-        height: { xs: "320px", md: "520px" },
-        // Degradado refinado: Mezcla tonos oscuros en base con destellos rosados sutiles
+        height: { xs: "360px", md: "500px", lg: "540px" },
+        // Degradado multicapa calibrado para proteger legibilidad de los textos
         backgroundImage: `
-          linear-gradient(180deg, rgba(20, 20, 20, 0.1) 0%, rgba(20, 20, 20, 0.6) 80%, rgba(20, 20, 20, 0.8) 100%),
-          linear-gradient(45deg, rgba(229, 56, 136, 0.15) 0%, transparent 60%),
+          linear-gradient(180deg, rgba(20, 16, 17, 0.4) 0%, rgba(20, 16, 17, 0.2) 40%, rgba(20, 16, 17, 0.85) 100%),
+          linear-gradient(90deg, rgba(233, 30, 99, 0.15) 0%, transparent 100%),
           url(${currentCourse.flayer_url || "https://images.unsplash.com/photo-1604654894610-df490651e56c?q=80&w=1200&auto=format&fit=crop"})
         `,
         backgroundSize: "cover",
         backgroundPosition: "center",
         display: "flex",
-        alignItems: "flex-end",
-        pb: { xs: 5, md: 7 },
-        overflow: "hidden", // Para asegurar que las animaciones de los hijos no se corten
+        alignItems: "stretch", // Permite que el contenedor use todo el alto disponible
+        overflow: "hidden",
       }}
     >
-      <Container maxWidth='xl' sx={{ position: "relative" }}>
-        {/* BOTÓN REGRESAR ESTILO "VIDRIO FLOTANTE" (Reubicado y Estilizado) */}
+      <Container
+        maxWidth='xl'
+        sx={{
+          px: { xs: 3, md: 8 },
+          pt: { xs: 4, md: 6 },
+          pb: { xs: 5, md: 7 },
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between", // Separa el botón (arriba) del título (abajo) de forma orgánica
+        }}
+      >
+        {/* TOP ROW: BOTÓN REGRESAR (Ya no es absoluto, no colisiona) */}
         <Box
           component={motion.div}
-          initial={{ opacity: 0, x: -20 }}
+          initial={{ opacity: 0, x: -15 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          sx={{
-            position: "absolute",
-            bottom: { xs: "85%", md: "90%" }, // Flota sobre la información
-            left: { xs: 16, md: 24 },
-          }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <Button
             startIcon={
-              <ArrowBackIosNewIcon sx={{ fontSize: "12px !important" }} />
+              <ArrowBackIosNewIcon sx={{ fontSize: "11px !important" }} />
             }
             onClick={() => navigate(-1)}
             variant='contained'
+            disableElevation
             sx={{
-              // Glassmorphism suave
-              backdropFilter: "blur(10px)",
-              backgroundColor: "rgba(255, 255, 255, 0.15)",
-              border: "1px solid rgba(255, 255, 255, 0.3)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              backgroundColor: "rgba(255, 255, 255, 0.12)",
+              border: "1px solid rgba(255, 255, 255, 0.25)",
               color: "#FFFFFF",
               fontWeight: 700,
-              fontSize: "0.8rem",
+              fontSize: "0.78rem",
               letterSpacing: "1px",
               textTransform: "none",
-              borderRadius: "50px", // Cápsula premium
-              px: 2.5,
-              py: 1,
-              transition: "all 0.3s ease",
+              borderRadius: "99px",
+              px: 3,
+              py: 1.2,
+              transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
               fontFamily: "'Montserrat', sans-serif",
               "&:hover": {
-                backgroundColor: "rgba(255, 255, 255, 0.25)",
-                transform: "translateX(-3px)",
+                backgroundColor: "rgba(255, 255, 255, 0.22)",
+                transform: "translateX(-4px)",
               },
             }}
           >
-            Volver
+            Volver al catálogo
           </Button>
         </Box>
 
-        {/* CONTENIDO PRINCIPAL ANIMADO */}
+        {/* BOTTOM ROW: TEXTOS DE MARCA ALINEADOS CON ESTILO EDITORIAL */}
         <Box
           component={motion.div}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
           sx={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
+            alignItems: "flex-start", // Alineación asimétrica a la izquierda
+            textAlign: "left",
+            maxWidth: { xs: "100%", md: "85%", lg: "70%" },
           }}
         >
-          {/* Etiqueta tipo de programa premium */}
+          {/* Tag de Categoría de Producto */}
           <Box
             sx={{
               display: "inline-block",
-              border: "1px solid rgba(255, 255, 255, 0.5)",
-              background: "rgba(255, 255, 255, 0.1)",
-              backdropFilter: "blur(5px)",
+              border: "1px solid rgba(255, 255, 255, 0.35)",
+              background: "rgba(255, 255, 255, 0.08)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
               color: "#FFFFFF",
-              px: 2.5,
-              py: 0.8,
-              borderRadius: "50px", // Cápsula
-              fontSize: "0.7rem",
+              px: 2.2,
+              py: 0.6,
+              borderRadius: "99px",
+              fontSize: "0.68rem",
               fontWeight: 700,
-              letterSpacing: "3px",
+              letterSpacing: "2.5px",
               textTransform: "uppercase",
               fontFamily: "'Montserrat', sans-serif",
-              mb: 2.5,
+              mb: 2,
             }}
           >
-            {currentCourse.tipo_curso} Profesional
+            {currentCourse.tipo_curso || "Taller"} Especializado
           </Box>
 
-          {/* Título Serif del Programa (Estilo Alta Costura) */}
+          {/* Título de Impacto en Cursiva Elegante */}
           <Typography
             variant='h1'
             sx={{
               color: "#FFFFFF",
-              fontSize: { xs: "2.4rem", sm: "3.5rem", md: "4.5rem" },
+              fontSize: {
+                xs: "2.2rem",
+                sm: "3.2rem",
+                md: "4.2rem",
+                lg: "4.8rem",
+              },
               lineHeight: 1.1,
-              fontFamily: "'Playfair Display', serif", // Tipografía Serif
-              fontStyle: "italic", // Cursiva para un look más sofisticado
-              fontWeight: 400, // Peso más ligero para un look editorial
+              fontFamily: "'Playfair Display', serif",
+              fontStyle: "italic",
+              fontWeight: 400,
               letterSpacing: "-0.5px",
-              maxWidth: "950px",
-              margin: "0 auto",
+              textShadow: "0 4px 24px rgba(0,0,0,0.25)", // Sutil relieve sobre fondos complejos
             }}
           >
             {currentCourse.titulo}

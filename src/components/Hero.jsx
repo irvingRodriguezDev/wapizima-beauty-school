@@ -89,11 +89,7 @@ const Hero = ({ onDiscoverLocations }) => {
         >
           <Grid container sx={{ justifyContent: "center" }}>
             {/* 1. BADGE SUPERIOR DE MARCA REFINADO */}
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
+            <Grid size={12} sx={{ display: "flex", justifyContent: "center" }}>
               <motion.div variants={itemVariants}>
                 <Box
                   sx={{

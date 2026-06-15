@@ -184,12 +184,14 @@ const Navbar = () => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
-        PaperProps={{
-          sx: {
-            width: 280,
-            background: "rgba(255, 255, 255, 0.85)",
-            backdropFilter: "blur(25px)",
-            borderLeft: "1px solid rgba(229, 56, 136, 0.1)",
+        slotProps={{
+          Paper: {
+            sx: {
+              width: 280,
+              background: "rgba(255, 255, 255, 0.85)",
+              backdropFilter: "blur(25px)",
+              borderLeft: "1px solid rgba(229, 56, 136, 0.1)",
+            },
           },
         }}
       >
@@ -243,10 +245,12 @@ const Navbar = () => {
                   >
                     <ListItemText
                       primary={item.label}
-                      primaryTypographyProps={{
-                        fontWeight: isActive ? 700 : 500,
-                        fontSize: "1rem",
-                        letterSpacing: "0.5px",
+                      slotProps={{
+                        primaryTypography: {
+                          fontWeight: isActive ? 700 : 500,
+                          fontSize: "1rem",
+                          letterSpacing: "0.5px",
+                        },
                       }}
                     />
                   </ListItemButton>

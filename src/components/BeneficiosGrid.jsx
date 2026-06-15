@@ -1,45 +1,46 @@
 import React from "react";
-import { Box, Typography, Grid, Container } from "@mui/material";
-import SchoolIcon from "@mui/icons-material/School";
-import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import { Box, Typography, Grid, Container, Stack } from "@mui/material";
+import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
+import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
+import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
+import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
 import { motion } from "framer-motion";
 
-// ---- VARIANTES DE ANIMACIÓN (FRAMER MOTION) ----
+// ---- VARIANTES DE ANIMACIÓN (ELEGANTES Y SUAVES) ----
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
 const BeneficiosGrid = () => {
+  // Íconos cambiados a sus versiones "Outlined" para un look más fino y minimalista
   const items = [
     {
-      icon: <SchoolIcon sx={{ fontSize: 36 }} />,
+      icon: <SchoolOutlinedIcon sx={{ fontSize: 32 }} />,
       title: "Aprende con Másteres",
       desc: "Clases impartidas por profesionales reconocidos a nivel nacional e internacional.",
     },
     {
-      icon: <WorkspacePremiumIcon sx={{ fontSize: 36 }} />,
+      icon: <WorkspacePremiumOutlinedIcon sx={{ fontSize: 32 }} />,
       title: "Certificación Oficial",
       desc: "Al concluir tus talleres recibes un reconocimiento con valor curricular garantizado.",
     },
     {
-      icon: <AccountBalanceWalletIcon sx={{ fontSize: 36 }} />,
-      title: "Aparta con el 10%",
+      icon: <AccountBalanceWalletOutlinedIcon sx={{ fontSize: 32 }} />,
+      title: "Aparta desde 30%",
       desc: "Inicia tu capacitación sin presiones financieras. Asegura tu lugar con un pago inicial mínimo.",
     },
     {
-      icon: <AutoAwesomeIcon sx={{ fontSize: 36 }} />,
+      icon: <AutoAwesomeOutlinedIcon sx={{ fontSize: 32 }} />,
       title: "Kit de Producto Incluido",
       desc: "Acceso a lanzamientos exclusivos y material de la línea original Wapizima.",
     },
@@ -47,34 +48,72 @@ const BeneficiosGrid = () => {
 
   return (
     <Box
+      component='section'
       sx={{
-        py: { xs: 8, md: 12 },
-        background: "#FFFBFD",
-        backgroundImage: `
-          radial-gradient(circle at 10% 15%, rgba(255, 240, 245, 0.9) 0%, transparent 40%),
-          radial-gradient(circle at 85% 20%, rgba(244, 114, 182, 0.18) 0%, rgba(255, 240, 245, 0.5) 35%, transparent 70%),
-          radial-gradient(circle at 50% 90%, rgba(229, 56, 136, 0.05) 0%, transparent 50%)
-        `,
+        py: { xs: 10, md: 16 },
+        background: "linear-gradient(180deg, #FFFFFF 0%, #FFF5F8 100%)",
         position: "relative",
+        overflow: "hidden",
       }}
     >
-      <Container maxWidth='xl'>
-        <motion.div
+      {/* Aura rosa de fondo estilo iluminación de pasarela */}
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: "-20%",
+          right: "-10%",
+          width: 700,
+          height: 700,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(245, 79, 156, 0.06) 0%, transparent 70%)",
+          filter: "blur(60px)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <Container maxWidth='xl' sx={{ px: { xs: 3, md: 8 } }}>
+        <Grid
+          container
+          spacing={{ xs: 6, lg: 8 }}
+          component={motion.div}
           variants={containerVariants}
           initial='hidden'
           whileInView='visible'
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-120px" }}
         >
-          <Grid container justifyContent='center'>
-            {/* 1. TÍTULO DE SECCIÓN EDITORIAL */}
-            <Grid size={12} sx={{ textAlign: "center", mb: { xs: 6, md: 9 } }}>
+          {/* 1. COLUMNA IZQUIERDA: BLOQUE EDITORIAL DE TÍTULO */}
+          <Grid size={{ xs: 12, lg: 4 }} sx={{ position: "relative" }}>
+            <Box sx={{ position: { lg: "sticky" }, top: "140px" }}>
+              {/* Mini tag de sección */}
+              <Typography
+                sx={{
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  color: "#E53888",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  mb: 2,
+                  fontFamily: "'Montserrat', sans-serif",
+                }}
+              >
+                — Tu Futuro Profesional
+              </Typography>
+
               <Typography
                 variant='h2'
                 sx={{
-                  fontWeight: 900,
-                  fontSize: { xs: "2rem", sm: "2.6rem", md: "3.4rem" },
-                  letterSpacing: "-0.5px",
-                  color: "#212121",
+                  fontWeight: 800,
+                  fontSize: {
+                    xs: "2.4rem",
+                    sm: "2.8rem",
+                    md: "3.2rem",
+                    lg: "3.5rem",
+                  },
+                  lineHeight: 1.15,
+                  letterSpacing: "-1px",
+                  color: "#1F1A1C",
+                  mb: 3,
                 }}
               >
                 Los beneficios de estudiar en{" "}
@@ -85,108 +124,121 @@ const BeneficiosGrid = () => {
                     fontStyle: "italic",
                     fontWeight: "400",
                     background:
-                      "linear-gradient(90deg, #E53888 0%, #F472B6 100%)",
+                      "linear-gradient(90deg, #E53888 0%, #FF7EB8 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    display: "inline-block",
-                    px: 1,
+                    display: "block",
+                    mt: 1,
                   }}
                 >
                   Wapizima
                 </Box>
               </Typography>
-            </Grid>
 
-            {/* 2. GRID DE TARJETAS FLOTANTES ROSA PREMIUM */}
-            <Grid size={12}>
-              <Grid container spacing={4} justifyContent='center'>
-                {items.map((item, index) => (
-                  <Grid
-                    size={{ xs: 12, sm: 6, md: 6, lg: 4, xl: 3 }}
-                    key={index}
+              <Typography
+                sx={{
+                  color: "#655F62",
+                  fontSize: "1rem",
+                  lineHeight: 1.7,
+                  fontWeight: 500,
+                  maxWidth: { lg: "320px" },
+                }}
+              >
+                Diseñamos una experiencia educativa premium para que desarrolles
+                tu talento con herramientas y certificaciones líderes en la
+                industria de las uñas.
+              </Typography>
+            </Box>
+          </Grid>
+
+          {/* 2. COLUMNA DERECHA: GRID DE TARJETAS ASIMÉTRICAS */}
+          <Grid size={{ xs: 12, lg: 8 }}>
+            <Grid container spacing={{ xs: 3, md: 4 }}>
+              {items.map((item, index) => (
+                <Grid size={{ xs: 12, md: 6 }} key={index}>
+                  <motion.div
+                    variants={itemVariants}
+                    style={{ height: "100%" }}
                   >
-                    <motion.div
-                      variants={itemVariants}
-                      style={{ height: "100%" }}
-                    >
-                      <Box
-                        sx={{
-                          textAlign: "center",
-                          p: 4,
-                          height: "100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          backgroundColor: "#FFFFFF",
-                          borderRadius: "24px",
-                          border: "1px solid rgba(244, 114, 182, 0.15)", // Borde rosa ultra traslúcido
-                          boxShadow: "0px 10px 30px rgba(229, 56, 136, 0.02)",
-                          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                          // Microinteracción Premium al pasar el cursor
-                          "&:hover": {
-                            transform: "translateY(-8px)",
-                            borderColor: "rgba(229, 56, 136, 0.3)",
-                            // Sutil aura rosa difuminada que simula iluminación desde atrás
-                            boxShadow: "0px 20px 40px rgba(229, 56, 136, 0.08)",
-                            "& .icon-container": {
-                              transform: "scale(1.1)",
-                              color: "#D82E7A",
-                            },
+                    <Box
+                      sx={{
+                        p: { xs: 4, md: 5 },
+                        height: "auto",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center", // Alineación a la izquierda para un look más moderno/editorial
+                        backgroundColor: "#FFFFFF",
+                        borderRadius: "32px", // Esquinas más amplias y orgánicas
+                        border: "1px solid rgba(245, 79, 156, 0.06)",
+                        boxShadow: "0px 16px 40px rgba(245, 79, 156, 0.02)",
+                        transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+                        position: "relative",
+                        overflow: "hidden",
+
+                        "&:hover": {
+                          transform: "translateY(-6px)",
+                          borderColor: "rgba(245, 79, 156, 0.2)",
+                          boxShadow: "0px 24px 48px rgba(245, 79, 156, 0.06)",
+                          "& .icon-bg": {
+                            background: "rgba(245, 79, 156, 0.08)",
+                            color: "#E53888",
+                            transform: "rotate(4deg) scale(1.05)",
                           },
+                        },
+                      }}
+                    >
+                      {/* Contenedor del Ícono tipo Badge Flotante */}
+                      <Box
+                        className='icon-bg'
+                        sx={{
+                          color: "#655F62", // Color neutro al inicio para no saturar visualmente
+                          mb: 4,
+                          p: 2,
+                          borderRadius: "18px",
+                          backgroundColor: "#FFF5F8", // Fondo rosa muy sutil
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                         }}
                       >
-                        {/* Contenedor del Ícono con Transición */}
-                        <Box
-                          className='icon-container'
-                          sx={{
-                            color: "#E53888", // Rosa principal nativo
-                            mb: 3,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            transition:
-                              "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                            filter:
-                              "drop-shadow(0px 4px 8px rgba(229, 56, 136, 0.15))",
-                          }}
-                        >
-                          {item.icon}
-                        </Box>
-
-                        <Typography
-                          variant='h6'
-                          sx={{
-                            color: "#212121",
-                            mb: 2,
-                            fontSize: "1.2rem",
-                            fontWeight: 700,
-                            fontFamily: "'Montserrat', sans-serif",
-                          }}
-                        >
-                          {item.title}
-                        </Typography>
-
-                        <Typography
-                          variant='body2'
-                          sx={{
-                            color: "#554D4F",
-                            lineHeight: 1.7,
-                            fontSize: "0.92rem",
-                            fontWeight: 500,
-                            fontFamily: "'Inter', sans-serif",
-                            textAlign: "center", // Alineación centrada para un look de tarjetas más simétrico e internacional
-                          }}
-                        >
-                          {item.desc}
-                        </Typography>
+                        {item.icon}
                       </Box>
-                    </motion.div>
-                  </Grid>
-                ))}
-              </Grid>
+
+                      <Typography
+                        variant='h5'
+                        sx={{
+                          color: "#1F1A1C",
+                          mb: 1.5,
+                          fontSize: "1.25rem",
+                          fontWeight: 700,
+                          fontFamily: "'Montserrat', sans-serif",
+                          letterSpacing: "-0.2px",
+                        }}
+                      >
+                        {item.title}
+                      </Typography>
+
+                      <Typography
+                        variant='body2'
+                        sx={{
+                          color: "#655F62",
+                          lineHeight: 1.65,
+                          fontSize: "0.92rem",
+                          fontWeight: 500,
+                          fontFamily: "'Inter', sans-serif",
+                          textAlign: "center",
+                        }}
+                      >
+                        {item.desc}
+                      </Typography>
+                    </Box>
+                  </motion.div>
+                </Grid>
+              ))}
             </Grid>
           </Grid>
-        </motion.div>
+        </Grid>
       </Container>
     </Box>
   );

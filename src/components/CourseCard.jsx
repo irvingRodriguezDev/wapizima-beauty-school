@@ -9,45 +9,39 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import { FormatCurrency } from "../utils/FormatCurrency";
 
 const CourseCard = ({ item }) => {
   return (
     <Card
       sx={{
-        borderRadius: "24px", // Esquinas ligeramente más orgánicas y exclusivas
-        boxShadow: "0px 10px 30px rgba(229, 56, 136, 0.02)",
-        border: "1px solid rgba(244, 114, 182, 0.15)",
+        borderRadius: "32px",
+        boxShadow: "0px 16px 40px rgba(233, 30, 99, 0.02)",
+        border: "1px solid rgba(245, 79, 156, 0.06)",
         display: "flex",
         flexDirection: "column",
         height: "100%",
         backgroundColor: "#FFFFFF",
         position: "relative",
+        overflow: "hidden",
         transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
         "&:hover": {
           transform: "translateY(-8px)",
-          borderColor: "rgba(229, 56, 136, 0.4)",
-          boxShadow: "0px 20px 40px rgba(229, 56, 136, 0.08)",
+          borderColor: "rgba(233, 30, 99, 0.2)",
+          boxShadow: "0px 24px 48px rgba(233, 30, 99, 0.08)",
           "& .img-flyer-premium": {
-            transform: "scale(1.06)", // Zoom un poco más inmersivo
+            transform: "scale(1.05)",
           },
           "& .btn-course-action": {
-            boxShadow: "0px 8px 22px rgba(229, 56, 136, 0.3)",
-            backgroundColor: "#D82E7A",
+            background: "linear-gradient(90deg, #E91E63 0%, #FF6097 100%)",
+            boxShadow: "0px 8px 24px rgba(233, 30, 99, 0.25)",
           },
         },
       }}
     >
-      {/* CONTENEDOR MULTIMEDIA CON CAPAS TRIDIMENSIONALES */}
-      <Box
-        sx={{
-          position: "relative",
-          overflow: "hidden",
-          height: 220,
-          borderTopLeftRadius: "24px",
-          borderTopRightRadius: "24px",
-        }}
-      >
+      {/* CONTENEDOR MULTIMEDIA */}
+      <Box sx={{ position: "relative", overflow: "hidden", height: 280 }}>
         <CardMedia
           component='img'
           className='img-flyer-premium'
@@ -64,58 +58,80 @@ const CourseCard = ({ item }) => {
           }}
         />
 
-        {/* 1. BADGE FLOTANTE GLASSMORPHISM (DISPONIBILIDAD) */}
+        {/* BADGE FLOTANTE DISPONIBILIDAD */}
         <Box
           sx={{
             position: "absolute",
-            top: 16,
-            left: 16,
-            backdropFilter: "blur(12px) saturate(160%)",
-            backgroundColor: "rgba(255, 255, 255, 0.75)",
+            top: 20,
+            left: 20,
+            backdropFilter: "blur(16px)",
+            backgroundColor: "rgba(255, 255, 255, 0.85)",
             border: "1px solid rgba(255, 255, 255, 0.4)",
-            color: "#D82E7A",
-            px: 1.8,
-            py: 0.6,
+            color: "#E91E63",
+            px: 2,
+            py: 0.8,
             borderRadius: "50px",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.04)",
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
             zIndex: 2,
           }}
         >
+          <Box
+            sx={{ position: "relative", display: "flex", width: 7, height: 7 }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                backgroundColor: "#E91E63",
+              }}
+            />
+            <Box
+              sx={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                backgroundColor: "#E91E63",
+                animation: "pulseWave 1.8s infinite ease-in-out",
+                "@keyframes pulseWave": {
+                  "0%": { transform: "scale(1)", opacity: 1 },
+                  "100%": { transform: "scale(3.5)", opacity: 0 },
+                },
+              }}
+            />
+          </Box>
           <Typography
             sx={{
               fontWeight: 800,
-              fontSize: "0.72rem",
+              fontSize: "0.7rem",
               fontFamily: "'Montserrat', sans-serif",
-              letterSpacing: "0.5px",
+              letterSpacing: "0.6px",
               textTransform: "uppercase",
             }}
           >
-            🔥 {item.lugares_disponibles} lugares disponibles
+            {item.lugares_disponibles} lugares
           </Typography>
         </Box>
       </Box>
 
       {/* CONTENIDO EDITORIAL */}
       <CardContent
-        sx={{
-          p: 3.5,
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
+        sx={{ p: 4, flexGrow: 1, display: "flex", flexDirection: "column" }}
       >
+        {/* BLOQUE INFORMATIVO SUPERIOR */}
         <Box sx={{ flexGrow: 1, mb: 3 }}>
-          {/* 2. MICRO-BADGE DE CATEGORÍA TEXTUAL (LOOK REVISTA DE MODA) */}
           {item.tipo_curso && (
             <Typography
               variant='caption'
               sx={{
                 display: "block",
-                color: "#E53888",
+                color: "#E91E63",
                 fontWeight: 700,
-                fontSize: "0.7rem",
-                letterSpacing: "2.5px",
+                fontSize: "0.72rem",
+                letterSpacing: "2px",
                 textTransform: "uppercase",
                 fontFamily: "'Montserrat', sans-serif",
                 mb: 1,
@@ -125,79 +141,67 @@ const CourseCard = ({ item }) => {
             </Typography>
           )}
 
-          {/* Título del programa */}
           <Typography
             variant='h6'
             component='h3'
             sx={{
               fontWeight: 800,
-              color: "#212121",
-              lineHeight: 1.35,
-              fontSize: "1.2rem",
+              color: "#2A2628",
+              lineHeight: 1.4,
+              fontSize: "1.25rem",
               fontFamily: "'Montserrat', sans-serif",
               letterSpacing: "-0.2px",
-              mb: 1.5,
             }}
           >
             {item.maestro ? `${item.titulo} con ${item.maestro}` : item.titulo}
           </Typography>
-
-          {/* Fechas en un formato mucho más minimalista y estético */}
-          <Typography
-            variant='body2'
-            sx={{
-              color: "#554D4F",
-              fontWeight: 500,
-              fontSize: "0.88rem",
-              fontFamily: "'Inter', sans-serif",
-              display: "flex",
-              alignItems: "center",
-              gap: 0.5,
-            }}
-          >
-            🗓️ Disponible:{" "}
-            {new Date(item.fecha_inicio).toLocaleDateString(undefined, {
-              month: "short",
-              day: "numeric",
-            })}{" "}
-            -{" "}
-            {new Date(item.fecha_fin).toLocaleDateString(undefined, {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </Typography>
         </Box>
 
-        {/* CONTENEDOR INFERIOR: PRECIO + BOTÓN DE ACCIÓN FLUIDO */}
-        <Box sx={{ mt: "auto", mx: "auto" }}>
+        {/* CONTENEDOR INFERIOR: ENFASIS EN PRECIO + FECHA CENTRADA */}
+        <Box
+          sx={{ width: "100%", pt: 3, borderTop: "1px solid rgba(0,0,0,0.05)" }}
+        >
+          {/* Bloque de Costo Máximo Impacto */}
           <Box
             sx={{
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
-              justifyContent: "space-between",
-              mb: 2.5,
+              mb: 1,
             }}
           >
             <Typography
-              variant='h6'
+              variant='caption'
+              sx={{
+                color: "#655F62",
+                fontWeight: 600,
+                fontSize: "0.75rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                mb: 0.5,
+              }}
+            >
+              Inversión
+            </Typography>
+            <Typography
+              variant='h5'
               component='p'
               sx={{
                 fontWeight: 900,
-                color: "#E53888",
-                fontSize: "1.4rem",
+                color: "#2A2628",
+                fontSize: "1.6rem", // Mayor tamaño para destacar el precio
                 letterSpacing: "-0.5px",
                 fontFamily: "'Montserrat', sans-serif",
               }}
             >
-              {FormatCurrency(item.costo)}{" "}
+              {FormatCurrency(item.costo)}
               <Box
                 component='span'
                 sx={{
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  color: "#554D4F",
-                  ml: 0.3,
+                  fontSize: "0.7rem",
+                  fontWeight: 800,
+                  color: "#E91E63",
+                  ml: 0.5,
                 }}
               >
                 MXN
@@ -205,31 +209,70 @@ const CourseCard = ({ item }) => {
             </Typography>
           </Box>
 
+          {/* Bloque de Fecha Centrado Limpio */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 0.8,
+              color: "#655F62",
+              mb: 3,
+            }}
+          >
+            <CalendarTodayOutlinedIcon
+              sx={{ fontSize: 14, color: "#E91E63" }}
+            />
+            <Typography
+              variant='body2'
+              sx={{
+                fontWeight: 500,
+                fontSize: "0.85rem",
+                fontFamily: "'Inter', sans-serif",
+              }}
+            >
+              {item.tipo_curso === "Taller" ? "El día" : "Del "}
+              {new Date(item.fecha_inicio).toLocaleDateString("es-MX", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+              {item.tipo_curso === "Taller" ? " " : " Al "}{" "}
+              {item.tipo_curso === "Taller"
+                ? " "
+                : new Date(item.fecha_fin).toLocaleDateString("es-MX", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+            </Typography>
+          </Box>
+
+          {/* Botón de Acción Directa fullWidth */}
           <Link
             to={`/curso/${item.slug}`}
-            style={{ textDecoration: "none", width: "100%" }}
+            style={{ textDecoration: "none", display: "block", width: "100%" }}
           >
             <Button
               className='btn-course-action'
               variant='contained'
+              disableElevation
               fullWidth
-              endIcon={
-                <ArrowForwardIcon sx={{ fontSize: "14px !important" }} />
-              }
+              endIcon={<ArrowForwardIcon />}
               sx={{
-                borderRadius: "50px",
-                py: 1.4,
+                borderRadius: "99px",
+                py: 1.6,
                 fontWeight: 700,
                 fontSize: "0.88rem",
-                letterSpacing: "1px",
+                letterSpacing: "0.5px",
                 textTransform: "none",
-                backgroundColor: "#E53888",
+                background: "#f86697",
                 color: "#FFFFFF",
                 fontFamily: "'Montserrat', sans-serif",
                 transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
-              Ver Detalles
+              Ver detalles del taller
             </Button>
           </Link>
         </Box>

@@ -98,7 +98,7 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
             letterSpacing: "-0.3px",
           }}
         >
-          Asegurar tu lugar
+          Asegura tu lugar
         </Typography>
         {!isProcessing && (
           <IconButton
@@ -121,15 +121,16 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
             fontSize: "0.92rem",
           }}
         >
-          Estás por inscribirte al programa profesional{" "}
+          Estás a un paso de comenzar tu formación en{" "}
           <strong
             style={{ color: "#212121", fontFamily: "'Montserrat', sans-serif" }}
           >
-            {currentCourse?.titulo || "Seleccionado"}
+            {currentCourse?.titulo || "Seleccionado"}.
           </strong>
-          . <br />
-          Completa tus datos de acreditación y personaliza el monto de tu primer
-          abono.
+          <br />
+          Completa tus datos de acreditación y elige cómo deseas inscribirte:
+          puedes reservar tu lugar con un anticipo o realizar el pago total de
+          tu inscripción.
         </Typography>
 
         {/* FEEDBACK DE ERROR ELEGANTE */}
