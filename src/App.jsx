@@ -35,7 +35,7 @@ function App() {
       <Route path='/franquicias' element={<FranquiciasSection />} />
       <Route path='/pago-exitoso' element={<PagoExitoso />} />
       <Route path='/inscripcion-cancelada' element={<InscripcionCancelada />} />
-      <Route path='/generador-accesos' element={<AccessGenerator />} />
+      <Route path='/generar-acceso' element={<AccessGenerator />} />
       {/* Ruta de escape por si escriben cualquier otra cosa (404) */}
       <Route path='*' element={<NotFound />} />
     </Routes>

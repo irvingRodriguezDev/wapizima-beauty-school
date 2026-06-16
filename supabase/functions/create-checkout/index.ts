@@ -60,7 +60,7 @@ serve(async (req) => {
     }
 
     // Llave de idempotencia única basada en la combinación del intento de compra
-    const idempotencyKey = btoa(`${schoolId}-${cursoId}-${phone}-${montoAPagar}`);
+    const idempotencyKey = crypto.randomUUID()
     
     // 1. Buscar si el cliente ya existe en la cuenta de la escuela
     const customers = await stripe.customers.list({ email: email, limit: 1 }, { stripeAccount: stripeAccountId });
@@ -96,6 +96,15 @@ serve(async (req) => {
         },
         quantity: 1,
       }],
+      metadata: {
+        name: name,
+        phone: phone,
+        email: email || '',
+        cursoId: cursoId,
+        schoolId: schoolId,
+        montoPuro: montoAPagar.toString(),
+        costo_curso: costo?.toString() || ''
+      },
       mode: 'payment',
       success_url: `${req.headers.get('origin')}/pago-exitoso`,
       cancel_url: `${req.headers.get('origin')}/inscripcion-cancelada`,

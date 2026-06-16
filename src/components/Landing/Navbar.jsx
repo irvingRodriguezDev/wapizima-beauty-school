@@ -34,6 +34,7 @@ const Navbar = () => {
     { label: "Inicio", href: "/" },
     { label: "Quiénes Somos", href: "/nosotros" },
     { label: "Franquicias", href: "/franquicias" },
+    { label: "Mi Acceso", href: "/generar-acceso" },
   ];
 
   const handleDrawerToggle = () => {
