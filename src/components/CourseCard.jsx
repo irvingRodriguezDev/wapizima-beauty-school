@@ -231,20 +231,24 @@ const CourseCard = ({ item }) => {
                 fontFamily: "'Inter', sans-serif",
               }}
             >
-              {item.tipo_curso === "Taller" ? "El día" : "Del "}
-              {new Date(item.fecha_inicio).toLocaleDateString("es-MX", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
+              {item.tipo_curso === "Taller" ? "El día " : "Del "}
+              <b>
+                {new Date(item.fecha_inicio).toLocaleDateString("es-MX", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </b>
               {item.tipo_curso === "Taller" ? " " : " Al "}{" "}
-              {item.tipo_curso === "Taller"
-                ? " "
-                : new Date(item.fecha_fin).toLocaleDateString("es-MX", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
+              <>
+                {item.tipo_curso === "Taller"
+                  ? " "
+                  : new Date(item.fecha_fin).toLocaleDateString("es-MX", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+              </>
             </Typography>
           </Box>
 
