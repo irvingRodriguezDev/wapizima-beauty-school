@@ -88,199 +88,153 @@ const stepsData = [
 const FranquiciasSection = () => {
   return (
     <Layout>
-      <Box
-        id='franquicias'
-        sx={{
-          py: { xs: 12, md: 18 },
-          backgroundColor: "#FFFBFD", // Fondo limpio e institucional
-          backgroundImage:
-            "radial-gradient(circle at 50% 20%, rgba(229, 56, 136, 0.03) 0%, transparent 50%)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* LÍNEA EJE CENTRAL MINIMALISTA EDITORIAL */}
-        <Box
-          sx={{
-            position: "absolute",
-            left: "50%",
-            top: "26%",
-            bottom: "28%",
-            width: "1px",
-            background:
-              "linear-gradient(to bottom, transparent, rgba(229, 56, 136, 0.15) 15%, rgba(229, 56, 136, 0.15) 85%, transparent)",
-            transform: "translateX(-50%)",
-            display: { xs: "none", md: "block" },
-          }}
-        />
-
-        <Container maxWidth='lg'>
-          {/* ---- ENCABEZADO EDITORIAL DE ALTA GAMA ---- */}
-          <Box sx={{ textAlign: "center", mb: { xs: 8, md: 12 } }}>
-            <Stack
-              direction='row'
-              spacing={1.2}
-              sx={{ mb: 2, justifyContent: "center", alignItems: "center" }}
-            >
-              <AutoAwesomeIcon sx={{ color: "#E53888", fontSize: 14 }} />
-              <Typography
-                variant='caption'
-                sx={{
-                  textTransform: "uppercase",
-                  letterSpacing: "3px",
-                  fontWeight: 700,
-                  color: "#D82E7A",
-                  fontFamily: "'Montserrat', sans-serif",
-                }}
-              >
-                Tu Próximo Gran Éxito Comercial
-              </Typography>
-            </Stack>
-
-            <Typography
-              variant='h2'
+      <Grid container spacing={2} id='franquicias' sx={{ padding: "20px" }}>
+        <Grid size={12}>
+          <AutoAwesomeIcon sx={{ color: "#E53888", fontSize: 14 }} />
+          <Typography
+            variant='caption'
+            sx={{
+              textTransform: "uppercase",
+              letterSpacing: "3px",
+              fontWeight: 700,
+              color: "#D82E7A",
+              fontFamily: "'Montserrat', sans-serif",
+            }}
+          >
+            Tu Próximo Gran Éxito Comercial
+          </Typography>
+        </Grid>
+        <Grid size={12}>
+          <Typography
+            variant='h2'
+            sx={{
+              fontWeight: 900,
+              fontSize: { xs: "2.2rem", md: "3.4rem" },
+              lineHeight: 1.15,
+              color: "#212121",
+              fontFamily: "'Montserrat', sans-serif",
+              letterSpacing: "-0.5px",
+            }}
+          >
+            Domina el mercado con un <br />
+            <Box
+              component='span'
               sx={{
-                fontWeight: 900,
-                fontSize: { xs: "2.2rem", md: "3.4rem" },
-                lineHeight: 1.15,
-                color: "#212121",
-                fontFamily: "'Montserrat', sans-serif",
-                letterSpacing: "-0.5px",
+                fontStyle: "italic",
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: "400",
+                color: "#E53888",
               }}
             >
-              Domina el mercado con un <br />
-              <Box
-                component='span'
-                sx={{
-                  fontStyle: "italic",
-                  fontFamily: "'Playfair Display', serif",
-                  fontWeight: "400",
-                  color: "#E53888",
-                }}
+              modelo llave en mano.
+            </Box>
+          </Typography>
+        </Grid>
+        <Grid size={12}>
+          {stepsData.map((step, index) => {
+            const isEven = index % 2 === 1;
+            return (
+              <Grid
+                container
+                key={step.num}
+                component={motion.div}
+                variants={cardVariants}
+                // Aquí se genera el zig-zag nativo invirtiendo la fila en pantallas grandes
+                direction={isEven ? { xs: "column", md: "row-reverse" } : "row"}
+                alignItems='center'
               >
-                modelo llave en mano.
-              </Box>
-            </Typography>
-          </Box>
-
-          {/* ---- FLUJO DINÁMICO EN ZIG-ZAG LIMPIO Y MAPADO ---- */}
-          <Stack
-            spacing={{ xs: 6, md: 8 }}
-            component={motion.div}
-            variants={containerVariants}
-            initial='hidden'
-            whileInView='visible'
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            {stepsData.map((step, index) => {
-              const isEven = index % 2 === 1;
-              return (
+                {/* Columna con el Contenido */}
                 <Grid
-                  container
-                  key={step.num}
-                  component={motion.div}
-                  variants={cardVariants}
-                  // Aquí se genera el zig-zag nativo invirtiendo la fila en pantallas grandes
-                  direction={
-                    isEven ? { xs: "column", md: "row-reverse" } : "row"
-                  }
-                  alignItems='center'
+                  size={{ xs: 12, md: 6 }}
+                  sx={{
+                    display: "flex",
+                    justifyContent: isEven ? "flex-start" : "flex-end",
+                  }}
                 >
-                  {/* Columna con el Contenido */}
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
+                  <Box
                     sx={{
-                      display: "flex",
-                      justifyContent: isEven ? "flex-start" : "flex-end",
+                      maxWidth: "500px",
+                      width: "100%",
+                      p: { xs: 3.5, sm: 4 },
+                      backgroundColor: "#FFFFFF",
+                      border: "1px solid rgba(244, 114, 182, 0.15)",
+                      borderRadius: "24px", // Suavizado premium
+                      boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.01)",
+                      mx: { md: 4 },
                     }}
                   >
-                    <Box
+                    <Stack
+                      direction='row'
+                      mb={2.5}
                       sx={{
-                        maxWidth: "500px",
-                        width: "100%",
-                        p: { xs: 3.5, sm: 4 },
-                        backgroundColor: "#FFFFFF",
-                        border: "1px solid rgba(244, 114, 182, 0.15)",
-                        borderRadius: "24px", // Suavizado premium
-                        boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.01)",
-                        mx: { md: 4 },
+                        justifyContent: "space-between",
+                        alignItems: "center",
                       }}
                     >
-                      <Stack
-                        direction='row'
-                        mb={2.5}
+                      <Box
                         sx={{
-                          justifyContent: "space-between",
+                          color: "#E53888",
+                          display: "flex",
                           alignItems: "center",
                         }}
                       >
-                        <Box
-                          sx={{
-                            color: "#E53888",
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          {step.icon}
-                        </Box>
-                        <Typography
-                          variant='h3'
-                          sx={{
-                            fontWeight: 900,
-                            color: "rgba(229, 56, 136, 0.12)",
-                            fontFamily: "'Montserrat', sans-serif",
-                            fontSize: "2.2rem",
-                          }}
-                        >
-                          {step.num}
-                        </Typography>
-                      </Stack>
-
+                        {step.icon}
+                      </Box>
                       <Typography
-                        variant='h4'
-                        component='h3'
+                        variant='h3'
                         sx={{
-                          fontWeight: 800,
-                          fontSize: "1.1rem",
-                          color: "#212121",
-                          mb: 1.5,
-                          letterSpacing: "0.3px",
+                          fontWeight: 900,
+                          color: "rgba(229, 56, 136, 0.2)",
                           fontFamily: "'Montserrat', sans-serif",
-                          textTransform: "uppercase",
+                          fontSize: "2.2rem",
                         }}
                       >
-                        {step.title}
+                        {step.num}
                       </Typography>
+                    </Stack>
 
-                      <Typography
-                        variant='body1'
-                        sx={{
-                          color: "#554D4F",
-                          fontSize: "0.9rem",
-                          lineHeight: 1.7,
-                          fontFamily: "'Inter', sans-serif",
-                        }}
-                      >
-                        {step.desc}
-                      </Typography>
-                    </Box>
-                  </Grid>
+                    <Typography
+                      variant='h4'
+                      component='h3'
+                      sx={{
+                        fontWeight: 800,
+                        fontSize: "1.1rem",
+                        color: "#212121",
+                        mb: 1.5,
+                        letterSpacing: "0.3px",
+                        fontFamily: "'Montserrat', sans-serif",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {step.title}
+                    </Typography>
 
-                  {/* Espaciador Nativo Limpio Ocupado en Desktop */}
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                    sx={{ display: { xs: "none", md: "block" } }}
-                  />
+                    <Typography
+                      variant='body1'
+                      sx={{
+                        color: "#554D4F",
+                        fontSize: "0.9rem",
+                        lineHeight: 1.7,
+                        fontFamily: "'Inter', sans-serif",
+                      }}
+                    >
+                      {step.desc}
+                    </Typography>
+                  </Box>
                 </Grid>
-              );
-            })}
-          </Stack>
 
-          {/* ---- SECCIÓN DE CONVERSIÓN EXCLUSIVA (CTA CARD LUXURY) ---- */}
+                {/* Espaciador Nativo Limpio Ocupado en Desktop */}
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  sx={{ display: { xs: "none", md: "block" } }}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+        <Grid size={12}>
           <Box
             component={motion.div}
             initial={{ opacity: 0, y: 30 }}
@@ -356,8 +310,8 @@ const FranquiciasSection = () => {
               Reúno los requisitos y quiero una franquicia
             </Button>
           </Box>
-        </Container>
-      </Box>
+        </Grid>
+      </Grid>
     </Layout>
   );
 };

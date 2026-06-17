@@ -5,7 +5,7 @@ import {
   DialogTitle,
   IconButton,
   Typography,
-  Box,
+  Grid, // Manteniendo tu estándar de Grid limpio
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { initiateStripeCheckout } from "../../utils/StripeHelper";
@@ -20,7 +20,6 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
     setIsProcessing(true);
     setErrorMessage("");
 
-    // Construimos el DTO con la data recibida del hijo
     const checkoutData = {
       name: formValues.name,
       phone: formValues.phone,
@@ -37,8 +36,6 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
     };
 
     const stripeAccountId = currentCourse?.escuela?.stripe_account_id;
-
-    // Ejecución hacia el checkout de Stripe Connect
     const result = await initiateStripeCheckout(checkoutData, stripeAccountId);
 
     if (!result.success) {
@@ -48,7 +45,6 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
   };
 
   const handleCloseModal = (event, reason) => {
-    // Si está cargando Stripe, bloqueamos el cierre accidental por clicks traseros
     if (
       isProcessing &&
       (reason === "backdropClick" || reason === "escapeKeyDown")
@@ -62,13 +58,12 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
     <Dialog
       open={open}
       onClose={handleCloseModal}
-      disableEscapeKeyDown={isProcessing}
       maxWidth='sm'
       fullWidth
       slotProps={{
         paper: {
           sx: {
-            borderRadius: "28px", // Esquinas suaves consistentes con el ecosistema visual
+            borderRadius: "28px",
             border: "1px solid rgba(244, 114, 182, 0.2)",
             backgroundColor: "#FFFFFF",
             p: { xs: 1.5, sm: 3 },
@@ -77,8 +72,12 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
         },
       }}
     >
-      {/* Cabecera del Modal */}
+      {/* 🔥 LA SOLUCIÓN: Cambiamos el componente a "div". 
+        Ahora HTML generará un <div> conteniendo un único <h2> de Typography, 
+        eliminando el error de hidratación para siempre.
+      */}
       <DialogTitle
+        component='div'
         sx={{
           m: 0,
           p: 2,
@@ -89,7 +88,7 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
       >
         <Typography
           variant='h3'
-          component='h2'
+          component='h2' // Tu título sigue manteniendo su etiqueta semántica H2 perfecta para SEO
           sx={{
             fontSize: "1.35rem",
             fontWeight: 800,
@@ -133,9 +132,10 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
           tu inscripción.
         </Typography>
 
-        {/* FEEDBACK DE ERROR ELEGANTE */}
+        {/* FEEDBACK DE ERROR OPTIMIZADO SIN BOX */}
         {errorMessage && (
-          <Box
+          <Grid
+            container
             sx={{
               mb: 3,
               p: 2,
@@ -151,10 +151,9 @@ const InscripcionModal = ({ open, onClose, currentCourse }) => {
             >
               {errorMessage}
             </Typography>
-          </Box>
+          </Grid>
         )}
 
-        {/* INYECCIÓN DEL COMPONENTE HIJO LIVIANO */}
         <InscriptionForm
           currentCourse={currentCourse}
           isProcessing={isProcessing}

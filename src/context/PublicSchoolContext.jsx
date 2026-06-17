@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import { supabase } from "../config/supabaseClient";
+import FormatDate from "../utils/FormatDate";
 
 const PublicSchoolContext = createContext(null);
 
@@ -60,6 +61,7 @@ export const PublicSchoolProvider = ({ slug, children }) => {
           timeZone: "America/Mexico_City",
         });
 
+        // 2. Tu consulta de Supabase con el filtro corregido
         const { data: coursesData, error: coursesErr } = await supabase
           .from("cursos")
           .select(
@@ -82,9 +84,10 @@ export const PublicSchoolProvider = ({ slug, children }) => {
     enrollments(count),
     salon:salones ( capacidad ) 
   `,
-          ) // 🌟 LA MAGIA: Le decimos que use 'salon_id' para traer la relación y lo nombre como 'salon'
+          )
           .eq("school_id", schoolData.id)
-          .gte("fecha_inicio", hoy)
+          .eq("status", "active")
+          .gte("fecha_inicio", hoy) // 👈 Ahora compara un String limpio "YYYY-MM-DD" contra el DATE de Postgres
           .order("created_at", { ascending: false });
 
         if (coursesErr) {
@@ -94,7 +97,8 @@ export const PublicSchoolProvider = ({ slug, children }) => {
           );
           throw coursesErr;
         }
-        // 1. Inyectamos la propiedad 'lugares_disponibles' calculada en cada objeto
+
+        // 3. Inyectamos la propiedad 'lugares_disponibles' calculada en cada objeto
         const cursosConDisponibilidad = (coursesData || []).map((curso) => {
           // Validamos el conteo de inscritos de forma segura
           const inscritos = Array.isArray(curso.enrollments)
@@ -107,15 +111,15 @@ export const PublicSchoolProvider = ({ slug, children }) => {
           // Calculamos la diferencia real
           const lugaresDisponibles = cupoMaximo - inscritos;
 
-          // Retornamos el objeto clonado agregando la nueva propiedad para usar en UI
+          // Retornamos el objeto clonado agregando las nuevas propiedades para usar en UI
           return {
             ...curso,
-            lugares_disponibles: lugaresDisponibles, // 👈 ¡Aquí nace tu nueva variable!
-            total_inscritos: inscritos, // Opcional por si quieres poner "X alumnas inscritas"
+            lugares_disponibles: lugaresDisponibles,
+            total_inscritos: inscritos,
           };
         });
 
-        // 2. Filtramos para dejar únicamente los que tengan más de 0 lugares libres
+        // 4. Filtramos para dejar únicamente los que tengan más de 0 lugares libres
         const cursosVisibles = cursosConDisponibilidad.filter(
           (curso) => curso.lugares_disponibles > 0,
         );

@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import { FormatCurrency } from "../utils/FormatCurrency";
+import FormatDate from "../utils/FormatDate";
 
 const CourseCard = ({ item }) => {
   return (
@@ -232,22 +233,14 @@ const CourseCard = ({ item }) => {
               }}
             >
               {item.tipo_curso === "Taller" ? "El día " : "Del "}
-              <b>
-                {new Date(item.fecha_inicio).toLocaleDateString("es-MX", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </b>
+              <b>{FormatDate(item.fecha_inicio)}</b>
               {item.tipo_curso === "Taller" ? " " : " Al "}{" "}
               <>
-                {item.tipo_curso === "Taller"
-                  ? " "
-                  : new Date(item.fecha_fin).toLocaleDateString("es-MX", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
+                {item.tipo_curso === "Taller" ? (
+                  " "
+                ) : (
+                  <b>{FormatDate(item.fecha_fin)}</b>
+                )}
               </>
             </Typography>
           </Box>

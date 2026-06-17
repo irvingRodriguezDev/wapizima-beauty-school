@@ -132,15 +132,15 @@ const InscriptionForm = ({ currentCourse, isProcessing, onSubmit }) => {
             inputLabel: {
               sx: { fontFamily: "'Montserrat', sans-serif", fontWeight: 500 },
             },
-          }}
-          helperText='Lo usaremos para respaldar tus comprobantes de pago de forma segura.'
-          FormHelperTextProps={{
-            sx: {
-              fontFamily: "'Inter', sans-serif",
-              fontSize: "0.75rem",
-              ml: 1,
+            formHelperText: {
+              sx: {
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.75rem",
+                ml: 1,
+              },
             },
           }}
+          helperText='Lo usaremos para respaldar tus comprobantes de pago de forma segura.'
         />
 
         {/* SECCIÓN DEL SLIDER GLOW DE STRIPE */}
