@@ -29,7 +29,7 @@ try {
       const session = event.data.object;
       
       // 🚀 Recuperamos la metadata exacta que inyectó 'create-checkout'
-      const { name, phone, email, cursoId, schoolId, costo_curso, montoPuro } = session.metadata;
+      const { name, phone, email, cursoId, schoolId, costo_curso, montoPuro, tipo_curso } = session.metadata;
       
       const montoPagadoStripe = session.amount_total / 100; // Pasamos de centavos a pesos decimales
       const costoTotalCurso = costo_curso ? parseFloat(costo_curso) : montoPagadoStripe;
@@ -39,10 +39,10 @@ try {
       const esLiquidacionTotal = saldoRestante <= 0;
 
       const statusPago = esLiquidacionTotal ? 'completed' : 'active';
-      
+      const cumpleCondicionQR = tipo_curso === "Curso" || esLiquidacionTotal;
       // Solo generamos el QR si la cuenta está totalmente en ceros
-      const secureTokenQR = esLiquidacionTotal 
-        ? `WBS-${crypto.randomUUID().substring(0, 8).toUpperCase()}` 
+      const secureTokenQR = cumpleCondicionQR
+        ? `WBS-${crypto.randomUUID().substring(0, 8).toUpperCase()}`
         : null;
 
       // 1. VALIDAR O CREAR AL ESTUDIANTE

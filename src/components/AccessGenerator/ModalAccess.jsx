@@ -199,7 +199,7 @@ const ModalAccess = ({ open, handleClose, COLORS, enrollment }) => {
               opacity: 0.9,
             }}
           >
-            Muestra este código al staff en taquilla
+            Muestra este código al encargado en el salón
           </Typography>
         </Grid>
       </Grid>

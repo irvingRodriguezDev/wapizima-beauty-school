@@ -221,7 +221,7 @@ const PlantelDetailPage = () => {
                   Programas Disponibles
                 </Typography>
                 <span style={{ fontSize: "1.4rem", marginLeft: "8px" }}>
-                  💅
+                  💅🏻
                 </span>
               </Stack>
               <Stack

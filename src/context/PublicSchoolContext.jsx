@@ -81,6 +81,7 @@ export const PublicSchoolProvider = ({ slug, children }) => {
     hora_fin, 
     slug,
     salon_id,
+    sold_out,
     enrollments(count),
     salon:salones ( capacidad ) 
   `,

@@ -269,7 +269,8 @@ const CourseCard = ({ item }) => {
                 transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
-              Ver detalles del taller
+              Ver detalles del{" "}
+              {item.tipo_curso === "Taller" ? "Taller" : "Curso"}
             </Button>
           </Link>
         </Box>

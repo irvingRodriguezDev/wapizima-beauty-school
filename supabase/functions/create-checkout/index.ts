@@ -103,7 +103,8 @@ serve(async (req) => {
         cursoId: cursoId,
         schoolId: schoolId,
         montoPuro: montoAPagar.toString(),
-        costo_curso: costo?.toString() || ''
+        costo_curso: costo?.toString() || '',
+        tipo_curso: tipo_curso?.toString() || '',
       },
       mode: 'payment',
       success_url: `${req.headers.get('origin')}/pago-exitoso`,
@@ -116,7 +117,9 @@ serve(async (req) => {
         cursoId: cursoId,
         schoolId: schoolId,
         montoPuro: montoAPagar.toString(),
-        costo_curso: costo?.toString() || ''
+        costo_curso: costo?.toString() || '',
+        tipo_curso: tipo_curso?.toString() || '',
+
       },
     }, {
       idempotencyKey: idempotencyKey,

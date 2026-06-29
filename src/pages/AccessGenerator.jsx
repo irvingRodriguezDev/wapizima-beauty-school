@@ -47,44 +47,57 @@ const AccessGenerator = () => {
 
       const limiteSieteDias = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
       const fechaLimiteStr = limiteSieteDias.toISOString().split("T")[0];
-
-      // 2. Consulta Real a Supabase uniendo estudiantes y cursos en un solo tiro
-      const { data, error: supabaseErr } = await supabase
+      // 2. Consulta a Supabase (Trae el array de registros que coincidan en fechas y correo)
+      const { data: enrollmentsList, error: supabaseErr } = await supabase
         .from("enrollments")
         .select(
           `
-          id,
-          status,
-          qr_code_token,
-          students!inner (
-            name,
-            email
-          ),
-          cursos!inner (
-            titulo,
-            fecha_inicio
-          )
-        `,
+        id,
+        status,
+        qr_code_token,
+        students!inner (
+          name,
+          email
+        ),
+        cursos!inner (
+          titulo,
+          fecha_inicio,
+          tipo_curso
         )
-        .eq("students.email", email) // Busca por correo limpio
-        .eq("status", "completed") // Solo inscripciones liquidadas de mostrador o Stripe
-        .gte("cursos.fecha_inicio", fechaHoyStr) // Desde hoy en adelante
-        .lte("cursos.fecha_inicio", fechaLimiteStr) // Máximo 7 días en el futuro
-        .maybeSingle(); // Retorna un objeto o null, evitando que truene si hay múltiples talleres
+      `,
+        )
+        .eq("students.email", email)
+        .in("status", ["completed", "active"]) // Permitimos ambos estados desde la consulta
+        .gte("cursos.fecha_inicio", fechaHoyStr)
+        .lte("cursos.fecha_inicio", fechaLimiteStr);
 
       if (supabaseErr) throw supabaseErr;
 
-      // 3. Validamos si se encontró el registro y cuenta con su token generado
+      // 3. Validamos de forma condicional en JavaScript la inscripción adecuada
+      const data =
+        enrollmentsList?.find((enrollment) => {
+          const tipoCurso = enrollment.cursos?.tipo_curso;
+          const estado = enrollment.status;
+
+          // REGLA: Si es 'Curso', pasa con active o completed. Si es otra cosa, estrictamente completed.
+          if (tipoCurso === "Curso") {
+            return estado === "active" || estado === "completed";
+          } else {
+            return estado === "completed";
+          }
+        }) || null;
+
+      // 4. Procesamos la inscripción válida encontrada
       if (data) {
         if (!data.qr_code_token) {
           setError(
-            "Tu inscripción está liquidada, pero tu pase de acceso aún no ha sido timbrado. Por favor contacta al administrador.",
+            "Tu inscripción es válida, pero tu pase de acceso aún no ha sido timbrado. Por favor contacta al administrador.",
           );
           setLoading(false);
           return;
         }
 
-        // Formateador estético para la fecha del taller
+        // Formateador estético para la fecha del taller/curso
         const opcionesFecha = {
           day: "numeric",
           month: "short",
@@ -101,10 +114,11 @@ const AccessGenerator = () => {
           courseName: data.cursos.titulo,
           fechaCurso: fechaFormateada,
           qr_code_token: data.qr_code_token,
+          tipo_curso: data.cursos.tipo_curso,
         });
       } else {
         setError(
-          "No se encontraron pases de asistencia liquidados para este correo electrónico en los próximos 7 días.",
+          "No se encontraron pases de asistencia válidos o vigentes para este correo electrónico en los próximos 7 días.",
         );
       }
     } catch (err) {
@@ -268,131 +282,6 @@ const AccessGenerator = () => {
 
                 {enrollment && (
                   <InfoAccess enrollment={enrollment} COLORS={COLORS} />
-                  // <Grid
-                  //   container
-                  //   sx={{
-                  //     mt: 3,
-                  //     p: 3,
-                  //     backgroundColor: "rgba(76, 175, 80, 0.03)",
-                  //     borderRadius: "24px",
-                  //     border: "1px solid rgba(76, 175, 80, 0.2)",
-                  //     alignItems: "center",
-                  //   }}
-                  // >
-                  //   <Grid
-                  //     size={12}
-                  //     sx={{
-                  //       display: "flex",
-                  //       flexDirection: "column",
-                  //       alignItems: "center",
-                  //       mb: 2,
-                  //     }}
-                  //   >
-                  //     <CheckCircleOutlinedIcon
-                  //       sx={{ color: "#4caf50", fontSize: "2.5rem", mb: 1 }}
-                  //     />
-                  //     <Typography
-                  //       variant='h6'
-                  //       sx={{
-                  //         fontWeight: 800,
-                  //         color: COLORS.dark,
-                  //         fontFamily: "'Montserrat', sans-serif",
-                  //         fontSize: "1.1rem",
-                  //       }}
-                  //     >
-                  //       ¡Inscripción Confirmada!
-                  //     </Typography>
-                  //     <Typography
-                  //       variant='subtitle2'
-                  //       sx={{
-                  //         color: "#4caf50",
-                  //         fontWeight: 700,
-                  //         fontSize: "0.75rem",
-                  //         letterSpacing: "1px",
-                  //         mt: 0.5,
-                  //       }}
-                  //     >
-                  //       CUENTA LIQUIDADA
-                  //     </Typography>
-                  //   </Grid>
-
-                  //   <Grid
-                  //     size={12}
-                  //     sx={{
-                  //       textAlign: "left",
-                  //       borderTop: "1px dashed rgba(0,0,0,0.08)",
-                  //       pt: 2,
-                  //       mb: 3,
-                  //     }}
-                  //   >
-                  //     <Typography
-                  //       variant='caption'
-                  //       sx={{
-                  //         color: "#655F62",
-                  //         textTransform: "uppercase",
-                  //         fontWeight: 700,
-                  //         letterSpacing: "0.5px",
-                  //       }}
-                  //     >
-                  //       Taller Próximo
-                  //     </Typography>
-                  //     <Typography
-                  //       variant='body1'
-                  //       sx={{
-                  //         fontWeight: 700,
-                  //         color: COLORS.dark,
-                  //         fontFamily: "'Inter', sans-serif",
-                  //         mb: 1.5,
-                  //       }}
-                  //     >
-                  //       {enrollment.courseName}
-                  //     </Typography>
-
-                  //     <Stack
-                  //       direction='row'
-                  //       spacing={1}
-                  //       sx={{ color: "#655F62", alignItems: "center" }}
-                  //     >
-                  //       <CalendarMonthIcon
-                  //         sx={{ fontSize: "1.1rem", color: COLORS.primary }}
-                  //       />
-                  //       <Typography
-                  //         variant='body2'
-                  //         sx={{
-                  //           fontFamily: "'Inter', sans-serif",
-                  //           fontWeight: 500,
-                  //         }}
-                  //       >
-                  //         Fecha del evento:{" "}
-                  //         <strong>{enrollment.fechaCurso}</strong>
-                  //       </Typography>
-                  //     </Stack>
-                  //   </Grid>
-
-                  //   <Grid size={12}>
-                  //     <Button
-                  //       variant='outlined'
-                  //       fullWidth
-                  //       onClick={() => setOpenModalQR(true)}
-                  //       startIcon={<QrCode2Icon />}
-                  //       sx={{
-                  //         borderRadius: "99px",
-                  //         py: 1.5,
-                  //         borderColor: COLORS.primary,
-                  //         color: COLORS.primary,
-                  //         fontWeight: 700,
-                  //         textTransform: "none",
-                  //         fontFamily: "'Montserrat', sans-serif",
-                  //         "&:hover": {
-                  //           backgroundColor: "rgba(233, 30, 99, 0.04)",
-                  //           borderColor: COLORS.accent,
-                  //         },
-                  //       }}
-                  //     >
-                  //       Ver mi Código QR de Entrada
-                  //     </Button>
-                  //   </Grid>
-                  // </Grid>
                 )}
               </Paper>
             </Grid>

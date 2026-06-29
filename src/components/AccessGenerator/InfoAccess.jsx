@@ -12,6 +12,7 @@ const InfoAccess = ({ enrollment, COLORS }) => {
     setOpenModalAccess(true);
     setSelectedEnrollment(data);
   };
+
   return (
     <>
       <Grid
@@ -47,18 +48,6 @@ const InfoAccess = ({ enrollment, COLORS }) => {
             }}
           >
             ¡Inscripción Confirmada!
-          </Typography>
-          <Typography
-            variant='subtitle2'
-            sx={{
-              color: "#4caf50",
-              fontWeight: 700,
-              fontSize: "0.75rem",
-              letterSpacing: "1px",
-              mt: 0.5,
-            }}
-          >
-            CUENTA LIQUIDADA
           </Typography>
         </Grid>
 
