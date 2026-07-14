@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <PublicSchoolProvider>
         {/* <ThemeProvider theme={theme}> */}
-        {/* <CssBaseline /> */}
+        <CssBaseline />
         <App />
         {/* </ThemeProvider> */}
       </PublicSchoolProvider>
