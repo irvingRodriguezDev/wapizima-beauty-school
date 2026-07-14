@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import SouthIcon from "@mui/icons-material/South";
-import LogoAcademia from "./LogoAcademias";
 // ---- VARIANTES DE ANIMACIÓN (FRAMER MOTION) ----
 const containerVariants = {
   hidden: { opacity: 0 },
