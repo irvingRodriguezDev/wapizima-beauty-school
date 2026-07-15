@@ -11,14 +11,14 @@ const LandingPrincipal = ({ onDiscoverLocations }) => {
   return (
     <Layout>
       {/* 1. Sección de Introducción de Impacto */}
-      <Hero onDiscoverLocations={onDiscoverLocations} />
+      {/* <Hero onDiscoverLocations={onDiscoverLocations} /> */}
 
       {/* 2. Cinta de Texto en Movimiento Continuo */}
-      <MarqueeCinta />
 
       {/* 3. Grid Minimalista de Beneficios Corporativos */}
-      <BeneficiosGrid />
+      {/* <BeneficiosGrid /> */}
       <Planteles />
+      {/* <MarqueeCinta /> */}
     </Layout>
   );
 };

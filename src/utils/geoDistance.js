@@ -1,15 +1,25 @@
 /**
  * Calcula la distancia en kilómetros entre dos coordenadas usando la Fórmula de Haversine.
- * Versión optimizada sin Stacks de cálculo repetitivo.
+ * Versión optimizada con validación estricta de coordenadas.
  */
 export const getDistanceKm = (lat1, lon1, lat2, lon2) => {
-  // Si alguna coordenada falta, evita que rompa la app devolviendo una distancia infinita o cero
-  if (!lat1 || !lon1 || !lat2 || !lon2) return 9999;
+  // Validamos que todas las coordenadas sean números válidos (permitiendo el 0)
+  const isInvalid = (val) =>
+    val === undefined || val === null || isNaN(Number(val));
+
+  if (
+    isInvalid(lat1) ||
+    isInvalid(lon1) ||
+    isInvalid(lat2) ||
+    isInvalid(lon2)
+  ) {
+    return 9999; // Retorno de seguridad para mandar al final
+  }
 
   const R = 6371; // Radio de la Tierra en km
 
-  // Función helper para convertir grados a radianes de forma limpia
-  const toRad = (value) => (value * Math.PI) / 180;
+  // Convertimos a radianes
+  const toRad = (value) => (Number(value) * Math.PI) / 180;
 
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);

@@ -36,7 +36,7 @@ const Hero = ({ onDiscoverLocations }) => {
           position: "relative",
           overflow: "hidden",
           width: "100%",
-          minHeight: { xs: "auto", md: "75vh" },
+          minHeight: { xs: "auto", md: "65vh" },
           display: "flex",
           alignItems: "center",
           // TRUCO DE UI: Fondo base limpio con esferas radiales (3 rosas) difuminadas al extremo

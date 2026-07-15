@@ -18,7 +18,7 @@ import { motion } from "framer-motion";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link, useLocation } from "react-router-dom";
-import LogoWapizima from "../../assets/Logo_Wapizima.webp";
+import LogoWapizima from "../../assets/LogoWapizimaAcademias.png";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
