@@ -131,7 +131,7 @@ const InscripcionCancelada = () => {
                 startIcon={
                   <ArrowBackIosNewIcon sx={{ fontSize: "12px !important" }} />
                 }
-                onClick={() => navigate(-1)} // Retorno natural al detalle/modal previo
+                onClick={() => navigate("/")} // Retorno natural al detalle/modal previo
                 sx={{
                   backgroundColor: "#E53888", // Rosa primario de conversión
                   color: "#FFFFFF",
@@ -149,7 +149,7 @@ const InscripcionCancelada = () => {
                   },
                 }}
               >
-                Volver a Intentar
+                Ir al inicio
               </Button>
 
               {/* Botón de Acción Secundario: Soporte Técnico Especializado */}
