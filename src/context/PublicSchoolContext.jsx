@@ -82,6 +82,7 @@ export const PublicSchoolProvider = ({ slug, children }) => {
     slug,
     salon_id,
     sold_out,
+    temario, plan_pagos,
     enrollments(count),
     salon:salones ( capacidad ) 
   `,
@@ -150,7 +151,7 @@ export const PublicSchoolProvider = ({ slug, children }) => {
       const { data, error: courseErr } = await supabase
         .from("cursos")
         .select(
-          `id, titulo, descripcion, costo, maestro, tipo_curso, flayer_url, lista_materiales, fecha_inicio, school_id,
+          `id, titulo, descripcion, costo, maestro, tipo_curso, flayer_url, lista_materiales, fecha_inicio, school_id, temario, plan_pagos,
           fecha_fin, created_at, hora_inicio, hora_fin, video_presentacion_url, slug, escuela:schools(stripe_account_id, name)`,
         )
         .eq("slug", courseSlug)
