@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import Search from "../components/Search";
 import { useDebounce } from "use-debounce";
-
+import svgCity from "../assets/undraw_best-place_dhzp.svg";
 // ---- VARIANTES DE ANIMACIÓN EDITORIAL ----
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -290,15 +290,59 @@ const Planteles = ({ onSelectSchool }) => {
             ) : (
               // Empty State elegante si la búsqueda no arroja coincidencias
               <Grid size={12}>
-                <Box sx={{ textAlign: "center", py: 8 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    py: { xs: 6, md: 10 }, // Espaciado vertical premium
+                    px: 3,
+                  }}
+                >
+                  {/* 1. La Ilustración (Controlada y estilizada) */}
+                  <Box
+                    component='img'
+                    src={svgCity}
+                    alt='No se encontraron planteles'
+                    sx={{
+                      width: "100%",
+                      maxWidth: { xs: 240, sm: 280 }, // Escalado perfecto para que no domine toda la pantalla
+                      height: "auto",
+                      mb: 4, // Espacio generoso hacia los textos para que respire
+                      opacity: 0.9,
+                      filter:
+                        "drop-shadow(0px 8px 24px rgba(240, 98, 146, 0.08))", // Sutil profundidad rosa
+                    }}
+                  />
+
+                  {/* 2. Bloque de Texto */}
                   <Typography
-                    variant='h6'
-                    sx={{ color: "#2A2628", fontWeight: 700, mb: 1 }}
+                    variant='h5' // Cambiado a h5 para mejor presencia
+                    sx={{
+                      color: "#2A2628",
+                      fontWeight: 800,
+                      fontFamily: "'Montserrat', sans-serif",
+                      mb: 1.5,
+                      fontSize: { xs: "1.25rem", sm: "1.5rem" }, // Responsivo
+                    }}
                   >
                     No encontramos planteles
                   </Typography>
-                  <Typography variant='body2' sx={{ color: "#6B6567" }}>
-                    Prueba buscando otra palabra clave o estado de la república.
+
+                  <Typography
+                    variant='body2'
+                    sx={{
+                      color: "#6B6567",
+                      fontFamily: "'Inter', sans-serif",
+                      maxWidth: 320, // Limitamos el ancho para que el texto no se extienda a lo largo y se lea mejor
+                      lineHeight: 1.6,
+                      fontWeight: 500,
+                    }}
+                  >
+                    Prueba buscando otra palabra clave o un estado diferente de
+                    la república.
                   </Typography>
                 </Box>
               </Grid>
