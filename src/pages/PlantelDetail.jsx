@@ -8,6 +8,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Layout from "../components/Landing/Layout";
 import PublicCoursesTabs from "../components/PublicCoursesTabs";
 import LoadingScreen from "../components/LoadingScreen";
+import CustomWhatsApp from "../components/CustomWhatsApp";
 
 const PlantelDetailPage = () => {
   const params = useParams();
@@ -194,7 +195,6 @@ const PlantelDetailPage = () => {
                 </Typography>
               </Stack>
             </Grid>
-
             {/* 3. SECCIÓN: TÍTULO DE OFERTA EDUCATIVA */}
             <Grid size={12} sx={{ mb: 2 }}>
               <Stack
@@ -255,6 +255,13 @@ const PlantelDetailPage = () => {
               <PublicCoursesTabs courses={courses} />
             </Grid>
           </Grid>
+          {school.number_phone !== null && (
+            <CustomWhatsApp
+              phone={school.number_phone}
+              name={school.name}
+              logo={school.logo_url}
+            />
+          )}
         </Container>
       </Grid>
     </Layout>

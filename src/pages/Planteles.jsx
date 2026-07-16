@@ -6,9 +6,10 @@ import { supabase } from "../config/supabaseClient";
 import PlantelCard from "../components/PlantelCard";
 import { Link } from "react-router-dom";
 import { parsePostGISPoint } from "../utils/geo";
-import { motion } from "framer-motion"; // 🛠️ Corregido: Se quitó la importación inexistente de 'distance' que podía causar warning
+import { motion } from "framer-motion";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import Search from "../components/Search";
+import { useDebounce } from "use-debounce";
 
 // ---- VARIANTES DE ANIMACIÓN EDITORIAL ----
 const containerVariants = {
@@ -16,15 +17,6 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: { staggerChildren: 0.1, delayChildren: 0.15 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -38,7 +30,11 @@ const Planteles = ({ onSelectSchool }) => {
   const [schools, setSchools] = useState([]);
   const [loadingSchools, setLoadingSchools] = useState(true);
 
-  // 1. Petición única de escuelas
+  // Inicializamos el input de búsqueda como string vacío
+  const [search, setSearch] = useState("");
+  const [debounceSearchText] = useDebounce(search, 350); // Reducido a 350ms para que se sienta más responsivo
+
+  // 1. Petición única de escuelas al montar el componente
   useEffect(() => {
     const fetchSchools = async () => {
       try {
@@ -59,43 +55,67 @@ const Planteles = ({ onSelectSchool }) => {
     fetchSchools();
   }, []);
 
-  // 2. Procesamiento y ordenamiento dinámico por distancia geoespacial
+  // Helper para normalizar texto (elimina acentos y convierte a minúsculas)
+  const normalizeText = (text) => {
+    if (!text) return "";
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, ""); // Remueve diacríticos/acentos
+  };
+
   const orderedSchools = useMemo(() => {
     if (!schools.length) return [];
 
     const userLat = location?.lat;
     const userLon = location?.lon || location?.lng;
     const hasUserCoords = userLat != null && userLon != null;
+    const cleanSearch = normalizeText(debounceSearchText);
+    return (
+      schools
+        // A. Filtramos localmente sin tocar la base de datos
+        .filter((school) => {
+          if (!cleanSearch) return true; // Si no hay búsqueda, pasan todas
 
-    return schools
-      .map((school) => {
-        const coords = parsePostGISPoint(school.location);
-        const hasSchoolCoords =
-          coords && coords.lat != null && coords.lng != null;
+          const nameMatch = normalizeText(school.name).includes(cleanSearch);
+          const addressMatch = normalizeText(school.address).includes(
+            cleanSearch,
+          );
+          const stateMatch = normalizeText(school.state).includes(cleanSearch); // Por si tienes campo state en DB
 
-        const distance =
-          hasUserCoords && hasSchoolCoords
-            ? getDistanceKm(
-                Number(userLat),
-                Number(userLon),
-                Number(coords.lat),
-                Number(coords.lng),
-              )
-            : null;
+          return nameMatch || addressMatch || stateMatch;
+        })
+        // B. Calculamos las distancias en tiempo real de las escuelas filtradas
+        .map((school) => {
+          const coords = parsePostGISPoint(school.location);
+          const hasSchoolCoords =
+            coords && coords.lat != null && coords.lng != null;
 
-        return {
-          ...school,
-          lat: coords?.lat ?? null,
-          lng: coords?.lng ?? null,
-          distance: distance != null ? parseFloat(distance.toFixed(1)) : null,
-        };
-      })
-      .sort((a, b) => {
-        if (a.distance === null) return 1;
-        if (b.distance === null) return -1;
-        return a.distance - b.distance;
-      });
-  }, [schools, location]);
+          const distance =
+            hasUserCoords && hasSchoolCoords
+              ? getDistanceKm(
+                  Number(userLat),
+                  Number(userLon),
+                  Number(coords.lat),
+                  Number(coords.lng),
+                )
+              : null;
+
+          return {
+            ...school,
+            lat: coords?.lat ?? null,
+            lng: coords?.lng ?? null,
+            distance: distance != null ? parseFloat(distance.toFixed(1)) : null,
+          };
+        })
+        // C. Ordenamos por cercanía física (las que no tienen distancia van al final)
+        .sort((a, b) => {
+          if (a.distance === null) return 1;
+          if (b.distance === null) return -1;
+          return a.distance - b.distance;
+        })
+    );
+  }, [schools, location, debounceSearchText]);
 
   const isCurrentlyLoading = loadingLocation || loadingSchools;
 
@@ -114,8 +134,8 @@ const Planteles = ({ onSelectSchool }) => {
       }}
     >
       <Container maxWidth='xl'>
-        {/* 1. ENCABEZADO EDITORIAL DE ALTO IMPACTO */}
-        <Box sx={{ textAlign: "center", mb: { xs: 6, md: 9 } }}>
+        {/* 1. ENCABEZADO EDITORIAL */}
+        <Box sx={{ textAlign: "center", mb: { xs: 5, md: 7 } }}>
           <Box
             sx={{
               display: "inline-flex",
@@ -203,7 +223,16 @@ const Planteles = ({ onSelectSchool }) => {
           </Typography>
         </Box>
 
-        {/* 2. GRID DE PLANTELES CON ANIMACIONES Y CONTROLES DE CARGA */}
+        {/* BUSCADOR DE PLANTELES */}
+        <Box sx={{ maxWidth: "100%", mx: "auto", mb: { xs: 6, md: 8 } }}>
+          <Search
+            titulo='Buscar Academia por estado, ciudad o nombre'
+            search={search}
+            setSearch={setSearch}
+          />
+        </Box>
+
+        {/* 2. GRID DE PLANTELES */}
         <Box
           component={motion.div}
           variants={containerVariants}
@@ -212,54 +241,68 @@ const Planteles = ({ onSelectSchool }) => {
           viewport={{ once: true, margin: "-50px" }}
         >
           <Grid container spacing={{ xs: 3, md: 4 }}>
-            {isCurrentlyLoading
-              ? // Esqueletos de carga adaptados a la grilla clásica de MUI v5
-                Array.from(new Array(4)).map((_, idx) => (
-                  <Grid key={idx} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                    <Box
-                      sx={{
-                        p: 2,
-                        bgcolor: "#fff",
-                        borderRadius: "24px",
-                        border: "1px solid rgba(0,0,0,0.03)",
-                      }}
-                    >
-                      <Skeleton
-                        variant='rectangular'
-                        height={220}
-                        sx={{ borderRadius: "18px", mb: 2 }}
-                      />
-                      <Skeleton
-                        variant='text'
-                        width='60%'
-                        height={25}
-                        sx={{ mb: 1 }}
-                      />
-                      <Skeleton variant='text' width='40%' height={20} />
-                    </Box>
-                  </Grid>
-                ))
-              : orderedSchools.map((school, index) => (
-                  <Grid key={school.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-                    <Link
-                      to={`/academia/${school.slug}`}
-                      style={{
-                        textDecoration: "none",
-                        display: "block",
-                        height: "100%",
-                        position: "relative",
-                      }}
-                    >
-                      {/* Badge Dinámico de Distancia Premium (Solo si hay coordenadas de usuario validas) */}
-
-                      <PlantelCard
-                        school={school}
-                        index={index}
-                        onSelectSchool={onSelectSchool}
-                      />
-                    </Link>
-                  </Grid>
-                ))}
+            {isCurrentlyLoading ? (
+              Array.from(new Array(4)).map((_, idx) => (
+                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={idx}>
+                  <Box
+                    sx={{
+                      p: 2,
+                      bgcolor: "#fff",
+                      borderRadius: "24px",
+                      border: "1px solid rgba(0,0,0,0.03)",
+                    }}
+                  >
+                    <Skeleton
+                      variant='rectangular'
+                      height={220}
+                      sx={{ borderRadius: "18px", mb: 2 }}
+                    />
+                    <Skeleton
+                      variant='text'
+                      width='60%'
+                      height={25}
+                      sx={{ mb: 1 }}
+                    />
+                    <Skeleton variant='text' width='40%' height={20} />
+                  </Box>
+                </Grid>
+              ))
+            ) : orderedSchools.length > 0 ? (
+              orderedSchools.map((school, index) => (
+                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={school.id}>
+                  <Link
+                    to={`/academia/${school.slug}`}
+                    style={{
+                      textDecoration: "none",
+                      display: "block",
+                      height: "100%",
+                      position: "relative",
+                    }}
+                  >
+                    <PlantelCard
+                      school={school}
+                      index={index}
+                      onSelectSchool={onSelectSchool}
+                    />
+                  </Link>
+                </Grid>
+              ))
+            ) : (
+              // Empty State elegante si la búsqueda no arroja coincidencias
+              <Grid size={12}>
+                <Box sx={{ textAlign: "center", py: 8 }}>
+                  <Typography
+                    variant='h6'
+                    sx={{ color: "#2A2628", fontWeight: 700, mb: 1 }}
+                  >
+                    No encontramos planteles
+                  </Typography>
+                  <Typography variant='body2' sx={{ color: "#6B6567" }}>
+                    Prueba buscando otra palabra clave o estado de la república.
+                  </Typography>
+                </Box>
+              </Grid>
+            )}
           </Grid>
         </Box>
       </Container>

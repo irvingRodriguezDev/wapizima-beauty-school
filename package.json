@@ -15,15 +15,17 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^9.0.1",
     "@mui/material": "^9.0.1",
+    "react-floating-whatsapp": "^5.0.8",
     "@stripe/react-stripe-js": "^6.4.0",
     "@stripe/stripe-js": "^9.7.0",
     "@supabase/supabase-js": "^2.106.0",
-    "react-fast-marquee": "^1.6.5",
     "framer-motion": "^12.39.0",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "^7.15.1"
+    "react-fast-marquee": "^1.6.5",
+    "react-router-dom": "^7.15.1",
+    "use-debounce": "^10.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

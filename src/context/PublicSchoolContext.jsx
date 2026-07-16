@@ -34,7 +34,7 @@ export const PublicSchoolProvider = ({ slug, children }) => {
         // 1. Buscamos la escuela por su slug
         const { data: schoolData, error: schoolErr } = await supabase
           .from("schools")
-          .select("id, name, address")
+          .select("id, name, address, number_phone, logo_url")
           .eq("slug", slug)
           .maybeSingle(); // Usamos maybeSingle() para evitar que truene rudo si no encuentra concordancia
 
