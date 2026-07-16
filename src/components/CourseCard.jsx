@@ -124,24 +124,6 @@ const CourseCard = ({ item }) => {
       >
         {/* BLOQUE INFORMATIVO SUPERIOR */}
         <Box sx={{ flexGrow: 1, mb: 3 }}>
-          {item.tipo_curso && (
-            <Typography
-              variant='caption'
-              sx={{
-                display: "block",
-                color: "#E91E63",
-                fontWeight: 700,
-                fontSize: "0.72rem",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                fontFamily: "'Montserrat', sans-serif",
-                mb: 1,
-              }}
-            >
-              {item.tipo_curso} Profesional
-            </Typography>
-          )}
-
           <Typography
             variant='h6'
             component='h3'
@@ -149,7 +131,7 @@ const CourseCard = ({ item }) => {
               fontWeight: 800,
               color: "#2A2628",
               lineHeight: 1.4,
-              fontSize: "1.25rem",
+              fontSize: "1.15rem",
               fontFamily: "'Montserrat', sans-serif",
               letterSpacing: "-0.2px",
             }}
@@ -190,7 +172,7 @@ const CourseCard = ({ item }) => {
               sx={{
                 fontWeight: 900,
                 color: "#2A2628",
-                fontSize: "1.6rem", // Mayor tamaño para destacar el precio
+                fontSize: "1.3rem", // Mayor tamaño para destacar el precio
                 letterSpacing: "-0.5px",
                 fontFamily: "'Montserrat', sans-serif",
               }}
@@ -221,14 +203,11 @@ const CourseCard = ({ item }) => {
               mb: 3,
             }}
           >
-            <CalendarTodayOutlinedIcon
-              sx={{ fontSize: 14, color: "#E91E63" }}
-            />
             <Typography
               variant='body2'
               sx={{
                 fontWeight: 500,
-                fontSize: "0.85rem",
+                fontSize: "0.65rem",
                 fontFamily: "'Inter', sans-serif",
               }}
             >

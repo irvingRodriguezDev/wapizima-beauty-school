@@ -4,28 +4,50 @@ import {
   Tabs,
   Tab,
   Typography,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
+  Grid, // Usando Grid v2 de MUI (compatible con la prop size)
 } from "@mui/material";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { FormatCurrency } from "../utils/FormatCurrency";
-import { Link } from "react-router-dom";
+import { SearchOff } from "@mui/icons-material";
+import { useDebounce } from "use-debounce";
 import CourseCard from "./CourseCard";
+import Search from "./Search";
+
+// Helper sencillo para remover acentos y facilitar búsquedas más naturales
+const cleanText = (text) => {
+  if (!text) return "";
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+};
 
 const PublicCoursesTabs = ({ courses = [] }) => {
   const [tabValue, setTabValue] = useState(0);
+  const [search, setSearch] = useState("");
+
+  // Reducido a 350ms para un comportamiento táctil y de teclado súper responsivo
+  const [debounceSearchText] = useDebounce(search, 350);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
-  // Filtrado estricto por tipo
-  const filteredData = courses.filter((item) =>
-    tabValue === 0 ? item.tipo_curso === "Curso" : item.tipo_curso === "Taller",
-  );
+  // ⚡ FILTRADO DOBLE: Por tipo de curso (Tab) y por texto de búsqueda (Debounced)
+  const filteredData = courses.filter((item) => {
+    // 1. Filtrado por tipo de curso
+    const matchesTab =
+      tabValue === 0
+        ? item.tipo_curso === "Curso"
+        : item.tipo_curso === "Taller";
+
+    // 2. Filtrado por búsqueda de texto (título o descripción corta)
+    const cleanQuery = cleanText(debounceSearchText);
+    const matchesSearch =
+      cleanQuery === "" ||
+      cleanText(item.titulo).includes(cleanQuery) ||
+      cleanText(item.maestro || item.descripcion).includes(cleanQuery);
+
+    return matchesTab && matchesSearch;
+  });
 
   return (
     <Box sx={{ width: "100%", margin: "0 auto", pt: 4 }}>
@@ -36,7 +58,7 @@ const PublicCoursesTabs = ({ courses = [] }) => {
           justifyContent: "center",
           borderBottom: "1px solid",
           borderColor: "rgba(229, 56, 136, 0.1)",
-          mb: 6,
+          mb: 5,
         }}
       >
         <Tabs
@@ -74,7 +96,16 @@ const PublicCoursesTabs = ({ courses = [] }) => {
         </Tabs>
       </Box>
 
-      {/* 2. GRID DE CURSOS / TALLERES */}
+      {/* 2. BARRA DE BÚSQUEDA */}
+      <Box sx={{ mb: 6 }}>
+        <Search
+          titulo={`Buscar en ${tabValue === 0 ? "Cursos" : "Talleres"}`}
+          search={search}
+          setSearch={setSearch}
+        />
+      </Box>
+
+      {/* 3. GRID DE CURSOS / TALLERES */}
       <Grid container spacing={4}>
         {filteredData.length > 0 ? (
           filteredData.map((item) => (
@@ -83,20 +114,49 @@ const PublicCoursesTabs = ({ courses = [] }) => {
             </Grid>
           ))
         ) : (
-          /* Estado Vacío Estilizado */
+          /* 4. ESTADO VACÍO EDITORIAL Y PREMIUM */
           <Grid size={12}>
-            <Box sx={{ textAlign: "center", py: 12 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                py: 10,
+                px: 3,
+                background: "rgba(255, 255, 255, 0.3)",
+                backdropFilter: "blur(10px)",
+                borderRadius: "24px",
+                border: "1px dashed rgba(229, 56, 136, 0.2)",
+              }}
+            >
+              <SearchOff
+                sx={{ fontSize: 60, color: "#F472B6", mb: 2, opacity: 0.8 }}
+              />
               <Typography
-                variant='body1'
+                variant='h6'
                 sx={{
-                  color: "#554D4F",
-                  letterSpacing: "0.5px",
-                  fontWeight: 500,
-                  fontFamily: "'Inter', sans-serif",
+                  color: "#2A2628",
+                  fontWeight: 700,
+                  fontFamily: "'Montserrat', sans-serif",
+                  mb: 1,
                 }}
               >
-                No hay {tabValue === 0 ? "cursos" : "talleres"} disponibles en
-                este momento.
+                No encontramos resultados
+              </Typography>
+              <Typography
+                variant='body2'
+                sx={{
+                  color: "#6B6567",
+                  fontFamily: "'Inter', sans-serif",
+                  maxWidth: 380,
+                  lineHeight: 1.6,
+                }}
+              >
+                {search.trim() !== ""
+                  ? `No se encontró ningún ${tabValue === 0 ? "curso" : "taller"} que coincida con "${search}". Intenta con otra palabra clave.`
+                  : `Actualmente no hay ${tabValue === 0 ? "cursos" : "talleres"} disponibles en esta categoría.`}
               </Typography>
             </Box>
           </Grid>
