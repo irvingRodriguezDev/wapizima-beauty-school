@@ -50,7 +50,7 @@ const PublicCoursesTabs = ({ courses = [] }) => {
   });
 
   return (
-    <Box sx={{ width: "100%", margin: "0 auto", pt: 4 }}>
+    <Box sx={{ width: "100%", margin: "0 auto", pt: 4, mt: -4 }}>
       {/* 1. SECCIÓN DE PESTAÑAS EDITORIALES */}
       <Box
         sx={{
@@ -97,7 +97,7 @@ const PublicCoursesTabs = ({ courses = [] }) => {
       </Box>
 
       {/* 2. BARRA DE BÚSQUEDA */}
-      <Box sx={{ mb: 6 }}>
+      <Box sx={{ mb: 2, mt: -4 }}>
         <Search
           titulo={`Buscar en ${tabValue === 0 ? "Cursos" : "Talleres"}`}
           search={search}
@@ -155,8 +155,12 @@ const PublicCoursesTabs = ({ courses = [] }) => {
                 }}
               >
                 {search.trim() !== ""
-                  ? `No se encontró ningún ${tabValue === 0 ? "curso" : "taller"} que coincida con "${search}". Intenta con otra palabra clave.`
-                  : `Actualmente no hay ${tabValue === 0 ? "cursos" : "talleres"} disponibles en esta categoría.`}
+                  ? `No se encontró ningún ${
+                      tabValue === 0 ? "curso" : "taller"
+                    } que coincida con "${search}". Intenta con otra palabra clave.`
+                  : `Actualmente no hay ${
+                      tabValue === 0 ? "cursos" : "talleres"
+                    } disponibles en esta categoría.`}
               </Typography>
             </Box>
           </Grid>

@@ -77,10 +77,10 @@ const PlantelDetailPage = () => {
           pb: 12,
         }}
       >
-        <Container maxWidth='xl' sx={{ px: { xs: 3, md: 8 } }}>
+        <Container maxWidth='2xl' sx={{ px: { xs: 3, md: 8 } }}>
           <Grid container spacing={4}>
             {/* 1. SECCIÓN: BOTÓN REGRESAR */}
-            <Grid size={12} sx={{ pt: 5, pb: 1 }}>
+            <Grid size={12} sx={{ pt: 5, pb: 1, mt: -2, mb: 2 }}>
               <Button
                 startIcon={
                   <ArrowBackIosNewIcon sx={{ fontSize: "11px !important" }} />
@@ -119,35 +119,13 @@ const PlantelDetailPage = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                mt: { xs: -8, md: -2 },
+                mb: { xs: 2 },
                 pt: { xs: 2, md: 4 },
                 pb: { xs: 4, md: 6 },
               }}
             >
               {/* Tag Premium con Emojis Controlados */}
-              <Stack
-                direction='row'
-                spacing={1}
-                sx={{
-                  alignItems: "center",
-                  border: "1px solid rgba(245, 79, 156, 0.2)",
-                  background: "rgba(245, 79, 156, 0.03)",
-                  color: "#E91E63",
-                  px: 2.2,
-                  py: 0.6,
-                  borderRadius: "99px",
-                  fontSize: "0.68rem",
-                  fontWeight: 700,
-                  letterSpacing: "2.5px",
-                  textTransform: "uppercase",
-                  fontFamily: "'Montserrat', sans-serif",
-                  mb: 3,
-                }}
-              >
-                <span>Sede Exclusiva</span>
-                <span style={{ fontSize: "0.85rem", marginTop: "-2px" }}>
-                  ✨
-                </span>
-              </Stack>
 
               {/* Nombre de la Sede */}
               <Typography
@@ -155,7 +133,7 @@ const PlantelDetailPage = () => {
                 component='h1'
                 sx={{
                   color: "#2A2628",
-                  fontSize: { xs: "2.6rem", sm: "3.8rem", md: "5rem" },
+                  fontSize: { xs: "1.6rem", sm: "3.8rem", md: "1.9rem" },
                   lineHeight: 1.05,
                   fontFamily: "'Playfair Display', serif",
                   fontStyle: "italic",
@@ -169,7 +147,7 @@ const PlantelDetailPage = () => {
               </Typography>
 
               {/* Dirección estilo Boutique */}
-              <Stack
+              {/* <Stack
                 direction='row'
                 spacing={1.5}
                 sx={{
@@ -193,10 +171,10 @@ const PlantelDetailPage = () => {
                 >
                   {school.address || "Dirección no especificada"}
                 </Typography>
-              </Stack>
+              </Stack> */}
             </Grid>
             {/* 3. SECCIÓN: TÍTULO DE OFERTA EDUCATIVA */}
-            <Grid size={12} sx={{ mb: 2 }}>
+            {/* <Grid size={12} sx={{ mb: 2 }}>
               <Stack
                 direction='row'
                 spacing={1}
@@ -248,10 +226,10 @@ const PlantelDetailPage = () => {
                   carrera al máximo nivel en el arte de las uñas.
                 </Typography>
               </Stack>
-            </Grid>
+            </Grid> */}
 
             {/* 4. SECCIÓN: TABS CON LAS TARJETAS DE CURSOS */}
-            <Grid size={12}>
+            <Grid size={12} sx={{ mt: -10 }}>
               <PublicCoursesTabs courses={courses} />
             </Grid>
           </Grid>
