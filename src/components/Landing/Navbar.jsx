@@ -36,7 +36,7 @@ const Navbar = () => {
     { label: "Franquicias", href: "/franquicias" },
     { label: "Mi Acceso", href: "/generar-acceso" },
   ];
-
+  const isActive = true;
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -65,7 +65,7 @@ const Navbar = () => {
           <Toolbar
             disableGutters
             sx={{
-              justifyContent: "space-between",
+              justifyContent: "center",
               // Transición de altura fluida al hacer scroll
               height: { xs: "75px", md: "95px" },
               transition: "height 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
@@ -94,7 +94,7 @@ const Navbar = () => {
                   alt='Wapizima Academy'
                   style={{
                     width: "auto",
-                    height: trigger ? "45px" : "55px", // El logo se encoge sutilmente con el scroll
+                    height: trigger ? "45px" : "45px", // El logo se encoge sutilmente con el scroll
                     transition: "height 0.4s ease",
                     objectFit: "contain",
                   }}
@@ -108,61 +108,32 @@ const Navbar = () => {
               spacing={5}
               sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
             >
-              {navItems.map((item) => {
-                const isActive = location.pathname === item.href;
-                return (
-                  <Box key={item.label} position='relative'>
-                    <Button
-                      component={Link}
-                      to={item.href}
-                      sx={{
-                        fontWeight: isActive ? 700 : 500,
-                        fontSize: "0.9rem",
-                        textTransform: "none",
-                        letterSpacing: "1.2px",
-                        px: 1,
-                        py: 0.5,
-                        minWidth: "auto",
-                        color: isActive ? "#E53888" : "#2D2526",
-                        transition: "color 0.3s ease",
-                        "&:hover": {
-                          background: "transparent",
-                          color: "#E53888",
-                        },
-                      }}
-                    >
-                      {item.label}
-                    </Button>
-
-                    {/* Indicador activo: Línea orgánica difuminada abajo del texto */}
-                    {isActive && (
-                      <Box
-                        component={motion.div}
-                        layoutId='glassActiveLine'
-                        sx={{
-                          position: "absolute",
-                          bottom: "-4px",
-                          left: "20%",
-                          width: "60%",
-                          height: "3px",
-                          borderRadius: "2px",
-                          background:
-                            "linear-gradient(90deg, #E53888, #F472B6)",
-                        }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 380,
-                          damping: 30,
-                        }}
-                      />
-                    )}
-                  </Box>
-                );
-              })}
+              <Box position='relative'>
+                {isActive && (
+                  <Box
+                    component={motion.div}
+                    layoutId='glassActiveLine'
+                    sx={{
+                      position: "absolute",
+                      bottom: "-4px",
+                      left: "20%",
+                      width: "60%",
+                      height: "3px",
+                      borderRadius: "2px",
+                      background: "linear-gradient(90deg, #E53888, #F472B6)",
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 380,
+                      damping: 30,
+                    }}
+                  />
+                )}
+              </Box>
             </Stack>
 
             {/* BOTÓN MÓVIL */}
-            <IconButton
+            {/* <IconButton
               onClick={handleDrawerToggle}
               sx={{
                 display: { md: "none" },
@@ -171,16 +142,16 @@ const Navbar = () => {
               }}
             >
               <MenuIcon sx={{ fontSize: 26 }} />
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </Container>
       </AppBar>
 
       {/* REEMPLAZO DEL COLCHÓN: Mantenemos la estructura limpia */}
-      <Box sx={{ height: { xs: "75px", md: "95px" } }} />
+      <Box sx={{ height: { xs: "65px", md: "95px" } }} />
 
       {/* 3. DRAWER MÓVIL CON EFECTO VIDRIO ESMERILADO */}
-      <Drawer
+      {/* <Drawer
         anchor='right'
         open={mobileOpen}
         onClose={handleDrawerToggle}
@@ -260,7 +231,7 @@ const Navbar = () => {
             })}
           </List>
         </Box>
-      </Drawer>
+      </Drawer> */}
     </>
   );
 };

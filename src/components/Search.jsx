@@ -37,7 +37,7 @@ const inputStyles = {
     marginLeft: "8px",
   },
 };
-const Search = ({ search, setSearch, titulo }) => {
+const Search = ({ search, setSearch, titulo, placeholder }) => {
   return (
     <Grid container spacing={2} sx={{ padding: "12px" }}>
       <Grid size={12}>
@@ -55,7 +55,7 @@ const Search = ({ search, setSearch, titulo }) => {
           variant='outlined'
           fullWidth
           type='text'
-          placeholder='Ej: Ciudad de México'
+          placeholder={placeholder}
           autoComplete='off'
           onChange={(e) => setSearch(e.target.value)}
           slotProps={{

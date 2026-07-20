@@ -6,10 +6,13 @@ import {
   CardMedia,
   Typography,
   Button,
+  Chip,
+  Stack,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import CalendarIcon from "@mui/icons-material/CalendarTodayOutlined";
+import TeacherIcon from "@mui/icons-material/AutoStoriesOutlined";
 import { FormatCurrency } from "../utils/FormatCurrency";
 import FormatDate from "../utils/FormatDate";
 
@@ -17,32 +20,33 @@ const CourseCard = ({ item }) => {
   return (
     <Card
       sx={{
-        borderRadius: "32px",
-        boxShadow: "0px 16px 40px rgba(233, 30, 99, 0.02)",
-        border: "1px solid rgba(245, 79, 156, 0.06)",
+        borderRadius: "28px",
+        boxShadow: "0px 16px 45px rgba(229, 56, 136, 0.03)",
+        border: "1px solid rgba(245, 79, 156, 0.08)",
         display: "flex",
         flexDirection: "column",
         height: "100%",
         backgroundColor: "#FFFFFF",
         position: "relative",
         overflow: "hidden",
-        transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
         "&:hover": {
-          transform: "translateY(-8px)",
-          borderColor: "rgba(233, 30, 99, 0.2)",
-          boxShadow: "0px 24px 48px rgba(233, 30, 99, 0.08)",
+          transform: "translateY(-6px)",
+          borderColor: "rgba(229, 56, 136, 0.25)",
+          boxShadow: "0px 24px 50px rgba(229, 56, 136, 0.09)",
           "& .img-flyer-premium": {
-            transform: "scale(1.05)",
+            transform: "scale(1.04)",
           },
           "& .btn-course-action": {
-            background: "linear-gradient(90deg, #E91E63 0%, #FF6097 100%)",
-            boxShadow: "0px 8px 24px rgba(233, 30, 99, 0.25)",
+            background: "linear-gradient(90deg, #E53888 0%, #F472B6 100%)",
+            boxShadow: "0px 8px 24px rgba(229, 56, 136, 0.2)",
+            transform: "scale(1.01)",
           },
         },
       }}
     >
-      {/* CONTENEDOR MULTIMEDIA */}
-      <Box sx={{ position: "relative", overflow: "hidden", height: 280 }}>
+      {/* 📸 CONTENEDOR MULTIMEDIA ANCLADO */}
+      <Box sx={{ position: "relative", overflow: "hidden", height: 260 }}>
         <CardMedia
           component='img'
           className='img-flyer-premium'
@@ -55,38 +59,64 @@ const CourseCard = ({ item }) => {
             height: "100%",
             width: "100%",
             objectFit: "cover",
-            transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+            transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         />
 
-        {/* BADGE FLOTANTE DISPONIBILIDAD */}
+        {/* 🏷️ BADGE FLOTANTE DE CATEGORÍA (CURSO / TALLER) */}
+        {/* <Chip
+          label={
+            item.tipo_curso === "Taller"
+              ? "Taller Intensivo"
+              : "Curso Certificado"
+          }
+          size='small'
+          sx={{
+            position: "absolute",
+            top: 20,
+            right: 20,
+            zIndex: 2,
+            backgroundColor:
+              item.tipo_curso === "Taller" ? "#FFF3E0" : "#FDE0F1",
+            color: item.tipo_curso === "Taller" ? "#ED6C0E" : "#E53888",
+            fontWeight: 800,
+            fontSize: "0.65rem",
+            letterSpacing: "0.5px",
+            textTransform: "uppercase",
+            borderRadius: "8px",
+            border: "none",
+          }}
+        /> */}
+
+        {/* 🟢 BADGE FLOTANTE: LUGARES DISPONIBLES CON PULSO ANIMADO */}
         <Box
           sx={{
             position: "absolute",
             top: 20,
             left: 20,
-            backdropFilter: "blur(16px)",
-            backgroundColor: "rgba(255, 255, 255, 0.85)",
-            border: "1px solid rgba(255, 255, 255, 0.4)",
-            color: "#E91E63",
-            px: 2,
-            py: 0.8,
+            backdropFilter: "blur(12px)",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            border: "1px solid rgba(255, 255, 255, 0.5)",
+            color: "#2A2628",
+            px: 1.8,
+            py: 0.6,
             borderRadius: "50px",
             display: "flex",
             alignItems: "center",
             gap: 1,
             zIndex: 2,
+            boxShadow: "0 4px 15px rgba(0,0,0,0.03)",
           }}
         >
           <Box
-            sx={{ position: "relative", display: "flex", width: 7, height: 7 }}
+            sx={{ position: "relative", display: "flex", width: 6, height: 6 }}
           >
             <Box
               sx={{
                 width: "100%",
                 height: "100%",
                 borderRadius: "50%",
-                backgroundColor: "#E91E63",
+                backgroundColor: "#4caf50", // Color verde para indicar disponibilidad activa
               }}
             />
             <Box
@@ -95,8 +125,8 @@ const CourseCard = ({ item }) => {
                 width: "100%",
                 height: "100%",
                 borderRadius: "50%",
-                backgroundColor: "#E91E63",
-                animation: "pulseWave 1.8s infinite ease-in-out",
+                backgroundColor: "#4caf50",
+                animation: "pulseWave 2s infinite ease-in-out",
                 "@keyframes pulseWave": {
                   "0%": { transform: "scale(1)", opacity: 1 },
                   "100%": { transform: "scale(3.5)", opacity: 0 },
@@ -107,10 +137,9 @@ const CourseCard = ({ item }) => {
           <Typography
             sx={{
               fontWeight: 800,
-              fontSize: "0.7rem",
+              fontSize: "0.68rem",
               fontFamily: "'Montserrat', sans-serif",
-              letterSpacing: "0.6px",
-              textTransform: "uppercase",
+              letterSpacing: "0.4px",
             }}
           >
             {item.lugares_disponibles} lugares
@@ -118,113 +147,154 @@ const CourseCard = ({ item }) => {
         </Box>
       </Box>
 
-      {/* CONTENIDO EDITORIAL */}
+      {/* 📝 CONTENIDO EDITORIAL PREMIUM */}
       <CardContent
-        sx={{ p: 4, flexGrow: 1, display: "flex", flexDirection: "column" }}
+        sx={{ p: 3, flexGrow: 1, display: "flex", flexDirection: "column" }}
       >
-        {/* BLOQUE INFORMATIVO SUPERIOR */}
-        <Box sx={{ flexGrow: 1, mb: 3 }}>
+        {/* Cuerpo informativo principal */}
+        <Box sx={{ flexGrow: 1, mb: 2 }}>
+          {/* Nombre de la Master Instructora */}
+          {item.maestro && (
+            <Stack
+              direction='row'
+              spacing={0.5}
+              sx={{ mb: 1, opacity: 0.85, alignItems: "center" }}
+            >
+              <TeacherIcon sx={{ fontSize: 14, color: "#E53888" }} />
+              <Typography
+                variant='caption'
+                sx={{
+                  fontWeight: 700,
+                  color: "#6B6567",
+                  fontFamily: "'Inter', sans-serif",
+                }}
+              >
+                Master: {item.maestro}
+              </Typography>
+            </Stack>
+          )}
+
+          {/* Título de la capacitación */}
           <Typography
             variant='h6'
             component='h3'
             sx={{
               fontWeight: 800,
               color: "#2A2628",
-              lineHeight: 1.4,
-              fontSize: "1.15rem",
+              lineHeight: 1.35,
+              fontSize: "1.1rem",
               fontFamily: "'Montserrat', sans-serif",
-              letterSpacing: "-0.2px",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden", // Mantiene simétrica la altura de la card si hay títulos muy largos
+              height: 44,
             }}
           >
-            {item.maestro ? `${item.titulo} con ${item.maestro}` : item.titulo}
+            {item.titulo}
           </Typography>
         </Box>
 
-        {/* CONTENEDOR INFERIOR: ENFASIS EN PRECIO + FECHA CENTRADA */}
+        {/* 📊 SECCIÓN INFERIOR: COSTO + CALENDARIO DISTRIBUIDO */}
         <Box
-          sx={{ width: "100%", pt: 3, borderTop: "1px solid rgba(0,0,0,0.05)" }}
+          sx={{
+            width: "100%",
+            pt: 2.5,
+            borderTop: "1px dashed rgba(229, 56, 136, 0.12)",
+          }}
         >
-          {/* Bloque de Costo Máximo Impacto */}
-          <Box
+          <Stack
+            direction='column'
             sx={{
-              display: "flex",
-              flexDirection: "column",
+              justifyContent: "center",
               alignItems: "center",
-              mb: 1,
+              mb: 2.5,
             }}
           >
-            <Typography
-              variant='caption'
-              sx={{
-                color: "#655F62",
-                fontWeight: 600,
-                fontSize: "0.75rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.5px",
-                mb: 0.5,
-              }}
-            >
-              Inversión
-            </Typography>
-            <Typography
-              variant='h5'
-              component='p'
-              sx={{
-                fontWeight: 900,
-                color: "#2A2628",
-                fontSize: "1.3rem", // Mayor tamaño para destacar el precio
-                letterSpacing: "-0.5px",
-                fontFamily: "'Montserrat', sans-serif",
-              }}
-            >
-              {FormatCurrency(item.costo)}
-              <Box
-                component='span'
+            {/* Bloque Financiero */}
+            <Box>
+              <Typography
+                variant='caption'
                 sx={{
-                  fontSize: "0.7rem",
-                  fontWeight: 800,
-                  color: "#E91E63",
-                  ml: 0.5,
+                  color: "#8B8285",
+                  fontWeight: 700,
+                  fontSize: "0.65rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                  display: "block",
                 }}
               >
-                MXN
-              </Box>
-            </Typography>
-          </Box>
+                Inversión
+              </Typography>
+              <Typography
+                variant='h5'
+                component='p'
+                sx={{
+                  fontWeight: 900,
+                  color: "#2A2628",
+                  fontSize: "1.25rem",
+                  fontFamily: "'Montserrat', sans-serif",
+                  lineHeight: 1.1,
+                }}
+              >
+                {FormatCurrency(item.costo)}
+                <Box
+                  component='span'
+                  sx={{
+                    fontSize: "0.65rem",
+                    fontWeight: 800,
+                    color: "#E53888",
+                    ml: 0.5,
+                  }}
+                >
+                  MXN
+                </Box>
+              </Typography>
+            </Box>
 
-          {/* Bloque de Fecha Centrado Limpio */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 0.8,
-              color: "#655F62",
-              mb: 3,
-            }}
-          >
-            <Typography
-              variant='body2'
-              sx={{
-                fontWeight: 500,
-                fontSize: "0.65rem",
-                fontFamily: "'Inter', sans-serif",
-              }}
-            >
-              {item.tipo_curso === "Taller" ? "El día " : "Del "}
-              <b>{FormatDate(item.fecha_inicio)}</b>
-              {item.tipo_curso === "Taller" ? " " : " Al "}{" "}
-              <>
-                {item.tipo_curso === "Taller" ? (
-                  " "
-                ) : (
-                  <b>{FormatDate(item.fecha_fin)}</b>
-                )}
-              </>
-            </Typography>
-          </Box>
+            {/* Bloque de Calendario a la Derecha */}
+            <Box sx={{ textAlign: "right", maxWidth: "60%" }}>
+              <Stack
+                direction='row'
+                sx={{
+                  mb: 0.25,
+                  alignItems: "center",
+                  spacing: 0.5,
+                  justifyContent: "center",
+                }}
+              >
+                <CalendarIcon sx={{ fontSize: 13, color: "#8B8285" }} />
+                <Typography
+                  variant='caption'
+                  sx={{
+                    color: "#8B8285",
+                    fontWeight: 700,
+                    fontSize: "0.65rem",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  Fecha / Hora{" "}
+                </Typography>
+              </Stack>
+              <Typography
+                variant='body2'
+                sx={{
+                  fontWeight: 700,
+                  fontSize: "0.72rem",
+                  fontFamily: "'Inter', sans-serif",
+                  color: "#554D4F",
+                }}
+              >
+                {item.tipo_curso === "Taller" ? "" : " "}
+                <span style={{ color: "#2A2628" }}>
+                  {FormatDate(item.fecha_inicio)} / {item.hora_inicio}
+                </span>
+              </Typography>
+            </Box>
+          </Stack>
 
-          {/* Botón de Acción Directa fullWidth */}
+          {/* ⚡ Botón de Acción Directa Call-To-Action */}
           <Link
             to={`/curso/${item.slug}`}
             style={{ textDecoration: "none", display: "block", width: "100%" }}
@@ -236,13 +306,12 @@ const CourseCard = ({ item }) => {
               fullWidth
               endIcon={<ArrowForwardIcon />}
               sx={{
-                borderRadius: "99px",
-                py: 1.6,
+                borderRadius: "16px", // Acabado squircle en sintonía con las nuevas directrices
+                py: 1.4,
                 fontWeight: 700,
-                fontSize: "0.88rem",
-                letterSpacing: "0.5px",
+                fontSize: "0.85rem",
                 textTransform: "none",
-                background: "#f86697",
+                background: "#E53888",
                 color: "#FFFFFF",
                 fontFamily: "'Montserrat', sans-serif",
                 transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",

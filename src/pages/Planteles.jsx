@@ -130,7 +130,7 @@ const Planteles = ({ onSelectSchool }) => {
           radial-gradient(circle at 50% 90%, rgba(240, 98, 146, 0.02) 0%, transparent 60%)
         `,
         pb: { xs: 10, md: 14 },
-        pt: { xs: 8, md: 10 },
+        pt: { xs: 2, md: 5 },
       }}
     >
       <Container maxWidth='xl'>
@@ -146,6 +146,7 @@ const Planteles = ({ onSelectSchool }) => {
               py: 0.8,
               borderRadius: "50px",
               mb: 3,
+              display: "none",
               border: "1px solid rgba(240, 98, 146, 0.2)",
             }}
           >
@@ -203,7 +204,7 @@ const Planteles = ({ onSelectSchool }) => {
               Wapizima Beauty School
             </Box>
             <br />
-            más cercano.
+            más cercano
           </Typography>
 
           <Typography
@@ -215,6 +216,7 @@ const Planteles = ({ onSelectSchool }) => {
               fontSize: { xs: "0.92rem", md: "1.05rem" },
               fontFamily: "'Inter', sans-serif",
               lineHeight: 1.65,
+              display: "none",
             }}
           >
             {geoError || !location
@@ -224,9 +226,17 @@ const Planteles = ({ onSelectSchool }) => {
         </Box>
 
         {/* BUSCADOR DE PLANTELES */}
-        <Box sx={{ maxWidth: "100%", mx: "auto", mb: { xs: 6, md: 8 } }}>
+        <Box
+          sx={{
+            maxWidth: "100%",
+            mx: "auto",
+            mb: { xs: 2, md: 8 },
+            mt: { xs: -4, md: 0 },
+          }}
+        >
           <Search
-            titulo='Buscar Academia por estado, ciudad o nombre'
+            titulo=''
+            placeholder='Buscar academia por ciudad'
             search={search}
             setSearch={setSearch}
           />

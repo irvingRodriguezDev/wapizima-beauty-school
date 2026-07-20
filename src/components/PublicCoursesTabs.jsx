@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Tabs,
-  Tab,
-  Typography,
-  Grid, // Usando Grid v2 de MUI (compatible con la prop size)
-} from "@mui/material";
+import { Box, Tabs, Tab, Typography, Grid } from "@mui/material";
 import { SearchOff } from "@mui/icons-material";
 import { useDebounce } from "use-debounce";
 import CourseCard from "./CourseCard";
 import Search from "./Search";
 
-// Helper sencillo para remover acentos y facilitar búsquedas más naturales
 const cleanText = (text) => {
   if (!text) return "";
   return text
@@ -24,22 +17,18 @@ const PublicCoursesTabs = ({ courses = [] }) => {
   const [tabValue, setTabValue] = useState(0);
   const [search, setSearch] = useState("");
 
-  // Reducido a 350ms para un comportamiento táctil y de teclado súper responsivo
   const [debounceSearchText] = useDebounce(search, 350);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
-  // ⚡ FILTRADO DOBLE: Por tipo de curso (Tab) y por texto de búsqueda (Debounced)
   const filteredData = courses.filter((item) => {
-    // 1. Filtrado por tipo de curso
     const matchesTab =
       tabValue === 0
         ? item.tipo_curso === "Curso"
         : item.tipo_curso === "Taller";
 
-    // 2. Filtrado por búsqueda de texto (título o descripción corta)
     const cleanQuery = cleanText(debounceSearchText);
     const matchesSearch =
       cleanQuery === "" ||
@@ -51,55 +40,99 @@ const PublicCoursesTabs = ({ courses = [] }) => {
 
   return (
     <Box sx={{ width: "100%", margin: "0 auto", pt: 4, mt: -4 }}>
-      {/* 1. SECCIÓN DE PESTAÑAS EDITORIALES */}
+      {/* 1. SECCIÓN DE PESTAÑAS ULTRA PREMIUM (Estilo Segmented Control / Glassmorphism) */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
-          borderBottom: "1px solid",
-          borderColor: "rgba(229, 56, 136, 0.1)",
           mb: 5,
         }}
       >
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          textColor='inherit'
-          variant='scrollable'
-          scrollButtons='auto'
-          allowScrollButtonsMobile
+        <Box
           sx={{
-            "& .MuiTabs-indicator": {
-              background: "linear-gradient(90deg, #E53888, #F472B6)",
-              height: "3px",
-              borderRadius: "3px 3px 0 0",
-            },
-            "& .MuiTab-root": {
-              fontWeight: 700,
-              fontSize: { xs: "0.8rem", sm: "0.9rem" },
-              textTransform: "uppercase",
-              letterSpacing: "2px",
-              fontFamily: "'Montserrat', sans-serif",
-              color: "#554D4F",
-              px: { xs: 2, sm: 4 },
-              pb: 2,
-              transition: "all 0.3s ease",
-              "&.Mui-selected": {
-                color: "#E53888",
-                fontWeight: 800,
-              },
-            },
+            p: 0.75,
+            borderRadius: "20px",
+            backgroundColor: "rgba(244, 114, 182, 0.05)", // Fondo rosa ultra sutil
+            border: "1px solid rgba(229, 56, 136, 0.08)",
+            backdropFilter: "blur(8px)",
+            display: "inline-block",
+            maxWidth: "100%",
           }}
         >
-          <Tab label='Cursos Completos' />
-          <Tab label='Talleres Especializados' />
-        </Tabs>
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            textColor='inherit'
+            variant='scrollable'
+            scrollButtons='auto'
+            allowScrollButtonsMobile
+            sx={{
+              minHeight: 44,
+              "& .MuiTabs-indicator": {
+                // Indicador transformado en una píldora trasera flotante blanca premium
+                backgroundColor: "#FFFFFF",
+                height: "100%",
+                borderRadius: "14px",
+                boxShadow: "0px 6px 16px rgba(229, 56, 136, 0.12)",
+                zIndex: 0,
+              },
+              "& .MuiTabs-flexContainer": {
+                position: "relative",
+                zIndex: 1,
+              },
+            }}
+          >
+            <Tab
+              label='Cursos Completos'
+              sx={{
+                fontWeight: 700,
+                fontSize: { xs: "0.78rem", sm: "0.85rem" },
+                textTransform: "none", // Menos agresivo que uppercase, se ve más editorial y moderno
+                letterSpacing: "0.3px",
+                fontFamily: "'Montserrat', sans-serif",
+                color: "#6B6567",
+                px: { xs: 3, sm: 5 },
+                minHeight: 44,
+                py: 1,
+                borderRadius: "14px",
+                transition: "color 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                position: "relative",
+                zIndex: 2,
+                "&.Mui-selected": {
+                  color: "#E53888", // Contraste rosa de la marca sobre la píldora blanca
+                },
+              }}
+            />
+            <Tab
+              label='Talleres Especializados'
+              sx={{
+                fontWeight: 700,
+                fontSize: { xs: "0.78rem", sm: "0.85rem" },
+                textTransform: "none",
+                letterSpacing: "0.3px",
+                fontFamily: "'Montserrat', sans-serif",
+                color: "#6B6567",
+                px: { xs: 3, sm: 5 },
+                minHeight: 44,
+                py: 1,
+                borderRadius: "14px",
+                transition: "color 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                position: "relative",
+                zIndex: 2,
+                "&.Mui-selected": {
+                  color: "#E53888",
+                },
+              }}
+            />
+          </Tabs>
+        </Box>
       </Box>
 
       {/* 2. BARRA DE BÚSQUEDA */}
       <Box sx={{ mb: 2, mt: -4 }}>
         <Search
-          titulo={`Buscar en ${tabValue === 0 ? "Cursos" : "Talleres"}`}
+          titulo=''
+          placeholder={`Buscar en ${tabValue === 0 ? "Cursos" : "Talleres"}`}
           search={search}
           setSearch={setSearch}
         />
@@ -114,7 +147,7 @@ const PublicCoursesTabs = ({ courses = [] }) => {
             </Grid>
           ))
         ) : (
-          /* 4. ESTADO VACÍO EDITORIAL Y PREMIUM */
+          /* 4. ESTADO VACÍO EDITORIAL */
           <Grid size={12}>
             <Box
               sx={{
