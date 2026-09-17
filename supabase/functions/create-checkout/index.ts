@@ -18,10 +18,42 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
 
   try {
-    const { name, phone, email, cursoId, schoolId, montoAPagar, stripeAccountId, curso, tipo_curso, maestro, fecha_inicio, costo, escuela } = await req.json()
+    const {
+      name,
+      phone,
+      email,
+      cursoId,
+      schoolId,
+      montoAPagar,
+      curso,
+      tipo_curso,
+      maestro,
+      fecha_inicio,
+      costo,
+      escuela
+    } = await req.json()
+
     const tipo = tipo_curso === "Curso" ? "Curso" : "Taller";
 
-    // 🌟 PASO 0: VALIDACIÓN DE LUGARES DISPONIBLES EN TIEMPO REAL 🌟
+    // 🌟 PASO 0: VERIFICACIÓN DE LA ESCUELA Y TIPO DE NEGOCIO 🌟
+    const { data: schoolData, error: schoolErr } = await supabase
+      .from("schools")
+      .select("id, name, is_franchise, stripe_account_id")
+      .eq("id", schoolId)
+      .single();
+
+    if (schoolErr || !schoolData) {
+      throw new Error("No se encontró la información del centro de capacitación.");
+    }
+
+    const isFranchise = Boolean(schoolData.is_franchise);
+    const connectedAccountId = schoolData.stripe_account_id;
+
+    if (isFranchise && !connectedAccountId) {
+      throw new Error("Esta franquicia aún no ha configurado su cuenta para recibir pagos.");
+    }
+
+    // 🌟 PASO 1: VALIDACIÓN DE LUGARES DISPONIBLES EN TIEMPO REAL 🌟
     const { data: cursoData, error: dbErr } = await supabase
       .from("cursos")
       .select(`
@@ -37,16 +69,13 @@ serve(async (req) => {
       throw new Error("No se pudo verificar la información del curso.");
     }
 
-    // Calculamos los inscritos (soportando array u objeto)
     const inscritos = Array.isArray(cursoData.enrollments)
       ? (cursoData.enrollments[0]?.count || 0)
       : (cursoData.enrollments?.count || 0);
 
-    // Obtenemos la capacidad máxima del salón asignado
     const cupoMaximo = cursoData.salon?.capacidad || 0;
     const lugaresDisponibles = cupoMaximo - inscritos;
 
-    // 🛑 Si ya no hay cupo, detenemos el proceso de inmediato
     if (lugaresDisponibles <= 0) {
       return new Response(
         JSON.stringify({ 
@@ -54,44 +83,73 @@ serve(async (req) => {
         }), 
         {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 422, // Unprocessable Entity (Entidad semánticamente incorrecta debido al cupo)
+          status: 422,
         }
       );
     }
 
-    // Llave de idempotencia única basada en la combinación del intento de compra
-    const idempotencyKey = crypto.randomUUID()
-    
-    // 1. Buscar si el cliente ya existe en la cuenta de la escuela
-    const customers = await stripe.customers.list({ email: email, limit: 1 }, { stripeAccount: stripeAccountId });
-    let customerId;
+    const idempotencyKey = crypto.randomUUID();
+    let customerId: string;
 
-    if (customers.data.length > 0) {
-      customerId = customers.data[0].id;
+    // 🌟 PASO 2: BÚSQUEDA O CREACIÓN DEL CLIENTE EN STRIPE 🌟
+    if (isFranchise && connectedAccountId) {
+      // --- FLUJO FRANQUICIA (Cuenta Conectada) ---
+      const customers = await stripe.customers.list(
+        { email: email, limit: 1 },
+        { stripeAccount: connectedAccountId }
+      );
+
+      if (customers.data.length > 0) {
+        customerId = customers.data[0].id;
+      } else {
+        const customer = await stripe.customers.create(
+          {
+            name: name,
+            email: email,
+            phone: phone,
+            metadata: {
+              plataforma_origen: "WBS",
+              escuela: escuela?.toString() || schoolData.name || '',
+              school_id: schoolId.toString(),
+              is_franchise: "true"
+            }
+          },
+          { stripeAccount: connectedAccountId }
+        );
+        customerId = customer.id;
+      }
     } else {
-      // 2. Si no existe, lo creamos dentro de la cuenta conectada
-      const customer = await stripe.customers.create({
-        name: name,
-        email: email,
-        phone: phone,
-        metadata: {
-          plataforma_origen: "WBS",
-          escuela: escuela?.toString() || '',
-        }
-      }, {
-        stripeAccount: stripeAccountId
-      });
-      customerId = customer.id;
+      // --- FLUJO SEDE PROPIA (Cuenta Directa / Nativa) ---
+      const customers = await stripe.customers.list({ email: email, limit: 1 });
+
+      if (customers.data.length > 0) {
+        customerId = customers.data[0].id;
+      } else {
+        const customer = await stripe.customers.create({
+          name: name,
+          email: email,
+          phone: phone,
+          metadata: {
+            plataforma_origen: "WBS",
+            escuela: escuela?.toString() || schoolData.name || '',
+            school_id: schoolId.toString(),
+            is_franchise: "false"
+          }
+        });
+        customerId = customer.id;
+      }
     }
 
-    // 3. Generamos la sesión de Checkout corriendo DIRECTAMENTE en la cuenta conectada
-    const session = await stripe.checkout.sessions.create({
+    // 🌟 PASO 3: GENERACIÓN DE LA SESIÓN DE CHECKOUT 🌟
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
       customer: customerId,
       payment_method_types: ['card'],
       line_items: [{
         price_data: {
           currency: 'mxn',
-          product_data: { name: `Inscripción al ${tipo} de ${curso} con ${maestro} el día ${fecha_inicio} ` },
+          product_data: { 
+            name: `Inscripción al ${tipo} de ${curso} con ${maestro} el día ${fecha_inicio}` 
+          },
           unit_amount: Math.round(montoAPagar * 100),
         },
         quantity: 1,
@@ -100,41 +158,31 @@ serve(async (req) => {
         name: name,
         phone: phone,
         email: email || '',
-        cursoId: cursoId,
-        schoolId: schoolId,
+        cursoId: cursoId.toString(),
+        schoolId: schoolId.toString(),
         montoPuro: montoAPagar.toString(),
         costo_curso: costo?.toString() || '',
         tipo_curso: tipo_curso?.toString() || '',
+        is_franchise: isFranchise ? "true" : "false"
       },
       mode: 'payment',
       success_url: `${req.headers.get('origin')}/pago-exitoso`,
       cancel_url: `${req.headers.get('origin')}/inscripcion-cancelada`,
-      
-      metadata: {
-        name: name,
-        phone: phone,
-        email: email || '',
-        cursoId: cursoId,
-        schoolId: schoolId,
-        montoPuro: montoAPagar.toString(),
-        costo_curso: costo?.toString() || '',
-        tipo_curso: tipo_curso?.toString() || '',
+    };
 
-      },
-    }, {
-      idempotencyKey: idempotencyKey,
-      stripeAccount: stripeAccountId
-    });
+    const session = (isFranchise && connectedAccountId)
+      ? await stripe.checkout.sessions.create(sessionParams, { idempotencyKey, stripeAccount: connectedAccountId })
+      : await stripe.checkout.sessions.create(sessionParams, { idempotencyKey });
 
     return new Response(JSON.stringify({ url: session.url }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
-    })
+    });
 
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 400,
-    })
+    });
   }
 })
