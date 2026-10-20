@@ -153,7 +153,7 @@ const InscripcionCancelada = () => {
               </Button>
 
               {/* Botón de Acción Secundario: Soporte Técnico Especializado */}
-              <Button
+              {/* <Button
                 component='a'
                 href={WHATSAPP_SOPORTE}
                 target='_blank'
@@ -179,7 +179,7 @@ const InscripcionCancelada = () => {
                 }}
               >
                 Asistencia por WhatsApp
-              </Button>
+              </Button> */}
             </Stack>
           </Box>
         </Container>
