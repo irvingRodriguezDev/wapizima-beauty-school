@@ -289,7 +289,8 @@ const CourseCard = ({ item }) => {
               >
                 {item.tipo_curso === "Taller" ? "" : " "}
                 <span style={{ color: "#2A2628" }}>
-                  {FormatDate(item.fecha_inicio)}
+                  {FormatDate(item.fecha_inicio)} /{" "}
+                  {formatTime(item.hora_inicio, true)}
                 </span>
               </Typography>
             </Box>

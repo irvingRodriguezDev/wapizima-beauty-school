@@ -114,8 +114,8 @@ const DetailsAndDescription = ({ currentCourse }) => {
                     fontFamily: "'Inter', sans-serif",
                   }}
                 >
-                  {formatTime(currentCourse.hora_inicio)} a{" "}
-                  {formatTime(currentCourse.hora_fin)}
+                  {formatTime(currentCourse.hora_inicio, true)} a{" "}
+                  {formatTime(currentCourse.hora_fin, true)}
                 </Typography>
               </Box>
             </Box>
