@@ -90,7 +90,7 @@ export const PublicSchoolProvider = ({ slug, children }) => {
           .eq("school_id", schoolData.id)
           .eq("status", "active")
           .gte("fecha_inicio", hoy) // 👈 Ahora compara un String limpio "YYYY-MM-DD" contra el DATE de Postgres
-          .order("created_at", { ascending: false });
+          .order("fecha_inicio", { ascending: true });
 
         if (coursesErr) {
           console.error(

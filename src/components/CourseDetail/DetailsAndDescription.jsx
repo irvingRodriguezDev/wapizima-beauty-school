@@ -4,6 +4,8 @@ import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import RecordVoiceOverOutlinedIcon from "@mui/icons-material/RecordVoiceOverOutlined";
+import FormatDate from "../../utils/FormatDate";
+import { formatTime } from "../../utils/formatTime";
 
 const DetailsAndDescription = ({ currentCourse }) => {
   // Extraer el ID de TikTok de forma ultra segura para evitar crashes
@@ -90,14 +92,7 @@ const DetailsAndDescription = ({ currentCourse }) => {
                   fontSize: "0.95rem",
                 }}
               >
-                {new Date(currentCourse.fecha_inicio).toLocaleDateString(
-                  "es-MX",
-                  {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  },
-                )}
+                {FormatDate(currentCourse.fecha_inicio)}
               </Typography>
 
               {/* Reemplazo de Stack por Box con Flexbox Nativo */}
@@ -119,7 +114,8 @@ const DetailsAndDescription = ({ currentCourse }) => {
                     fontFamily: "'Inter', sans-serif",
                   }}
                 >
-                  {currentCourse.hora_inicio} a {currentCourse.hora_fin}
+                  {formatTime(currentCourse.hora_inicio)} a{" "}
+                  {formatTime(currentCourse.hora_fin)}
                 </Typography>
               </Box>
             </Box>

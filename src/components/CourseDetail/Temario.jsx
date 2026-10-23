@@ -86,7 +86,7 @@ const Temario = ({ temario, expanded, handleChangeAccordion }) => {
                         </ListItemIcon>
                         <ListItemText
                           primary={punto}
-                          primaryTypographyProps={{
+                          slotProps={{
                             variant: "body2",
                             color: "text.secondary",
                           }}

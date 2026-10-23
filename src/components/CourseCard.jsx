@@ -15,6 +15,7 @@ import CalendarIcon from "@mui/icons-material/CalendarTodayOutlined";
 import TeacherIcon from "@mui/icons-material/AutoStoriesOutlined";
 import { FormatCurrency } from "../utils/FormatCurrency";
 import FormatDate from "../utils/FormatDate";
+import { formatTime } from "../utils/formatTime";
 
 const CourseCard = ({ item }) => {
   return (
@@ -46,7 +47,7 @@ const CourseCard = ({ item }) => {
       }}
     >
       {/* 📸 CONTENEDOR MULTIMEDIA ANCLADO */}
-      <Box sx={{ position: "relative", overflow: "hidden", height: 260 }}>
+      <Box sx={{ position: "relative", overflow: "hidden", height: 400 }}>
         <CardMedia
           component='img'
           className='img-flyer-premium'
@@ -288,7 +289,7 @@ const CourseCard = ({ item }) => {
               >
                 {item.tipo_curso === "Taller" ? "" : " "}
                 <span style={{ color: "#2A2628" }}>
-                  {FormatDate(item.fecha_inicio)} / {item.hora_inicio}
+                  {FormatDate(item.fecha_inicio)}
                 </span>
               </Typography>
             </Box>
